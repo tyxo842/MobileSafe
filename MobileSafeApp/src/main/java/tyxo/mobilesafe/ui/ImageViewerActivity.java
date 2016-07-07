@@ -1,20 +1,33 @@
 package tyxo.mobilesafe.ui;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.umeng.analytics.MobclickAgent;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Date;
 
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.base.BaseActivityToolbar;
+import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.TouchImageView;
 
@@ -59,6 +72,13 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         return true;
     }
 
+    @Override
+    public void onCreateCustomToolbar(Toolbar toolbar) {
+        super.onCreateCustomToolbar(toolbar);
+        TextView tv_toolbar_title = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title.setText("点击切换 测试");
+    }
+
     /*@Override
     public void onCreateCustomToolbar(Toolbar toolbar) {
         super.onCreateCustomToolbar(toolbar);
@@ -71,17 +91,10 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
 
     /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }*/
 
@@ -103,7 +116,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
 
     @Override
     public boolean onLongClick(View v) {
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(new String[]{"保存图片"}, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -114,7 +127,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
                 }
             }
         });
-        builder.show();*/
+        builder.show();
 
         return true;
     }
@@ -143,7 +156,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         return false;
     }
 
-    /*private class SaveImageTask extends AsyncTask<Bitmap, Void, String> {
+    private class SaveImageTask extends AsyncTask<Bitmap, Void, String> {
         @Override
         protected String doInBackground(Bitmap... params) {
             String result = "保存失败";
@@ -174,9 +187,9 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
             ToastUtil.showToastS(getApplicationContext(), result);
             image.setDrawingCacheEnabled(false);
         }
-    }*/
+    }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
         Glide.with(this)
@@ -192,5 +205,5 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
-    }*/
+    }
 }

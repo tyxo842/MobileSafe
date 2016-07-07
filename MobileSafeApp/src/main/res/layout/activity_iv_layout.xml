@@ -27,13 +27,14 @@
 
             <ImageView
                 android:id="@+id/iv_iv_layout_1"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="#999999"/>
 
             <tyxo.mobilesafe.widget.TouchImageView
                 android:id="@+id/picture"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content" />
 
