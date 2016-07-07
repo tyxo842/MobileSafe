@@ -17,6 +17,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="20dp"
+            android:clickable="true"
+            android:background="@drawable/seloctor_btn_commit_unradian"
             android:text="点击切换"/>
 
         <tyxo.mobilesafe.widget.TouchImageView

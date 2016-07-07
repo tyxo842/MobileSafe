@@ -21,6 +21,7 @@
 
         <activity
             android:name=".ui.ImageViewerActivity"
+            android:label=""
             android:theme="@style/MyToolbarTheme" />
 
     </application>

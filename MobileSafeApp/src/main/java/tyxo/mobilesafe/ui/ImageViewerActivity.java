@@ -3,12 +3,11 @@ package tyxo.mobilesafe.ui;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -32,29 +31,15 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     private TouchImageView image;
 
     @Override
-    protected void setContentView() {
-        // setContentView(R.layout.fragment_image_viewer);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iv_layout);
 
-        image = (TouchImageView) findViewById(R.id.picture);
         url = getIntent().getStringExtra("url");
-
-//        this.setBarTitle("图片查看");
-    }
-
-    @Override
-    public void onCreateCustomToolbar(Toolbar toolbar) {
-        super.onCreateCustomToolbar(toolbar);
-        toolbar.showOverflowMenu();
-//        getLayoutInflater().inflate(R.layout.toolbar_demo_layout, toolbar);
-        getLayoutInflater().inflate(R.layout.layout_toolbar, toolbar);
-        TextView tv_toolbar_title = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
-        tv_toolbar_title.setText("点击切换 测试");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.menu_main, menu);
 //        MenuItem itemCompat = menu.findItem(R.id.action_search) ;
 //        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(itemCompat);
@@ -63,6 +48,22 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    @Override
+    protected void initView() {
+        super.initView();
+        image = (TouchImageView) findViewById(R.id.picture);
+    }
+
+    /*@Override
+    public void onCreateCustomToolbar(Toolbar toolbar) {
+        super.onCreateCustomToolbar(toolbar);
+        toolbar.showOverflowMenu();
+//        getLayoutInflater().inflate(R.layout.toolbar_demo_layout, toolbar);
+        getLayoutInflater().inflate(R.layout.layout_toolbar, toolbar);
+        TextView tv_toolbar_title = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title.setText("点击切换 测试");
+    }*/
 
     /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
