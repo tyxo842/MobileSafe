@@ -7,6 +7,7 @@ import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import tyxo.mobilesafe.R;
 
@@ -27,7 +28,7 @@ public abstract class BaseActivityToolbar extends AppCompatActivity {
 
 	@Override
 	public void setContentView(@LayoutRes int layoutResID) {
-		//super.setContentView(layoutResID);
+		super.setContentView(layoutResID);
 		mToolbarHelper = new ToolbarHelper(this, layoutResID);
 		mToolbar = mToolbarHelper.getToolbar();
 		setContentView(mToolbarHelper.getContentView());
@@ -36,12 +37,12 @@ public abstract class BaseActivityToolbar extends AppCompatActivity {
 		// 自定义的一些操作
 		onCreateCustomToolbar(mToolbar);
 
-		initView();		// 初始化 view
+		initView(mToolbarHelper.getContentView());		// 初始化 view
 		initListener();	// 初始化 监听
 		initData();		// 初始化 数据
 	}
 
-	protected void initView(){}
+	protected void initView(View contentView){}
 
 	protected void initListener(){}
 

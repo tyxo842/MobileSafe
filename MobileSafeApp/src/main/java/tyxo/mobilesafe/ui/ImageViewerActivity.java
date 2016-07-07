@@ -1,34 +1,30 @@
 package tyxo.mobilesafe.ui;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.umeng.analytics.MobclickAgent;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Date;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.base.BaseActivityToolbar;
-import tyxo.mobilesafe.utils.ToastUtil;
+import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.TouchImageView;
 
-public class ImageViewerActivity extends BaseActivityToolbar implements RequestListener<String, GlideDrawable>, View.OnLongClickListener {
+public class ImageViewerActivity extends BaseActivityToolbar implements RequestListener<String,
+        GlideDrawable>, View.OnClickListener ,View.OnLongClickListener {
 
     private String url;
-    private TouchImageView image;
+    private TouchImageView image;       // 图片显示
+    private TextView tv_iv_layout_1;    // 点击切换
+    private ImageView iv_iv_layout_1;   // 图片显示
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +32,20 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         setContentView(R.layout.activity_iv_layout);
 
         url = getIntent().getStringExtra("url");
+    }
+
+    @Override
+    protected void initView(View contentView) {
+        super.initView(contentView);
+        image = (TouchImageView) contentView.findViewById(R.id.picture);
+        tv_iv_layout_1 = (TextView) contentView.findViewById(R.id.tv_iv_layout_1);
+        iv_iv_layout_1 = (ImageView) contentView.findViewById(R.id.iv_iv_layout_1);
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        tv_iv_layout_1.setOnClickListener(this);
     }
 
     @Override
@@ -47,12 +57,6 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
 //        mSearchView.setIconifiedByDefault(false);
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    protected void initView() {
-        super.initView();
-        image = (TouchImageView) findViewById(R.id.picture);
     }
 
     /*@Override
@@ -82,8 +86,24 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     }*/
 
     @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_iv_layout_1:
+                HLog.i("tyxo","url 1 : "+url);
+                Glide.with( this )
+                        .load( url )
+                        .asBitmap()
+                        .placeholder(R.drawable.loading) //占位符 也就是加载中的图片，可放个gif
+                        .error(R.drawable.icon_zanwu) //失败图片
+                        .into( target ) ;
+                HLog.i("tyxo","url 2 : "+url);
+                break;
+        }
+    }
+
+    @Override
     public boolean onLongClick(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(new String[]{"保存图片"}, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -94,10 +114,18 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
                 }
             }
         });
-        builder.show();
+        builder.show();*/
 
         return true;
     }
+
+    private SimpleTarget target = new SimpleTarget() {
+        @Override
+        public void onResourceReady(Object resource, GlideAnimation glideAnimation) {
+            //图片加载完成
+            iv_iv_layout_1.setImageBitmap((Bitmap) resource);//第一/二处会报: java.lang.ClassCastException: com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable cannot be cast to android.graphics.Bitmap
+        }
+    };
 
     @Override
     public boolean onException(Exception e, String model,
@@ -115,7 +143,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         return false;
     }
 
-    private class SaveImageTask extends AsyncTask<Bitmap, Void, String> {
+    /*private class SaveImageTask extends AsyncTask<Bitmap, Void, String> {
         @Override
         protected String doInBackground(Bitmap... params) {
             String result = "保存失败";
@@ -146,9 +174,9 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
             ToastUtil.showToastS(getApplicationContext(), result);
             image.setDrawingCacheEnabled(false);
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
         Glide.with(this)
@@ -164,5 +192,5 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
-    }
+    }*/
 }
