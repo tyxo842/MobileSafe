@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,22 +18,38 @@ import tyxo.mobilesafe.base.myinterface.IBaseInit;
 
 public abstract class BaseActivityToolbar extends AppCompatActivity implements IBaseInit, IBaseBarCallback {
 
-	/**获取类名 */
-	public String mPageName = this.getClass().getSimpleName();
+	public String mPageName = this.getClass().getSimpleName();	// 获取类名
 	/**当前Activity的上下文 */
 	protected Context mContext;
-	private Toolbar mToolbar;
+	public Toolbar mToolbar;
+	private ToolbarHelper mToolbarHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		mContext = this;
-		setContentView();
+	}
+
+	@Override
+	public void setContentView(@LayoutRes int layoutResID) {
+		super.setContentView(layoutResID);
+		mToolbarHelper = new ToolbarHelper(this, layoutResID);
+		mToolbar = mToolbarHelper.getToolbar();
+		setContentView(mToolbarHelper.getContentView());
+		// 把toolbar 设置到 Activity 中
+		setSupportActionBar(mToolbar);
+		// 自定义的一些操作
+		onCreateCustomToolbar(mToolbar);
+//		initToobar(true);
 
 		initView();
 		initData();
 		initListener();
+	}
+
+	public void onCreateCustomToolbar(Toolbar toolbar){
+		toolbar.setContentInsetsRelative(0,0);
 	}
 
 	/** 设置Activity使用的视图 */

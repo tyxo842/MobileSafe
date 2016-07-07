@@ -19,7 +19,10 @@
 
 
 
-
+    <!--配套 toolbar 使用的 无actionbar 主题-->
+    <style name="MyToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--<item name="colorPrimary">@android:color/holo_red_light</item>-->
+    </style>
 
     <!-- Dialog 对话框风格 -->
     <style name="CustomDialog" parent="@android:style/Theme.Dialog">
