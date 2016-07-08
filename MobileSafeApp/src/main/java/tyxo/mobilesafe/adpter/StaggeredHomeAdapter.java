@@ -1,4 +1,4 @@
-package tyxo.mobilesafe.ui;
+package tyxo.mobilesafe.adpter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import tyxo.mobilesafe.R;
 
-class StaggeredHomeAdapter extends RecyclerView.Adapter<StaggeredHomeAdapter.MyViewHolder> {
+public class StaggeredHomeAdapter extends RecyclerView.Adapter<StaggeredHomeAdapter.MyViewHolder> {
 
     private List<String> mDatas;
     private LayoutInflater mInflater;

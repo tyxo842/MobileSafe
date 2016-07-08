@@ -30,6 +30,10 @@
             android:name=".ui.ImageViewerActivity"
             android:label=""
             android:theme="@style/MyToolbarTheme" />
+        <activity
+            android:name=".ui.StaggeredGridLayoutActivity"
+            android:label=""
+            android:theme="@style/MyToolbarTheme" />
 
     </application>
 </manifest>

@@ -10,12 +10,23 @@
     tools:context="tyxo.mobilesafe.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <TextView
+        android:id="@+id/tv_main_up_recycler_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="@drawable/seloctor_btn_commit_unradian"
+        android:text="点击调整到recyclerView"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_main_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/order_bg_f0f3f5"
         android:dividerHeight="10dp"
+        android:layout_below="@id/tv_main_up_recycler_1"
+        android:layout_marginTop="20dp"
         />
 
 </RelativeLayout>

@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 import tyxo.mobilesafe.adpter.AdapterMainRecycler;
 import tyxo.mobilesafe.ui.ImageViewerActivity;
+import tyxo.mobilesafe.ui.StaggeredGridLayoutActivity;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.DividerGridItemDecoration;
 
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;//不用notifyDataSetChanged,而是notifyItemInserted(position)与notifyItemRemoved(position),否则没动画效果
     private AdapterMainRecycler mAdapter;
     private ArrayList<String> mDatas;
+    private TextView tv_main_up_recycler_1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity
         textView_title_left = (TextView) header.findViewById(R.id.textView_title_left);
         iv_left_header1 = (ImageView) header.findViewById(R.id.iv_left_header1);
 
+        tv_main_up_recycler_1 = (TextView) findViewById(R.id.tv_main_up_recycler_1);
         mRecyclerView = (RecyclerView)findViewById(R.id.rv_main_recyclerview);
 //        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));  // 设置布局管理器
 //        mRecyclerView.setLayoutManager(new GridLayoutManager(this,4));
@@ -86,6 +89,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         iv_left_header1.setOnClickListener(this);
         textView_title_left.setOnClickListener(this);
+
+        tv_main_up_recycler_1.setOnClickListener(this);
     }
 
     private void initData() {
@@ -104,6 +109,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_main_up_recycler_1:
+            {
+                Intent intent = new Intent(this, StaggeredGridLayoutActivity.class);
+                startActivity(intent);
+            }
+                break;
             case R.id.fab:
                 Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();

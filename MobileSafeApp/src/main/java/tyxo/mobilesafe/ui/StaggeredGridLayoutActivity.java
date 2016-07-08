@@ -13,85 +13,75 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tyxo.mobilesafe.R;
+import tyxo.mobilesafe.adpter.StaggeredHomeAdapter;
 import tyxo.mobilesafe.utils.ToastUtil;
 
-public class StaggeredGridLayoutActivity extends ActionBarActivity
-{
+public class StaggeredGridLayoutActivity extends ActionBarActivity {
 
-	private RecyclerView mRecyclerView;
-	private List<String> mDatas;
-	private StaggeredHomeAdapter mStaggeredHomeAdapter;
+    private RecyclerView mRecyclerView;
+    private List<String> mDatas;
+    private StaggeredHomeAdapter mStaggeredHomeAdapter;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_single_recyclerview);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_single_recyclerview);
 
-		initData();
+        initData();
 
-		mRecyclerView = (RecyclerView) findViewById(R.id.id_recyclerview);
-		mStaggeredHomeAdapter = new StaggeredHomeAdapter(this, mDatas);
+        mRecyclerView = (RecyclerView) findViewById(R.id.id_recyclerview);
+        mStaggeredHomeAdapter = new StaggeredHomeAdapter(this, mDatas);
 
-		mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,
-				StaggeredGridLayoutManager.VERTICAL));
-		mRecyclerView.setAdapter(mStaggeredHomeAdapter);
-		// 设置item动画
-		mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,
+                StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView.setAdapter(mStaggeredHomeAdapter);
+        // 设置item动画
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-		initEvent();
+        initEvent();
 
-	}
+    }
 
-	private void initEvent()
-	{
-		mStaggeredHomeAdapter.setOnItemClickLitener(new StaggeredHomeAdapter.OnItemClickLitener()
-		{
-			@Override
-			public void onItemClick(View view, int position)
-			{
+    private void initEvent() {
+        mStaggeredHomeAdapter.setOnItemClickLitener(new StaggeredHomeAdapter.OnItemClickLitener() {
+            @Override
+            public void onItemClick(View view, int position) {
 //				Toast.makeText(StaggeredGridLayoutActivity.this,position + " click", Toast.LENGTH_SHORT).show();
-				ToastUtil.showToastS(getApplicationContext(), position + " click");
-			}
+                ToastUtil.showToastS(getApplicationContext(), position + " click");
+            }
 
-			@Override
-			public void onItemLongClick(View view, int position)
-			{
+            @Override
+            public void onItemLongClick(View view, int position) {
 //				Toast.makeText(StaggeredGridLayoutActivity.this,position + " long click", Toast.LENGTH_SHORT).show();
-				ToastUtil.showToastS(getApplicationContext(), position + " long click");
-			}
-		});
-	}
+                ToastUtil.showToastS(getApplicationContext(), position + " long click");
+            }
+        });
+    }
 
-	protected void initData()
-	{
-		mDatas = new ArrayList<String>();
-		for (int i = 'A'; i < 'z'; i++)
-		{
-			mDatas.add("" + (char) i);
-		}
-	}
+    protected void initData() {
+        mDatas = new ArrayList<String>();
+        for (int i = 'A'; i < 'z'; i++) {
+            mDatas.add("" + (char) i);
+        }
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		getMenuInflater().inflate(R.menu.main_staggered, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_staggered, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-		case R.id.id_action_add:
-			mStaggeredHomeAdapter.addData(1);
-			break;
-		case R.id.id_action_delete:
-			mStaggeredHomeAdapter.removeData(1);
-			break;
-		}
-		return true;
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.id_action_add:
+                mStaggeredHomeAdapter.addData(1);
+                break;
+            case R.id.id_action_delete:
+                mStaggeredHomeAdapter.removeData(1);
+                break;
+        }
+        return true;
+    }
 
 }
