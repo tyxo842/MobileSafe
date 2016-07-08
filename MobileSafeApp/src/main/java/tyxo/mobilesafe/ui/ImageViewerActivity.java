@@ -114,6 +114,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
                         .placeholder(R.drawable.loading) //占位符 也就是加载中的图片，可放个gif
                         .error(R.drawable.icon_zanwu) //失败图片
                         .into( target ) ;
+//                Glide.with(this).load(R.drawable.ic_launceher).centerCrop().transform(new GlideRoundTransform(this)).into(iv_demo);
                 HLog.i("tyxo","url 2 : "+url);
                 break;
         }

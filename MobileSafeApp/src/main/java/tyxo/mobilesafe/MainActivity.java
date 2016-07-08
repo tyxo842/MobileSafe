@@ -10,6 +10,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +24,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import java.util.ArrayList;
+
+import tyxo.mobilesafe.adpter.AdapterMainRecycler;
 import tyxo.mobilesafe.ui.ImageViewerActivity;
 import tyxo.mobilesafe.utils.log.HLog;
+import tyxo.mobilesafe.widget.DividerGridItemDecoration;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
@@ -36,6 +43,10 @@ public class MainActivity extends AppCompatActivity
     private String url;                         // webView 加载的url
     private View header;
     private TextView textView_title_left;
+
+    private RecyclerView mRecyclerView;//不用notifyDataSetChanged,而是notifyItemInserted(position)与notifyItemRemoved(position),否则没动画效果
+    private AdapterMainRecycler mAdapter;
+    private ArrayList<String> mDatas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +71,12 @@ public class MainActivity extends AppCompatActivity
         header = navigationView.getHeaderView(0);
         textView_title_left = (TextView) header.findViewById(R.id.textView_title_left);
         iv_left_header1 = (ImageView) header.findViewById(R.id.iv_left_header1);
+
+        mRecyclerView = (RecyclerView)findViewById(R.id.rv_main_recyclerview);
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));  // 设置布局管理器
+//        mRecyclerView.setLayoutManager(new GridLayoutManager(this,4));
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL));//4列,竖着滑动
+//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.HORIZONTAL));//4行,横着滑动
     }
 
     private void initListener() {
@@ -72,7 +89,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initData() {
-
+        mDatas = new ArrayList<>();
+        for (int i = 'A'; i < 'z'; i++) {
+//            mDatas.add(""+i);
+            mDatas.add(""+(char)i);
+        }
+        mAdapter = new AdapterMainRecycler(getApplicationContext(),mDatas);
+        mRecyclerView.setAdapter(mAdapter);
+//        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));//list的分割线
+        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));//grid的分割线
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());//设置item动画
     }
 
     @Override
@@ -177,6 +203,14 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
 //            ToastUtil.showToastS();
             return true;
+        }
+        switch (id) {
+            case R.id.action_delete:
+                mAdapter.removeData(0);
+                break;
+            case R.id.action_new:
+                mAdapter.addData(0);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
