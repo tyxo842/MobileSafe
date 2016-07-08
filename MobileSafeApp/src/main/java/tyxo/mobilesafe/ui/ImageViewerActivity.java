@@ -30,7 +30,12 @@ import tyxo.mobilesafe.base.BaseActivityToolbar;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.TouchImageView;
-
+/**
+* @author ly
+* @des : 配合 清单设置:
+*                   android:label=""
+*                   android:theme="@style/MyToolbarTheme"
+*/
 public class ImageViewerActivity extends BaseActivityToolbar implements RequestListener<String,
         GlideDrawable>, View.OnClickListener ,View.OnLongClickListener {
 
