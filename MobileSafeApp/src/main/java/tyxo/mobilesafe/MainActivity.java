@@ -45,10 +45,11 @@ public class MainActivity extends AppCompatActivity
     private View header;
     private TextView textView_title_left;
 
-    private RecyclerView mRecyclerView;//不用notifyDataSetChanged,而是notifyItemInserted(position)与notifyItemRemoved(position),否则没动画效果
+    //不用notifyDataSetChanged,而是notifyItemInserted(position)与notifyItemRemoved(position),否则没动画效果
+    private RecyclerView mRecyclerView;     // 主界面(右) recyclerView
+    private TextView tv_main_up_recycler_1; // 主界面(右) 跳转recyclerView按钮
     private AdapterMainRecycler mAdapter;
     private ArrayList<String> mDatas;
-    private TextView tv_main_up_recycler_1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initData() {
+        url = "http://b164.photo.store.qq.com/psb?/V11IXfXu1OApUM/bRbBm8FNRXVXb*BGLmN4IM2UtDkHFiAuLRcuGcv7RRQ!/b/dL54w2GxAQAA&bo=IANYAgAAAAABAF4!&rf=viewer_4";
         mDatas = new ArrayList<>();
         for (int i = 'A'; i < 'z'; i++) {
 //            mDatas.add(""+i);
@@ -116,19 +118,16 @@ public class MainActivity extends AppCompatActivity
             }
                 break;
             case R.id.fab:
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 break;
             case R.id.iv_left_header1:
-                url = "http://b164.photo.store.qq.com/psb?/V11IXfXu1OApUM/bRbBm8FNRXVXb*BGLmN4IM2UtDkHFiAuLRcuGcv7RRQ!/b/dL54w2GxAQAA&bo=IANYAgAAAAABAF4!&rf=viewer_4";
                 Intent intent = new Intent(this, ImageViewerActivity.class);
                 intent.putExtra("url", url);
                 startActivity(intent);
 
-//                drawer.closeDrawer(GravityCompat.START);
+//                drawer.closeDrawer(GravityCompat.START); // 收起 侧拉
                 break;
             case R.id.textView_title_left:
-                url = "http://b164.photo.store.qq.com/psb?/V11IXfXu1OApUM/bRbBm8FNRXVXb*BGLmN4IM2UtDkHFiAuLRcuGcv7RRQ!/b/dL54w2GxAQAA&bo=IANYAgAAAAABAF4!&rf=viewer_4";
                 Glide.with( this )
                         .load( url )
                         .asBitmap()

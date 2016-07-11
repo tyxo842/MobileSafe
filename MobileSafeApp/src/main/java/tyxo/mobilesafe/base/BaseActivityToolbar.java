@@ -8,9 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import tyxo.mobilesafe.R;
 
+/**
+* @author ly
+* @des : 使用 搭配(清单文件中) 	android:label=""
+								android:theme="Theme.AppCompat.Light.NoActionBar"
+* 	设置标题(居中) 直接调用  		mToolbarTitle.setText("");
+*/
 public abstract class BaseActivityToolbar extends AppCompatActivity {
 
 	public String mPageName = this.getClass().getSimpleName();	// 获取类名
@@ -18,6 +25,7 @@ public abstract class BaseActivityToolbar extends AppCompatActivity {
 	protected Context mContext;
 	public Toolbar mToolbar;
 	private ToolbarHelper mToolbarHelper;
+	protected TextView mToolbarTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +39,7 @@ public abstract class BaseActivityToolbar extends AppCompatActivity {
 		super.setContentView(layoutResID);
 		mToolbarHelper = new ToolbarHelper(this, layoutResID);
 		mToolbar = mToolbarHelper.getToolbar();
+		mToolbarTitle = mToolbarHelper.getmTitle();
 		setContentView(mToolbarHelper.getContentView());
 		// 把toolbar 设置到 Activity 中
 		setSupportActionBar(mToolbar);
@@ -50,13 +59,18 @@ public abstract class BaseActivityToolbar extends AppCompatActivity {
 
 	public void onCreateCustomToolbar(Toolbar toolbar){
 		toolbar.setContentInsetsRelative(0,0);
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//			getSupportActionBar().setHomeAsUpIndicator(R.drawable.icon_return);
+		}
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				finish();
+				this.finish();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

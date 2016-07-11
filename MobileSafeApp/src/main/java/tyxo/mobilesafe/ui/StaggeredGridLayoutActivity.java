@@ -1,7 +1,6 @@
 package tyxo.mobilesafe.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -14,9 +13,10 @@ import java.util.List;
 
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.adpter.StaggeredHomeAdapter;
+import tyxo.mobilesafe.base.BaseActivityToolbar;
 import tyxo.mobilesafe.utils.ToastUtil;
 
-public class StaggeredGridLayoutActivity extends ActionBarActivity {
+public class StaggeredGridLayoutActivity extends BaseActivityToolbar {
 
     private RecyclerView mRecyclerView;
     private List<String> mDatas;
@@ -27,6 +27,7 @@ public class StaggeredGridLayoutActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_recyclerview);
 
+        mToolbarTitle.setText("recyclerView");
         initData();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recyclerview);
@@ -73,6 +74,7 @@ public class StaggeredGridLayoutActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.id_action_add:
                 mStaggeredHomeAdapter.addData(1);

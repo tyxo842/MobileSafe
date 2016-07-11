@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import tyxo.mobilesafe.R;
 
@@ -20,6 +21,7 @@ public class ToolbarHelper {
     private FrameLayout mContentView;   // base view
     private View mUseView;              // 自定义view
     private Toolbar mToolbar;
+    private TextView mTitle;
     private LayoutInflater mInflater;   // 视图构造器
 
     // toolbar 是否悬浮在窗口之上; toolbar 的高度获取
@@ -46,6 +48,7 @@ public class ToolbarHelper {
     private void initToolbar() {
         View toolbar = mInflater.inflate(R.layout.layout_toolbar, mContentView);
         mToolbar = (Toolbar) toolbar.findViewById(R.id.id_tool_bar);
+        mTitle = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
     }
 
     private void initUserView(int id) {
@@ -71,4 +74,6 @@ public class ToolbarHelper {
     public Toolbar getToolbar(){
         return mToolbar;
     }
+
+    public TextView getmTitle(){return mTitle;}
 }
