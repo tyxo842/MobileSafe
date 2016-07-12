@@ -1,6 +1,5 @@
 package tyxo.mobilesafe.ui;
 
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
@@ -24,9 +23,16 @@ public class StaggeredGridLayoutActivity extends BaseActivityToolbar {
     private StaggeredHomeAdapter mStaggeredHomeAdapter;
     private SwipeRefreshLayout swipeRL_recyclerActivity;
 
-    @Override
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_single_recyclerview);
+
+        initEvent();
+    }*/
+
+    @Override
+    protected void setMyContentView() {
         setContentView(R.layout.activity_single_recyclerview);
 
         initEvent();

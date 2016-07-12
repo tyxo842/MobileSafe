@@ -32,6 +32,8 @@ public abstract class BaseActivityToolbar extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 //		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		mContext = this;
+
+		setMyContentView();
 	}
 
 	@Override
@@ -50,6 +52,12 @@ public abstract class BaseActivityToolbar extends AppCompatActivity {
 		initListener();	// 初始化 监听
 		initData();		// 初始化 数据
 	}
+
+	/**
+	 * 设置 Activity 使用的视图
+	 * 在此方法实现里面,setContentView(R.layout.xxx);
+	 */
+	protected abstract void setMyContentView();
 
 	protected void initView(View contentView){}
 

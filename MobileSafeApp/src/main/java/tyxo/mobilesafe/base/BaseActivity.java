@@ -9,12 +9,14 @@ import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.base.myinterface.IBaseBarCallback;
 import tyxo.mobilesafe.base.myinterface.IBaseInit;
+import tyxo.mobilesafe.widget.control.LogicProxy;
 
 public abstract class BaseActivity extends AppCompatActivity implements IBaseBarCallback, IBaseInit {
 
@@ -29,9 +31,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseBar
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// BaseApplication.getInstance().addActivity(this);
 		mContext = this;
 		setContentView();
+
 
 		initView();
 		initData();
@@ -40,6 +44,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseBar
 
 	/** 设置Activity使用的视图 */
 	protected abstract void setContentView();
+
+	/** 初始化师徒控件 */
+	@Override
+	public void initView() { }
 
 	/** 初始化数据 */
 	@Override
@@ -84,6 +92,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseBar
 					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 			mActionBar.setCustomView(v, layout);
 		}
+	}
+
+	//获得该页面的实例
+	public <T> T getLogicImpl(Class cls, Object obj ){
+		return LogicProxy.getInstance().bind(cls, obj);
 	}
 
 	@Override

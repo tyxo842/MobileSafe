@@ -3,7 +3,6 @@ package tyxo.mobilesafe.ui;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -44,9 +43,16 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     private TextView tv_iv_layout_1;    // 点击切换
     private ImageView iv_iv_layout_1;   // 图片显示
 
-    @Override
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_iv_layout);
+
+        url = getIntent().getStringExtra("url");
+    }*/
+
+    @Override
+    protected void setMyContentView() {
         setContentView(R.layout.activity_iv_layout);
 
         url = getIntent().getStringExtra("url");
