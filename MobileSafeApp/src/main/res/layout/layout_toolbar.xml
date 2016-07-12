@@ -12,6 +12,7 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         >
     <!--app:navigationIcon="?attr/homeAsUpIndicator" 返回按钮的图标
+    android:navigationIcon="@drawable/navigationIcon" 网上说的修改图标:不管用
      android:background="?attr/colorPrimary"-->
 
         <TextView
