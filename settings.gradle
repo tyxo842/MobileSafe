@@ -1,1 +1,1 @@
-include ':MobileSafeApp',':core'
+include ':MobileSafeApp'
