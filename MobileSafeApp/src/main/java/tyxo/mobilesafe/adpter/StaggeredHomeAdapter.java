@@ -75,8 +75,7 @@ public class StaggeredHomeAdapter extends RecyclerView.Adapter<StaggeredHomeAdap
                 public boolean onLongClick(View v) {
                     int pos = holder.getLayoutPosition();
                     mOnItemClickLitener.onItemLongClick(holder.itemView, pos);
-                    removeData(pos);
-                    return false;
+                    return true;
                 }
             });
         }

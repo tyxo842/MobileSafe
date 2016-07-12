@@ -58,6 +58,8 @@ public class StaggeredGridLayoutActivity extends BaseActivityToolbar {
             @Override
             public void onItemLongClick(View view, int position) {
                 ToastUtil.showToastS(getApplicationContext(), position + " long click");
+                /*mDatas.remove(position);
+                mStaggeredHomeAdapter.notifyItemRemoved(position);*/
             }
         });
     }
