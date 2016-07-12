@@ -19,14 +19,20 @@
         android:background="@drawable/seloctor_btn_commit_unradian"
         android:text="点击调整到recyclerView"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_main_recyclerview"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRL_recyclerActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/order_bg_f0f3f5"
-        android:dividerHeight="10dp"
         android:layout_below="@id/tv_main_up_recycler_1"
-        android:layout_marginTop="20dp"
-        />
+        android:layout_marginTop="20dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_main_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/order_bg_f0f3f5"
+            android:dividerHeight="10dp"
+            />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

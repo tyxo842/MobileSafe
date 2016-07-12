@@ -1,6 +1,7 @@
 package tyxo.mobilesafe.ui;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -21,39 +22,41 @@ public class StaggeredGridLayoutActivity extends BaseActivityToolbar {
     private RecyclerView mRecyclerView;
     private List<String> mDatas;
     private StaggeredHomeAdapter mStaggeredHomeAdapter;
+    private SwipeRefreshLayout swipeRL_recyclerActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_recyclerview);
 
+        initEvent();
+    }
+
+    @Override
+    protected void initView(View contentView) {
+        super.initView(contentView);
         mToolbarTitle.setText("recyclerView");
         initData();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recyclerview);
+        swipeRL_recyclerActivity = (SwipeRefreshLayout)findViewById(R.id.swipeRL_recyclerActivity);
         mStaggeredHomeAdapter = new StaggeredHomeAdapter(this, mDatas);
 
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,
-                StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
         mRecyclerView.setAdapter(mStaggeredHomeAdapter);
         // 设置item动画
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        initEvent();
-
     }
 
     private void initEvent() {
         mStaggeredHomeAdapter.setOnItemClickLitener(new StaggeredHomeAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-//				Toast.makeText(StaggeredGridLayoutActivity.this,position + " click", Toast.LENGTH_SHORT).show();
                 ToastUtil.showToastS(getApplicationContext(), position + " click");
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
-//				Toast.makeText(StaggeredGridLayoutActivity.this,position + " long click", Toast.LENGTH_SHORT).show();
                 ToastUtil.showToastS(getApplicationContext(), position + " long click");
             }
         });
@@ -85,5 +88,4 @@ public class StaggeredGridLayoutActivity extends BaseActivityToolbar {
         }
         return true;
     }
-
 }
