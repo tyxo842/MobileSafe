@@ -24,6 +24,11 @@
         <!--<item name="colorPrimary">@android:color/holo_red_light</item>-->
     </style>
 
+    <!-- menu的item点击效果 返回键未找到 -->
+    <style name="MyToolbarThemeSelector" parent="MyToolbarTheme">
+        <item name="android:actionBarItemBackground">@drawable/seloctor_btn_commit_unradian</item>
+    </style>
+
     <!-- Dialog 对话框风格 -->
     <style name="CustomDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>

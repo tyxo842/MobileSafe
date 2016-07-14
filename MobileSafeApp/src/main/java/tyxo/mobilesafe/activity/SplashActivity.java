@@ -1,4 +1,4 @@
-package tyxo.mobilesafe.ui;
+package tyxo.mobilesafe.activity;
 
 import android.content.Intent;
 import android.view.animation.Animation;

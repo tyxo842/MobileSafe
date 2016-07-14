@@ -1,4 +1,4 @@
-package tyxo.mobilesafe.ui;
+package tyxo.mobilesafe.activity;
 
 import android.content.DialogInterface;
 import android.graphics.Bitmap;

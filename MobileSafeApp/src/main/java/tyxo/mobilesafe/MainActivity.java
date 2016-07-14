@@ -17,10 +17,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,17 +34,21 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
+import tyxo.mobilesafe.activity.ImageViewerActivity;
+import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
 import tyxo.mobilesafe.adpter.AdapterMainRecycler;
-import tyxo.mobilesafe.ui.ImageViewerActivity;
-import tyxo.mobilesafe.ui.StaggeredGridLayoutActivity;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.DividerItemDecoration;
+import tyxo.mobilesafe.widget.WrapRecyclerView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener{
 
     private FloatingActionButton fab;
     private DrawerLayout drawer;
@@ -52,7 +61,7 @@ public class MainActivity extends AppCompatActivity
     private TextView textView_title_left;
 
     //不用notifyDataSetChanged,而是notifyItemInserted(position)与notifyItemRemoved(position),否则没动画效果
-    private RecyclerView mRecyclerView;     // 主界面(右) recyclerView
+    private WrapRecyclerView mRecyclerView;     // 主界面(右) recyclerView
     private TextView tv_main_up_recycler_1; // 主界面(右) 跳转recyclerView按钮
     private AdapterMainRecycler mAdapter;
     private ArrayList<String> mDatas;
@@ -60,6 +69,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayoutManager mLayoutManager;
     private int lastVisibleItem;
     private MyHandler handler;
+    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,14 +96,71 @@ public class MainActivity extends AppCompatActivity
         iv_left_header1 = (ImageView) header.findViewById(R.id.iv_left_header1);
 
         tv_main_up_recycler_1 = (TextView) findViewById(R.id.tv_main_up_recycler_1);
-        mRecyclerView = (RecyclerView)findViewById(R.id.rv_main_recyclerview);
+        mRecyclerView = (WrapRecyclerView)findViewById(R.id.rv_main_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));  // 设置布局管理器
 //        mRecyclerView.setLayoutManager(new GridLayoutManager(this,4));
 //        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL));//4列,竖着滑动,分割线要配合DividerGridItemDecoration使用
 //        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.HORIZONTAL));//4行,横着滑动
 
         swipeRL_recyclerActivity = (SwipeRefreshLayout)findViewById(R.id.swipeRL_recyclerActivity);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//        AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
+//                AbsListView.LayoutParams.WRAP_CONTENT);
+        View header = inflater.inflate(R.layout.layout_main_header, null);
+        mRecyclerView.addHeaderView(header);
+
+        editText = (EditText) header.findViewById(R.id.et_main_1);
+        // TODO: 2016/7/13 待完成小功能 : 软键盘弹出 默认数字 但是也可以选择英文输入,汉字未成!!
+        //String digists = "[^a-zA-Z0-9\\u4E00-\\u9FA5]";   // [\u4e00-\u9fa5]
+        String digists = "0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+//        editText.setKeyListener(DigitsKeyListener.getInstance(digists));
+        /*editText.setKeyListener(new NumberKeyListener() {
+            @Override
+            protected char[] getAcceptedChars() {
+                char[] c = {'a','b','c','d','e','1','2'};
+                return c;
+                //return new char[0];
+            }
+
+            @Override
+            public int getInputType() {
+                // 0无键盘 1英文键盘 2模拟键盘 3数字键盘
+                return 3;
+            }
+        });*/
+//        editText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+//        editText.addTextChangedListener(watcher);
+        editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
     }
+
+    public static String stringFilter(String str)throws PatternSyntaxException {
+        // 只允许字母、数字和汉字
+        String   regEx  =  "[^a-zA-Z0-9\u4E00-\u9FA5]";
+        Pattern p   =   Pattern.compile(regEx);
+        Matcher m   =   p.matcher(str);
+        return   m.replaceAll("").trim();
+    }
+    TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String editable = editText.getText().toString();
+            String str = stringFilter(editable.toString());
+            if (!editable.equals(str)) {
+                editText.setText(str);
+                editText.setSelection(str.length());
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     protected void initListener() {
         fab.setOnClickListener(this);
@@ -285,6 +352,16 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
+
+
+
+
+
+
+
+
+
+
     private class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -300,11 +377,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-
-
-
-
-
 
     /*// 隐藏toolbar
     private void hideToolbar(){

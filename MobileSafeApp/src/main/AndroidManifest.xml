@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.SplashActivity"
+            android:name=".activity.SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/MyToolbarTheme">
             <intent-filter>
@@ -38,14 +38,14 @@
         </activity>
 
         <activity
-            android:name=".ui.ImageViewerActivity"
+            android:name=".activity.ImageViewerActivity"
             android:label=""
             android:theme="@style/MyToolbarTheme" />
 
         <activity
-            android:name=".ui.StaggeredGridLayoutActivity"
+            android:name=".activity.StaggeredGridLayoutActivity"
             android:label=""
-            android:theme="@style/MyToolbarTheme" />
+            android:theme="@style/MyToolbarThemeSelector" />
 
     </application>
 </manifest>

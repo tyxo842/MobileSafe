@@ -26,7 +26,14 @@
         android:layout_below="@id/tv_main_up_recycler_1"
         android:layout_marginTop="20dp">
 
-        <android.support.v7.widget.RecyclerView
+        <!--<android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_main_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/order_bg_f0f3f5"
+            android:dividerHeight="10dp"
+            />-->
+        <tyxo.mobilesafe.widget.WrapRecyclerView
             android:id="@+id/rv_main_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
