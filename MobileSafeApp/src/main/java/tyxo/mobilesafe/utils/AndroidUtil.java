@@ -547,28 +547,28 @@ public class AndroidUtil {
     /*************************************************************************************/
 
 	/** 获取当前程序的版本号 */
-    public static int getAppVersionCode(Context context)
-            throws NameNotFoundException {
-        // 获取PackageManager的实例
+    public static int getVersionCode(Context context) throws NameNotFoundException {
         PackageManager packageManager = context.getPackageManager();
-
-        // getPackageName()是你当前类的包名，0代表是获取版本信息
         PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
-
         return packInfo.versionCode; // versionName=2.0; versionCode=2
     }
-
     /** 获取当前程序的版本名 */
-    public static String getAppVersionName(Context context) throws NameNotFoundException {
-        // 获取PackageManager的实例
-        PackageManager packageManager = context.getPackageManager();
+    public static String getVersionName(Context context){
+        try {
+            // 获取 包管理者PackageManager 的实例
+            PackageManager packageManager = context.getPackageManager();
 
-        // getPackageName()是你当前类的包名，0代表是获取版本信息
-        PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
-        String versionNameV = "v " + packInfo.versionName;
-        HLog.i("lyjc", "versionName : " + packInfo.versionName);
+            //返回包的基本信息.  第一个参数:表示包名;第二个参数:标记,0代表获取到所有的标记
+            // getPackageName()是你当前类的包名
+            PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            String versionNameV = "v " + packInfo.versionName; //获取版本名
+            HLog.i("lyjc", "versionName : " + packInfo.versionName);
 
-        return versionNameV; // versionName=2.0; versionCode=2
+            return versionNameV; // versionName=1.2.0; versionCode=2
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     /** 当前代码是否运行在主线程 */

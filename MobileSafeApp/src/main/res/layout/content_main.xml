@@ -11,12 +11,23 @@
     tools:showIn="@layout/app_bar_main">
 
     <TextView
+        android:id="@+id/main_up_tv_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:singleLine="true"
+        android:text="这是一个滚动炫酷的的TextView,用SpannableString打造"
+        />
+
+    <TextView
+        android:layout_below="@id/main_up_tv_1"
         android:id="@+id/tv_main_up_recycler_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp"
         android:background="@drawable/seloctor_btn_commit_unradian"
+        android:textColor="@color/white"
         android:text="点击调整到recyclerView"/>
 
     <android.support.v4.widget.SwipeRefreshLayout

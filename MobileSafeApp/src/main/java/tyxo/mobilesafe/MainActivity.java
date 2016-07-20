@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity
     private int lastVisibleItem;
     private MyHandler handler;
     private EditText editText;
+    private TextView main_up_tv_1;              //滚动炫酷的的TextView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity
         textView_title_left = (TextView) header.findViewById(R.id.textView_title_left);
         iv_left_header1 = (ImageView) header.findViewById(R.id.iv_left_header1);
 
+        main_up_tv_1 = (TextView) findViewById(R.id.main_up_tv_1);
         tv_main_up_recycler_1 = (TextView) findViewById(R.id.tv_main_up_recycler_1);
         mRecyclerView = (WrapRecyclerView)findViewById(R.id.rv_main_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));  // 设置布局管理器
@@ -110,7 +112,6 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.addHeaderView(header);
 
         editText = (EditText) header.findViewById(R.id.et_main_1);
-        // TODO: 2016/7/13 待完成小功能 : 软键盘弹出 默认数字 但是也可以选择英文输入,汉字未成!!
         //String digists = "[^a-zA-Z0-9\\u4E00-\\u9FA5]";   // [\u4e00-\u9fa5]
         String digists = "0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 //        editText.setKeyListener(DigitsKeyListener.getInstance(digists));
@@ -131,6 +132,8 @@ public class MainActivity extends AppCompatActivity
 //        editText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
 //        editText.addTextChangedListener(watcher);
         editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+
+        //main_up_tv_1
     }
 
     public static String stringFilter(String str)throws PatternSyntaxException {
