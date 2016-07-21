@@ -26,18 +26,19 @@
                 android:background="@drawable/seloctor_btn_commit_unradian"
                 android:text="点击切换"/>
 
-            <ImageView
-                android:id="@+id/iv_iv_layout_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="#999999"/>
-
             <tyxo.mobilesafe.widget.TouchImageView
                 android:id="@+id/picture"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content" />
+
+            <ImageView
+                android:id="@+id/iv_iv_layout_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="100dp"
+                android:background="#999999"/>
 
         </LinearLayout>
 

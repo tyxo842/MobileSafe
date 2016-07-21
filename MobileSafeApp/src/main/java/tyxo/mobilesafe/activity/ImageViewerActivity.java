@@ -27,6 +27,7 @@ import java.util.Date;
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.base.BaseActivityToolbar;
 import tyxo.mobilesafe.utils.ToastUtil;
+import tyxo.mobilesafe.utils.ViewUtil;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.TouchImageView;
 /**
@@ -64,6 +65,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         image = (TouchImageView) contentView.findViewById(R.id.picture);
         tv_iv_layout_1 = (TextView) contentView.findViewById(R.id.tv_iv_layout_1);
         iv_iv_layout_1 = (ImageView) contentView.findViewById(R.id.iv_iv_layout_1);
+        ViewUtil.setAimation(iv_iv_layout_1);    //设置属性动画
     }
 
     @Override
@@ -74,11 +76,11 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        MenuItem itemCompat = menu.findItem(R.id.action_search) ;
-//        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(itemCompat);
-//        mSearchView.setIconified(false);
-//        mSearchView.setIconifiedByDefault(false);
+        /*getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem itemCompat = menu.findItem(R.id.action_search) ;
+        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(itemCompat);
+        mSearchView.setIconified(false);
+        mSearchView.setIconifiedByDefault(false);*/
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -94,7 +96,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     public void onCreateCustomToolbar(Toolbar toolbar) {
         super.onCreateCustomToolbar(toolbar);
         toolbar.showOverflowMenu();
-//        getLayoutInflater().inflate(R.layout.toolbar_demo_layout, toolbar);
+        //getLayoutInflater().inflate(R.layout.toolbar_demo_layout, toolbar);
         getLayoutInflater().inflate(R.layout.layout_toolbar, toolbar);
         TextView tv_toolbar_title = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("点击切换 测试");
@@ -120,7 +122,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
                         .placeholder(R.drawable.loading) //占位符 也就是加载中的图片，可放个gif
                         .error(R.drawable.icon_zanwu) //失败图片
                         .into( target ) ;
-//                Glide.with(this).load(R.drawable.ic_launceher).centerCrop().transform(new GlideRoundTransform(this)).into(iv_demo);
+                //Glide.with(this).load(R.drawable.ic_launceher).centerCrop().transform(new GlideRoundTransform(this)).into(iv_demo);
                 HLog.i("tyxo","url 2 : "+url);
                 break;
         }

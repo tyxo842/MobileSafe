@@ -1,9 +1,11 @@
 package tyxo.mobilesafe.utils;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.URLSpan;
+import android.view.View;
 
 /**
  * Created by LY on 2016/7/21 11: 14.
@@ -89,6 +91,19 @@ public class ViewUtil {
         ss.setSpan(urlSpan,5,ss.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         /*除此之外，还有MaskFilterSpan可以实现模糊和浮雕效果，
         RasterizerSpan可以实现光栅效果，因为以上两个使用频率不高，而且效果也不是很明显*/
+    }
+
+    /**
+     * 设置属性动画, 参数:
+     *  第一个target :      目标
+     *  第二个propertyName: 动画的名称
+     *  第三 values       : 可变参数,旋转的角度
+     * */
+    public static void setAimation(View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view,"rotationY",0,90,270,360);
+        animator.setDuration(3000);                 //设置动画时间
+        animator.setRepeatCount(animator.INFINITE); //设置无限旋转
+        animator.start();
     }
 }
 
