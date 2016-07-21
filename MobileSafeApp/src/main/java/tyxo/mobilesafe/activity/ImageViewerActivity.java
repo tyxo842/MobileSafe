@@ -183,8 +183,8 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
                 File imageFile = new File(file.getAbsolutePath(), new Date().getTime() + ".jpg");
                 FileOutputStream outStream = null;
                 outStream = new FileOutputStream(imageFile);
-                Bitmap image = params[0];
-                image.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                Bitmap imageBit = params[0];
+                imageBit.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
                 outStream.flush();
                 outStream.close();
                 result = getResources().getString(R.string.save_picture_success, file.getAbsolutePath());

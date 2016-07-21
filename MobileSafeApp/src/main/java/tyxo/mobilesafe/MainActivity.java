@@ -19,13 +19,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,21 +37,22 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+import java.util.List;
 
 import tyxo.mobilesafe.activity.ImageViewerActivity;
 import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
+import tyxo.mobilesafe.adpter.AdapterMainGridView;
 import tyxo.mobilesafe.adpter.AdapterMainRecycler;
+import tyxo.mobilesafe.bean.MainGVItemBean;
+import tyxo.mobilesafe.utils.StringUtils;
 import tyxo.mobilesafe.utils.ToastUtil;
+import tyxo.mobilesafe.utils.ViewUtil;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.DividerItemDecoration;
 import tyxo.mobilesafe.widget.WrapRecyclerView;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener,
-        SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
 
     private FloatingActionButton fab;
     private DrawerLayout drawer;
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity
 
     //不用notifyDataSetChanged,而是notifyItemInserted(position)与notifyItemRemoved(position),否则没动画效果
     private WrapRecyclerView mRecyclerView;     // 主界面(右) recyclerView
-    private TextView tv_main_up_recycler_1; // 主界面(右) 跳转recyclerView按钮
+    private TextView tv_main_up_recycler_1;     // 主界面(右) 跳转recyclerView按钮
     private AdapterMainRecycler mAdapter;
     private ArrayList<String> mDatas;
     private SwipeRefreshLayout swipeRL_recyclerActivity;
@@ -71,6 +75,13 @@ public class MainActivity extends AppCompatActivity
     private MyHandler handler;
     private EditText editText;
     private TextView main_up_tv_1;              //滚动炫酷的的TextView
+    private GridView mGridView;
+    private AdapterMainGridView mGridAdapter;   //主界面gridview 的适配器
+    private List<MainGVItemBean> gvListInfos;   //用于填充gridview的数据集合
+
+    private int [] iconIDs = {R.drawable.app_financial,R.drawable.app_donate,R.drawable.app_essential,
+            R.drawable.app_citycard,R.drawable.app_inter_transfer,R.drawable.app_facepay};
+    private String [] titles = {"手机防盗","骚扰拦截","软件管理","进程管理","流量统计","缓存清理"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +120,10 @@ public class MainActivity extends AppCompatActivity
 //        AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
 //                AbsListView.LayoutParams.WRAP_CONTENT);
         View header = inflater.inflate(R.layout.layout_main_header, null);
+        View headerGridView = inflater.inflate(R.layout.layout_main_header_gridview, null);
+        mGridView = (GridView) headerGridView.findViewById(R.id.main_header_gridview);
         mRecyclerView.addHeaderView(header);
+        mRecyclerView.addHeaderView(headerGridView);
 
         editText = (EditText) header.findViewById(R.id.et_main_1);
         //String digists = "[^a-zA-Z0-9\\u4E00-\\u9FA5]";   // [\u4e00-\u9fa5]
@@ -133,26 +147,21 @@ public class MainActivity extends AppCompatActivity
 //        editText.addTextChangedListener(watcher);
         editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 
-        //main_up_tv_1
+        SpannableString ss = new SpannableString(this.getResources().getString(R.string.spannablestring_tv));
+        ViewUtil.setSpannableStringStyle(this,ss);    //设置 SpannableString 的样式
+        main_up_tv_1.setMovementMethod(LinkMovementMethod.getInstance());//如果设置点击,必须加,否则没效果!!
+        //main_up_tv_1.setHighlightColor(Color.parseColor("#666666"));   //控制点击的背景色
+        main_up_tv_1.setText(ss);
     }
 
-    public static String stringFilter(String str)throws PatternSyntaxException {
-        // 只允许字母、数字和汉字
-        String   regEx  =  "[^a-zA-Z0-9\u4E00-\u9FA5]";
-        Pattern p   =   Pattern.compile(regEx);
-        Matcher m   =   p.matcher(str);
-        return   m.replaceAll("").trim();
-    }
     TextWatcher watcher = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String editable = editText.getText().toString();
-            String str = stringFilter(editable.toString());
+            String str = StringUtils.stringFilter(editable.toString());
             if (!editable.equals(str)) {
                 editText.setText(str);
                 editText.setSelection(str.length());
@@ -160,9 +169,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        public void afterTextChanged(Editable s) {
-
-        }
+        public void afterTextChanged(Editable s) { }
     };
 
     protected void initListener() {
@@ -253,13 +260,22 @@ public class MainActivity extends AppCompatActivity
     }
 
      protected void initData() {
-        url = "http://b164.photo.store.qq.com/psb?/V11IXfXu1OApUM/bRbBm8FNRXVXb*BGLmN4IM2UtDkHFiAuLRcuGcv7RRQ!/b/dL54w2GxAQAA&bo=IANYAgAAAAABAF4!&rf=viewer_4";
+        url = ConstValues.MYPHOTO_URL;
         mDatas = new ArrayList<>();
         for (int i = 'A'; i < 'z'; i++) {
 //            mDatas.add(""+i);
             mDatas.add(""+(char)i);
         }
+        gvListInfos = new ArrayList<>();
+         for (int i = 0; i < iconIDs.length; i++) {
+             MainGVItemBean bean = new MainGVItemBean();
+             bean.setIcon(iconIDs[i]);
+             bean.setTitle(titles[i]);
+             gvListInfos.add(bean);
+         }
         mAdapter = new AdapterMainRecycler(getApplicationContext(),mDatas);
+        mGridAdapter = new AdapterMainGridView(this,gvListInfos);
+        mGridView.setAdapter(mGridAdapter);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));//list的分割线
 //        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));//grid的分割线

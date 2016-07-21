@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:singleLine="true"
-        android:text="这是一个滚动炫酷的的TextView,用SpannableString打造"
+        android:text="@string/spannablestring_tv"
         />
 
     <TextView
