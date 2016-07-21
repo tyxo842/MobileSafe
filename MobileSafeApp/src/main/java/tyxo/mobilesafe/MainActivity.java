@@ -28,7 +28,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,10 +48,12 @@ import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.ViewUtil;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.DividerItemDecoration;
+import tyxo.mobilesafe.widget.DoubleClickExitDetector;
+import tyxo.mobilesafe.widget.GridViewMy;
 import tyxo.mobilesafe.widget.WrapRecyclerView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
+        View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,AdapterMainRecycler.OnItemClickListener{
 
     private FloatingActionButton fab;
     private DrawerLayout drawer;
@@ -75,9 +76,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MyHandler handler;
     private EditText editText;
     private TextView main_up_tv_1;              //滚动炫酷的的TextView
-    private GridView mGridView;
+    private GridViewMy mGridView;               //主界面gridview
     private AdapterMainGridView mGridAdapter;   //主界面gridview 的适配器
     private List<MainGVItemBean> gvListInfos;   //用于填充gridview的数据集合
+    private DoubleClickExitDetector exitDetector;//双击返回退出
 
     private int [] iconIDs = {R.drawable.app_financial,R.drawable.app_donate,R.drawable.app_essential,
             R.drawable.app_citycard,R.drawable.app_inter_transfer,R.drawable.app_facepay};
@@ -121,14 +123,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                AbsListView.LayoutParams.WRAP_CONTENT);
         View header = inflater.inflate(R.layout.layout_main_header, null);
         View headerGridView = inflater.inflate(R.layout.layout_main_header_gridview, null);
-        mGridView = (GridView) headerGridView.findViewById(R.id.main_header_gridview);
+        mGridView = (GridViewMy) headerGridView.findViewById(R.id.main_header_gridview);
         mRecyclerView.addHeaderView(header);
         mRecyclerView.addHeaderView(headerGridView);
 
         editText = (EditText) header.findViewById(R.id.et_main_1);
         //String digists = "[^a-zA-Z0-9\\u4E00-\\u9FA5]";   // [\u4e00-\u9fa5]
         String digists = "0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-//        editText.setKeyListener(DigitsKeyListener.getInstance(digists));
+        //editText.setKeyListener(DigitsKeyListener.getInstance(digists));
         /*editText.setKeyListener(new NumberKeyListener() {
             @Override
             protected char[] getAcceptedChars() {
@@ -143,9 +145,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return 3;
             }
         });*/
-//        editText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-//        editText.addTextChangedListener(watcher);
-        editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        //editText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        //editText.addTextChangedListener(watcher);
+        editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);//et 默认数字软键盘,可输入字母汉字等
 
         SpannableString ss = new SpannableString(this.getResources().getString(R.string.spannablestring_tv));
         ViewUtil.setSpannableStringStyle(this,ss);    //设置 SpannableString 的样式
@@ -153,24 +155,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //main_up_tv_1.setHighlightColor(Color.parseColor("#666666"));   //控制点击的背景色
         main_up_tv_1.setText(ss);
     }
-
-    TextWatcher watcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String editable = editText.getText().toString();
-            String str = StringUtils.stringFilter(editable.toString());
-            if (!editable.equals(str)) {
-                editText.setText(str);
-                editText.setSelection(str.length());
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) { }
-    };
 
     protected void initListener() {
         fab.setOnClickListener(this);
@@ -263,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         url = ConstValues.MYPHOTO_URL;
         mDatas = new ArrayList<>();
         for (int i = 'A'; i < 'z'; i++) {
-//            mDatas.add(""+i);
             mDatas.add(""+(char)i);
         }
         gvListInfos = new ArrayList<>();
@@ -278,10 +261,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mGridView.setAdapter(mGridAdapter);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));//list的分割线
-//        mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));//grid的分割线
+        //mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));//grid的分割线
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());//设置item动画
 
          handler = new MyHandler();
+         exitDetector = new DoubleClickExitDetector(this);
     }
 
     @Override
@@ -301,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 intent.putExtra("url", url);
                 startActivity(intent);
 
-//                drawer.closeDrawer(GravityCompat.START); // 收起 侧拉
+                //drawer.closeDrawer(GravityCompat.START); // 收起 侧拉
                 break;
             case R.id.textView_title_left:
                 Glide.with( this )
@@ -313,6 +297,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 HLog.i("tyxo","小标题 点击 ... url : "+url);
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -333,13 +327,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_send) {
 
-        } /*else if (id == R.id.iv_left_header1) {
-            ToastUtil.showToastS(getApplicationContext(),"点击了header图形");
-
-            Intent intent = new Intent(this, ImageViewerActivity.class);
-            intent.putExtra("url", url);
-            startActivity(intent);
-        }*/
+        }
 
         /*switch (id) {
             case R.id.fab:
@@ -372,15 +360,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     };
 
 
-
-
-
-
-
-
-
-
-
     private class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -410,12 +389,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         animator.start();
     }*/
 
+    TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String editable = editText.getText().toString();
+            String str = StringUtils.stringFilter(editable.toString());
+            if (!editable.equals(str)) {
+                editText.setText(str);
+                editText.setSelection(str.length());
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) { }
+    };
+
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (exitDetector.onClick()) {
+                super.onBackPressed();
+            }
         }
     }
 

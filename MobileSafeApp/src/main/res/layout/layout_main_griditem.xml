@@ -8,6 +8,9 @@
         android:orientation="vertical"
         android:gravity="center"
         android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_centerInParent="true"
         android:background="@drawable/selector_order_list_item_radian_2">
 
         <ImageView
