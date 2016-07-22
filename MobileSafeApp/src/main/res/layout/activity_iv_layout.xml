@@ -40,6 +40,8 @@
                 android:layout_marginBottom="100dp"
                 android:background="#999999"/>
 
+            <include layout="@layout/layout_imageactivity_shortcutbadger"/>
+
         </LinearLayout>
 
     </ScrollView>

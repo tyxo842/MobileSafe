@@ -32,4 +32,5 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     //compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     compile 'com.romainpiel.shimmer:library:1.4.0'
+    compile project(':ShortcutBadger')
 }

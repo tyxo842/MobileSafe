@@ -1,1 +1,2 @@
 include ':MobileSafeApp'
+include ':ShortcutBadger'

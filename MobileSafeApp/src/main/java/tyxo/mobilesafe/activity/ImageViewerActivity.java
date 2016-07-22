@@ -1,6 +1,9 @@
 package tyxo.mobilesafe.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -8,8 +11,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -24,12 +29,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.base.BaseActivityToolbar;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.ViewUtil;
 import tyxo.mobilesafe.utils.log.HLog;
+import tyxo.mobilesafe.widget.AutoClearEditText;
 import tyxo.mobilesafe.widget.TouchImageView;
+
 /**
 * @author ly
 * @des : 配合 清单设置:
@@ -43,20 +51,24 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     private TouchImageView image;       // 图片显示
     private TextView tv_iv_layout_1;    // 点击切换
     private ImageView iv_iv_layout_1;   // 图片显示
-
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_iv_layout);
-
-        url = getIntent().getStringExtra("url");
-    }*/
+    private AutoClearEditText numInput; // badge数字输入框
+    private Button button;              // 设置按钮
+    private Button removeBadgeBtn;      // 清除按钮
 
     @Override
     protected void setMyContentView() {
         setContentView(R.layout.activity_iv_layout);
 
         url = getIntent().getStringExtra("url");
+
+        //find the home launcher Package
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        ResolveInfo resolveInfo = getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        String currentHomePackage = resolveInfo.activityInfo.packageName;
+
+        TextView textViewHomePackage = (TextView) findViewById(R.id.imageActivity_tv_package);
+        textViewHomePackage.setText("launcher:" + currentHomePackage);
     }
 
     @Override
@@ -66,12 +78,17 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         tv_iv_layout_1 = (TextView) contentView.findViewById(R.id.tv_iv_layout_1);
         iv_iv_layout_1 = (ImageView) contentView.findViewById(R.id.iv_iv_layout_1);
         ViewUtil.setAimation(iv_iv_layout_1);    //设置属性动画
+        numInput = (AutoClearEditText) contentView.findViewById(R.id.imageActivity_et_numinput);
+        button = (Button) contentView.findViewById(R.id.imageActivity_btn_setBadge);
+        removeBadgeBtn = (Button) contentView.findViewById(R.id.imageActivity_btn_setBadge);
     }
 
     @Override
     protected void initListener() {
         super.initListener();
         tv_iv_layout_1.setOnClickListener(this);
+        button.setOnClickListener(this);
+        removeBadgeBtn.setOnClickListener(this);
     }
 
     @Override
@@ -92,25 +109,6 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         tv_toolbar_title.setText("点击切换 测试");
     }
 
-    /*@Override
-    public void onCreateCustomToolbar(Toolbar toolbar) {
-        super.onCreateCustomToolbar(toolbar);
-        toolbar.showOverflowMenu();
-        //getLayoutInflater().inflate(R.layout.toolbar_demo_layout, toolbar);
-        getLayoutInflater().inflate(R.layout.layout_toolbar, toolbar);
-        TextView tv_toolbar_title = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
-        tv_toolbar_title.setText("点击切换 测试");
-    }*/
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -125,6 +123,26 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
                 //Glide.with(this).load(R.drawable.ic_launceher).centerCrop().transform(new GlideRoundTransform(this)).into(iv_demo);
                 HLog.i("tyxo","url 2 : "+url);
                 break;
+            case R.id.imageActivity_btn_setBadge:
+            {
+                int badgeCount = 0;
+                try {
+                    badgeCount = Integer.parseInt(numInput.getText().toString());
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getApplicationContext(), "Error input", Toast.LENGTH_SHORT).show();
+                }
+
+                boolean success = ShortcutBadger.applyCount(this, badgeCount);
+                ToastUtil.showToastS(mContext,"Set count=" + badgeCount + ", success=" + success);
+                break;
+            }
+
+            case R.id.imageActivity_btn_removeBadge:
+            {
+                boolean success = ShortcutBadger.removeCount(this);
+                ToastUtil.showToastS(mContext,"success=" + success);
+                break;
+            }
         }
     }
 
@@ -202,6 +220,25 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
             image.setDrawingCacheEnabled(false);
         }
     }
+
+    /*@Override
+    public void onCreateCustomToolbar(Toolbar toolbar) {
+        super.onCreateCustomToolbar(toolbar);
+        toolbar.showOverflowMenu();
+        //getLayoutInflater().inflate(R.layout.toolbar_demo_layout, toolbar);
+        getLayoutInflater().inflate(R.layout.layout_toolbar, toolbar);
+        TextView tv_toolbar_title = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title.setText("点击切换 测试");
+    }*/
+
+    /*@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
 
     @Override
     protected void onResume() {

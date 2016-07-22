@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MobileSafe.iml" filepath="$PROJECT_DIR$/MobileSafe.iml" />
       <module fileurl="file://$PROJECT_DIR$/MobileSafeApp/MobileSafeApp.iml" filepath="$PROJECT_DIR$/MobileSafeApp/MobileSafeApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ShortcutBadger/ShortcutBadger.iml" filepath="$PROJECT_DIR$/ShortcutBadger/ShortcutBadger.iml" />
     </modules>
   </component>
 </project>
