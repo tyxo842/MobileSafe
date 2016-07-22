@@ -9,5 +9,6 @@
     <string name="left_open">侧拉菜单打开</string>
     <string name="left_close">侧拉菜单关闭</string>
     <string name="save_picture_success">图片成功保存至%s目录</string>
-    <string name="spannablestring_tv">这是一个滚动炫酷的TextView,用SpannableString打造</string>
+    <string name="spannablestring_tv">这是一个炫酷的TextView,用SpannableString打造</string>
+    <string name="scroll_tv">这是一个滚动炫酷的TextView,来着tyxo出品,应该超一行了吧,ps:如果不超一行居然不滚动!!</string>
 </resources>

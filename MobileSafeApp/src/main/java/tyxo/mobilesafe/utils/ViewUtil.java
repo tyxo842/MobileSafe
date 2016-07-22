@@ -86,6 +86,7 @@ public class ViewUtil {
         //可点击的富文本
         ClickableSpanMy clickableSpanMy = new ClickableSpanMy(context, "www.baidu.com");
         ss.setSpan(clickableSpanMy,5,ss.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);*/
+
         //设置超链接文本,其实此类继承clickableSpan
         URLSpan urlSpan = new URLSpan("http://www.baidu.com");
         ss.setSpan(urlSpan,5,ss.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

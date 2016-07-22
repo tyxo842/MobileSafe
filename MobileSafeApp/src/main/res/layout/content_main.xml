@@ -10,8 +10,36 @@
     tools:context="tyxo.mobilesafe.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
+    <tyxo.mobilesafe.widget.FocusableTextView
+        android:id="@+id/main_up_tv_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:text="@string/scroll_tv"
+        />
+
+    <tyxo.mobilesafe.widget.FocusableTextView
+        android:id="@+id/main_up_tv_2"
+        android:layout_below="@id/main_up_tv_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:text="@string/scroll_tv"
+        />
+
+    <tyxo.mobilesafe.widget.FocusableTextView
         android:id="@+id/main_up_tv_1"
+        android:layout_below="@id/main_up_tv_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -26,7 +54,7 @@
     focusable(针对物理键)与focusableInTouchMode(针对手指)要同时设置
     marqueeRepeatLimit设置文本一直滚动-->
 
-    <TextView
+    <com.romainpiel.shimmer.ShimmerTextView
         android:layout_below="@id/main_up_tv_1"
         android:id="@+id/tv_main_up_recycler_1"
         android:layout_width="match_parent"

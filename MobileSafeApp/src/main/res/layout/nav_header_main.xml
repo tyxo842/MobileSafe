@@ -28,12 +28,15 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="小标题"
+        android:textSize="18sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <TextView
+    <com.romainpiel.shimmer.ShimmerTextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#444"
+        android:textSize="16sp"
         android:text="说明,比如tyxo842@163.com" />
 
 </LinearLayout>

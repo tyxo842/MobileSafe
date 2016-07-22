@@ -34,6 +34,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +55,7 @@ import tyxo.mobilesafe.widget.GridViewMy;
 import tyxo.mobilesafe.widget.WrapRecyclerView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,AdapterMainRecycler.OnItemClickListener{
+        View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, AdapterMainRecycler.OnItemClickListener {
 
     private FloatingActionButton fab;
     private DrawerLayout drawer;
@@ -63,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ImageView iv_left_header1;          // 左侧头部 图像
     private String url;                         // webView 加载的url
     private View header;
-    private TextView textView_title_left;
+    private TextView textView_title_left;       //左侧小标题
+    private ShimmerTextView textView;                  //左侧小标题下边说明
 
     //不用notifyDataSetChanged,而是notifyItemInserted(position)与notifyItemRemoved(position),否则没动画效果
     private WrapRecyclerView mRecyclerView;     // 主界面(右) recyclerView
@@ -80,10 +83,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AdapterMainGridView mGridAdapter;   //主界面gridview 的适配器
     private List<MainGVItemBean> gvListInfos;   //用于填充gridview的数据集合
     private DoubleClickExitDetector exitDetector;//双击返回退出
+    private Shimmer shimmer;
 
-    private int [] iconIDs = {R.drawable.app_financial,R.drawable.app_donate,R.drawable.app_essential,
-            R.drawable.app_citycard,R.drawable.app_inter_transfer,R.drawable.app_facepay};
-    private String [] titles = {"手机防盗","骚扰拦截","软件管理","进程管理","流量统计","缓存清理"};
+    private int[] iconIDs = {R.drawable.app_financial, R.drawable.app_donate, R.drawable.app_essential,
+            R.drawable.app_citycard, R.drawable.app_inter_transfer, R.drawable.app_facepay};
+    private String[] titles = {"手机防盗", "骚扰拦截", "软件管理", "进程管理", "流量统计", "缓存清理"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,24 +111,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         header = navigationView.getHeaderView(0);
         textView_title_left = (TextView) header.findViewById(R.id.textView_title_left);
+        textView = (ShimmerTextView) header.findViewById(R.id.textView);
         iv_left_header1 = (ImageView) header.findViewById(R.id.iv_left_header1);
 
         main_up_tv_1 = (TextView) findViewById(R.id.main_up_tv_1);
         tv_main_up_recycler_1 = (TextView) findViewById(R.id.tv_main_up_recycler_1);
-        mRecyclerView = (WrapRecyclerView)findViewById(R.id.rv_main_recyclerview);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));  // 设置布局管理器
-//        mRecyclerView.setLayoutManager(new GridLayoutManager(this,4));
-//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL));//4列,竖着滑动,分割线要配合DividerGridItemDecoration使用
-//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.HORIZONTAL));//4行,横着滑动
+        /** 开启土豪金颜色 */
+        if (shimmer != null && shimmer.isAnimating()) {
+            shimmer.cancel();
+        } else {
+            shimmer = new Shimmer();
+            shimmer.setDuration(3000)
+                    .setStartDelay(300)
+                    //.setRepeatCount(0)
+                    //.setAnimatorListener(new Animator.AnimatorListener() { })
+                    .setDirection(Shimmer.ANIMATION_DIRECTION_LTR);
+            shimmer.start(textView);
+        }
+        mRecyclerView = (WrapRecyclerView) findViewById(R.id.rv_main_recyclerview);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));  // 设置布局管理器
+        //mRecyclerView.setLayoutManager(new GridLayoutManager(this,4));
+        //mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL));//4列,竖着滑动,分割线要配合DividerGridItemDecoration使用
+        //mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.HORIZONTAL));//4行,横着滑动
+        swipeRL_recyclerActivity = (SwipeRefreshLayout) findViewById(R.id.swipeRL_recyclerActivity);
 
-        swipeRL_recyclerActivity = (SwipeRefreshLayout)findViewById(R.id.swipeRL_recyclerActivity);
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-//        AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
-//                AbsListView.LayoutParams.WRAP_CONTENT);
+        //AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,AbsListView.LayoutParams.WRAP_CONTENT);
+        //ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         View header = inflater.inflate(R.layout.layout_main_header, null);
         View headerGridView = inflater.inflate(R.layout.layout_main_header_gridview, null);
+        //header.setLayoutParams(params);
+        //headerGridView.setLayoutParams(params);
         mGridView = (GridViewMy) headerGridView.findViewById(R.id.main_header_gridview);
-        mRecyclerView.addHeaderView(header);
+        //mRecyclerView.addHeaderView(header);
         mRecyclerView.addHeaderView(headerGridView);
 
         editText = (EditText) header.findViewById(R.id.et_main_1);
@@ -147,10 +166,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });*/
         //editText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         //editText.addTextChangedListener(watcher);
-        editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);//et 默认数字软键盘,可输入字母汉字等
+        editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);           //et 默认数字软键盘,可输入字母汉字等
 
         SpannableString ss = new SpannableString(this.getResources().getString(R.string.spannablestring_tv));
-        ViewUtil.setSpannableStringStyle(this,ss);    //设置 SpannableString 的样式
+        ViewUtil.setSpannableStringStyle(this, ss);                      //设置 SpannableString 的样式
         main_up_tv_1.setMovementMethod(LinkMovementMethod.getInstance());//如果设置点击,必须加,否则没效果!!
         //main_up_tv_1.setHighlightColor(Color.parseColor("#666666"));   //控制点击的背景色
         main_up_tv_1.setText(ss);
@@ -163,7 +182,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         iv_left_header1.setOnClickListener(this);
         textView_title_left.setOnClickListener(this);
-
         tv_main_up_recycler_1.setOnClickListener(this);
         /*mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -199,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });*/
 
         // 设置进度条 颜色变化，最多可以设置4种颜色
-        swipeRL_recyclerActivity.setColorSchemeResources(R.color.gray,R.color.green,R.color.order_text_code_color_2b5fc5);
+        swipeRL_recyclerActivity.setColorSchemeResources(R.color.gray, R.color.green, R.color.order_text_code_color_2b5fc5);
         //swipeRL_recyclerActivity.setSize(SwipeRefreshLayout.LARGE);                //进度条大小,只有两个选择
         swipeRL_recyclerActivity.setProgressBackgroundColor(R.color.order_bg_f0f3f5);//进度条背景颜色
         /*第一个参数scale就是就是刷新那个圆形进度是是否缩放,如果为true表示缩放,圆形进度图像就会从小到大展示出来,为false就不缩放;
@@ -212,13 +230,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //swipeRL_recyclerActivity.setPadding(20, 20, 20, 20);
         swipeRL_recyclerActivity.setOnRefreshListener(this);
         // 第一次进入页面的时候显示加载进度条 ,调整进度条距离屏幕顶部的距离
-        swipeRL_recyclerActivity.setProgressViewOffset(false,0,(int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,24,getResources().getDisplayMetrics()));
+        swipeRL_recyclerActivity.setProgressViewOffset(false, 0, (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState==RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem +1 ==mAdapter.getItemCount()) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount()) {
                     swipeRL_recyclerActivity.setRefreshing(true);
 
                     /* 此处换成网络请求  上拉加载
@@ -227,8 +245,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Message msg = new Message();
                     msg.what = 0;
                     handler.sendMessageDelayed(msg, 1000);
-                    ToastUtil.showToastS(getApplicationContext(),"上拉加载");
-
+                    ToastUtil.showToastS(getApplicationContext(), "上拉加载");
                 }
             }
 
@@ -243,40 +260,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
-     protected void initData() {
+    protected void initData() {
         url = ConstValues.MYPHOTO_URL;
         mDatas = new ArrayList<>();
         for (int i = 'A'; i < 'z'; i++) {
-            mDatas.add(""+(char)i);
+            mDatas.add("" + (char) i);
         }
         gvListInfos = new ArrayList<>();
-         for (int i = 0; i < iconIDs.length; i++) {
-             MainGVItemBean bean = new MainGVItemBean();
-             bean.setIcon(iconIDs[i]);
-             bean.setTitle(titles[i]);
-             gvListInfos.add(bean);
-         }
-        mAdapter = new AdapterMainRecycler(getApplicationContext(),mDatas);
-        mGridAdapter = new AdapterMainGridView(this,gvListInfos);
+        for (int i = 0; i < iconIDs.length; i++) {
+            MainGVItemBean bean = new MainGVItemBean();
+            bean.setIcon(iconIDs[i]);
+            bean.setTitle(titles[i]);
+            gvListInfos.add(bean);
+        }
+        mAdapter = new AdapterMainRecycler(getApplicationContext(), mDatas);
+        mGridAdapter = new AdapterMainGridView(this, gvListInfos);
         mGridView.setAdapter(mGridAdapter);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));//list的分割线
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));//list的分割线
         //mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));//grid的分割线
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());//设置item动画
 
-         handler = new MyHandler();
-         exitDetector = new DoubleClickExitDetector(this);
+        handler = new MyHandler();
+        exitDetector = new DoubleClickExitDetector(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_main_up_recycler_1:
-            {
+            case R.id.tv_main_up_recycler_1: {
                 Intent intent = new Intent(this, StaggeredGridLayoutActivity.class);
                 startActivity(intent);
             }
-                break;
+            break;
             case R.id.fab:
                 Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 break;
@@ -288,13 +304,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //drawer.closeDrawer(GravityCompat.START); // 收起 侧拉
                 break;
             case R.id.textView_title_left:
-                Glide.with( this )
-                        .load( url )
+                Glide.with(this)
+                        .load(url)
                         .asBitmap()
                         .placeholder(R.drawable.loading) //占位符 也就是加载中的图片，可放个gif
                         .error(R.drawable.icon_zanwu) //失败图片
-                        .into( target ) ;
-                HLog.i("tyxo","小标题 点击 ... url : "+url);
+                        .into(target);
+                HLog.i("tyxo", "小标题 点击 ... url : " + url);
                 break;
         }
     }
@@ -341,16 +357,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    /** recyclerView 上拉下拉 监听*/
+    /**
+     * recyclerView 上拉下拉 监听
+     */
     @Override
     public void onRefresh() {
         Message msg = new Message();
         msg.what = 0;
         handler.sendMessageDelayed(msg, 1000);
-        ToastUtil.showToastS(getBaseContext(),"下拉刷新");
+        ToastUtil.showToastS(getBaseContext(), "下拉刷新");
     }
 
-    /** 加载图片 */
+    /**
+     * 加载图片
+     */
     private SimpleTarget target = new SimpleTarget() {
         @Override
         public void onResourceReady(Object resource, GlideAnimation glideAnimation) {
@@ -391,7 +411,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     TextWatcher watcher = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -404,7 +425,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         @Override
-        public void afterTextChanged(Editable s) { }
+        public void afterTextChanged(Editable s) {
+        }
     };
 
     @Override
