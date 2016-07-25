@@ -45,6 +45,7 @@ import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
 import tyxo.mobilesafe.adpter.AdapterMainGridView;
 import tyxo.mobilesafe.adpter.AdapterMainRecycler;
 import tyxo.mobilesafe.bean.MainGVItemBean;
+import tyxo.mobilesafe.utils.AnimationUtil;
 import tyxo.mobilesafe.utils.StringUtils;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.ViewUtil;
@@ -258,6 +259,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        initGridViewListener();
     }
 
     protected void initData() {
@@ -276,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mAdapter = new AdapterMainRecycler(getApplicationContext(), mDatas);
         mGridAdapter = new AdapterMainGridView(this, gvListInfos);
         mGridView.setAdapter(mGridAdapter);
+        AnimationUtil.setMainGridAnimtion(this,mGridView);  //gridView 设置动画
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));//list的分割线
         //mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));//grid的分割线
@@ -396,6 +400,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    //初始化 gridview 监听
+    private void initGridViewListener() {
+        /*
+        //拖拽 监听
+        mGridView.setOnDragListener(new DynamicGridView.OnDragListener() {
+            @Override
+            public void onDragStarted(int position) {
+                HLog.v("tyxo","gridView 拖拽 start position: "+position);
+            }
+
+            @Override
+            public void onDragPositionsChanged(int oldPosition, int newPosition) {
+                HLog.v("tyxo",String.format("拖拽 位置 position 从 %d 到 %d",oldPosition,newPosition));
+            }
+        });
+
+        // 长按 监听
+        mGridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                mGridView.startEditMode(position);
+                return true;
+            }
+        });
+
+        //条目点击 监听
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ToastUtil.showToastS(MainActivity.this,parent.getAdapter().getItem(position).toString());
+            }
+        });*/
+    }
+
     /*// 隐藏toolbar
     private void hideToolbar(){
         ObjectAnimator animator = ObjectAnimator.ofFloat(mToolbar, View.TRANSLATION_Y, 0,-mToolbar.getHeight());
@@ -438,6 +476,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 super.onBackPressed();
             }
         }
+        /*if (mGridView.isEditMode()) {
+            mGridView.stopEditMode();
+        } else {
+            super.onBackPressed();
+        }*/
     }
 
     @Override

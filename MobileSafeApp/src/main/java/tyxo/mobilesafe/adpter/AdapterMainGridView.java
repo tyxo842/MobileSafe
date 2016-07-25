@@ -12,6 +12,7 @@ import java.util.List;
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.base.BaseViewHolder;
 import tyxo.mobilesafe.bean.MainGVItemBean;
+import tyxo.mobilesafe.widget.BadgeView;
 
 /**
  * Created by LY on 2016/7/21 14: 31.
@@ -52,10 +53,19 @@ public class AdapterMainGridView extends BaseAdapter{
         ImageView main_header_gv_item_iv = BaseViewHolder.get(convertView, R.id.main_header_gv_item_iv);
         TextView main_header_gv_item_tv = BaseViewHolder.get(convertView, R.id.main_header_gv_item_tv);
 
+        ImageView main_header_gv_item_iv_num = BaseViewHolder.get(convertView, R.id.main_header_gv_item_iv_num);
+
         /** 控件赋值 */
         MainGVItemBean bean = gvListInfos.get(position);
         main_header_gv_item_iv.setImageResource(bean.getIcon());
         main_header_gv_item_tv.setText(bean.getTitle());
+
+        if (2 == position) {
+            main_header_gv_item_iv_num.setVisibility(View.VISIBLE);
+            BadgeView badge = new BadgeView(context);
+            badge.setTargetView(main_header_gv_item_iv_num);
+            badge.setBadgeCount(6);
+        }
 
         return convertView;
     }

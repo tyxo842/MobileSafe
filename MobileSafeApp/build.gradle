@@ -33,4 +33,5 @@ dependencies {
     //compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     compile 'com.romainpiel.shimmer:library:1.4.0'
     compile project(':ShortcutBadger')
+    compile 'com.hovans.dynamicgrid:dynamicgrid:1.0.0'
 }
