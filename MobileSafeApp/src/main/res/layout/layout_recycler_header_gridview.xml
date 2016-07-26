@@ -8,8 +8,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!--<org.askerov.dynamicgrid.DynamicGridView-->
-        <tyxo.mobilesafe.widget.GridViewMy
+        <!--<tyxo.mobilesafe.widget.GridViewMy-->
+        <!--<GridView-->
+        <org.askerov.dynamicgrid.DynamicGridView
             android:id="@+id/main_header_gridview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

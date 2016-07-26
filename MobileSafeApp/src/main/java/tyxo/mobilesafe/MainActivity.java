@@ -149,26 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mRecyclerView.addHeaderView(headerGridView);
 
         editText = (EditText) header.findViewById(R.id.et_main_1);
-        //String digists = "[^a-zA-Z0-9\\u4E00-\\u9FA5]";   // [\u4e00-\u9fa5]
-        String digists = "0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        //editText.setKeyListener(DigitsKeyListener.getInstance(digists));
-        /*editText.setKeyListener(new NumberKeyListener() {
-            @Override
-            protected char[] getAcceptedChars() {
-                char[] c = {'a','b','c','d','e','1','2'};
-                return c;
-                //return new char[0];
-            }
-
-            @Override
-            public int getInputType() {
-                // 0无键盘 1英文键盘 2模拟键盘 3数字键盘
-                return 3;
-            }
-        });*/
-        //editText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-        //editText.addTextChangedListener(watcher);
-        editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);           //et 默认数字软键盘,可输入字母汉字等
+        initEditText();     /** 初始化 输入框 默认弹出效果 等*/
 
         SpannableString ss = new SpannableString(this.getResources().getString(R.string.spannablestring_tv));
         ViewUtil.setSpannableStringStyle(this, ss); /** 设置 SpannableString 的样式 */
@@ -185,38 +166,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         iv_left_header1.setOnClickListener(this);
         textView_title_left.setOnClickListener(this);
         tv_main_up_recycler_1.setOnClickListener(this);
-        /*mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                // 得到第一个item
-                int firstVisibleItem = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-                if (firstVisibleItem == 0) {    // 当前可见item的第一个是否是列表的第一个 如果是第一个应用显示
-                    if (!isshow) {              // 如果此时不在现实中 得显示
-                        isshow = true;
-                    }
-                } else {                        // 不是第一个
-                    if (disy > 25 && isshow) {  // 滑动距离大于25且显示状态 向下 就隐藏
-                        isshow = false;
-                        hideToolbar();
-                        disy = 0;               // 归零
-                    }
-                    if (disy<-25 && ! isshow) { // 向上滑动且距离大于25且隐藏状态 就显示
-                        isshow = true;
-                        showToolbar();
-                        disy = 0;               // 归零
-                    }
-                }
-                if ((isshow && dy >0)||(!isshow && dy <0)) { // 增加滑动的距离 只有再触发两种状态的时候才进行叠加
-                    disy += dy;
-                }
-            }
-        });*/
 
         // 设置进度条 颜色变化，最多可以设置4种颜色
         swipeRL_recyclerActivity.setColorSchemeResources(R.color.gray, R.color.green, R.color.order_text_code_color_2b5fc5);
@@ -234,29 +183,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // 第一次进入页面的时候显示加载进度条 ,调整进度条距离屏幕顶部的距离
         swipeRL_recyclerActivity.setProgressViewOffset(false, 0, (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount()) {
-                    swipeRL_recyclerActivity.setRefreshing(true);
 
-                    /* 此处换成网络请求  上拉加载
-                    ......
-                    * */
-                    Message msg = new Message();
-                    msg.what = 0;
-                    handler.sendMessageDelayed(msg, 1000);
-                    ToastUtil.showToastS(getApplicationContext(), "上拉加载");
-                }
-            }
+        initRecyclerViewOnloadMoreListener();   /** 初始化 上拉加载 监听*/
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
-            }
-        });
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -362,20 +291,75 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    /**
-     * recyclerView 上拉下拉 监听
-     */
+    /** recyclerView 上拉下拉 监听 */
     @Override
     public void onRefresh() {
         Message msg = new Message();
-        msg.what = 0;
+        msg.what = 1;
         handler.sendMessageDelayed(msg, 1000);
         ToastUtil.showToastS(getBaseContext(), "下拉刷新");
     }
 
-    /**
-     * 加载图片
-     */
+    private void initRecyclerViewOnloadMoreListener() {
+        /*mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                // 得到第一个item
+                int firstVisibleItem = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                if (firstVisibleItem == 0) {    // 当前可见item的第一个是否是列表的第一个 如果是第一个应用显示
+                    if (!isshow) {              // 如果此时不在现实中 得显示
+                        isshow = true;
+                    }
+                } else {                        // 不是第一个
+                    if (disy > 25 && isshow) {  // 滑动距离大于25且显示状态 向下 就隐藏
+                        isshow = false;
+                        hideToolbar();
+                        disy = 0;               // 归零
+                    }
+                    if (disy<-25 && ! isshow) { // 向上滑动且距离大于25且隐藏状态 就显示
+                        isshow = true;
+                        showToolbar();
+                        disy = 0;               // 归零
+                    }
+                }
+                if ((isshow && dy >0)||(!isshow && dy <0)) { // 增加滑动的距离 只有再触发两种状态的时候才进行叠加
+                    disy += dy;
+                }
+            }
+        });*/
+
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount()) {
+                    swipeRL_recyclerActivity.setRefreshing(true);
+
+                    /* 此处换成网络请求  上拉加载
+                    ......
+                    * */
+                    Message msg = new Message();
+                    msg.what = 0;
+                    handler.sendMessageDelayed(msg, 1000);
+                    ToastUtil.showToastS(getApplicationContext(), "上拉加载");
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+            }
+        });
+    }
+
+    /** 加载图片 */
     private SimpleTarget target = new SimpleTarget() {
         @Override
         public void onResourceReady(Object resource, GlideAnimation glideAnimation) {
@@ -394,6 +378,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     swipeRL_recyclerActivity.setRefreshing(false);
                     break;
                 case 1:
+                    swipeRL_recyclerActivity.setRefreshing(false);
                     break;
                 case 2:
                     break;
@@ -447,6 +432,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         animator.setDuration(500);
         animator.start();
     }*/
+
+    private void initEditText() {
+        //String digists = "[^a-zA-Z0-9\\u4E00-\\u9FA5]";   // [\u4e00-\u9fa5]
+        String digists = "0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        //editText.setKeyListener(DigitsKeyListener.getInstance(digists));
+        /*editText.setKeyListener(new NumberKeyListener() {
+            @Override
+            protected char[] getAcceptedChars() {
+                char[] c = {'a','b','c','d','e','1','2'};
+                return c;
+                //return new char[0];
+            }
+
+            @Override
+            public int getInputType() {
+                // 0无键盘 1英文键盘 2模拟键盘 3数字键盘
+                return 3;
+            }
+        });*/
+        //editText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        //editText.addTextChangedListener(watcher);
+        editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);           //et 默认数字软键盘,可输入字母汉字等
+    }
 
     TextWatcher watcher = new TextWatcher() {
         @Override

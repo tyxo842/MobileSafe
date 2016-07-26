@@ -42,6 +42,11 @@ public class AdapterRecyclerHeader extends RecyclerView.Adapter<RecyclerView.Vie
         notifyDataSetChanged();
     }
 
+    public void setDatas(List<String> datas){
+        mDatas = datas;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemViewType(int position) {
         //return super.getItemViewType(position);
