@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import org.askerov.dynamicgrid.DynamicGridView;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +21,7 @@ import tyxo.mobilesafe.adpter.AdapterRecyclerHeader;
 import tyxo.mobilesafe.base.BaseActivityToolbar;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
+import tyxo.mobilesafe.widget.GridViewMy;
 
 /**
  * Created by LY on 2016/7/26 10: 49.
@@ -34,7 +33,7 @@ public class RecyclerActivity extends BaseActivityToolbar {
     private RecyclerView mRecyclerview;
     private LinearLayoutManager mLayoutManager;
     private AdapterRecyclerHeader mAdapter;
-    private DynamicGridView mGridView;
+    private GridViewMy mGridView;
     private AdapterDynamic mGridAdapter;
     private int num;
     private SwipeRefreshLayout swipeRL;
@@ -80,7 +79,7 @@ public class RecyclerActivity extends BaseActivityToolbar {
 
     public void setHeader() {
         View header = LayoutInflater.from(this).inflate(R.layout.layout_recycler_header_gridview,mRecyclerview,false);
-        mGridView = (DynamicGridView)header.findViewById(R.id.main_header_gridview);
+        mGridView = (GridViewMy)header.findViewById(R.id.recycler_header_gridview);
         mGridAdapter = new AdapterDynamic(this,getAdapterData(6),3);
         mGridView.setAdapter(mGridAdapter);
         initGridViewListener();     /** 初始化 GridView 监听*/
@@ -88,7 +87,7 @@ public class RecyclerActivity extends BaseActivityToolbar {
     }
 
     private void initGridViewListener() {
-        mGridView.setOnDragListener(new DynamicGridView.OnDragListener(){
+        mGridView.setOnDragListener(new GridViewMy.OnDragListener(){
             @Override
             public void onDragStarted(int position) {
                 HLog.v("tyxo","拖拽 开始 位置: "+position);
