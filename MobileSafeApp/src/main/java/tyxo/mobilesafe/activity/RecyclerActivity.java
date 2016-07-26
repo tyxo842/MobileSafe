@@ -21,6 +21,7 @@ import tyxo.mobilesafe.adpter.AdapterRecyclerHeader;
 import tyxo.mobilesafe.base.BaseActivityToolbar;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
+import tyxo.mobilesafe.widget.DividerItemDecoration;
 import tyxo.mobilesafe.widget.GridViewMy;
 
 /**
@@ -51,7 +52,8 @@ public class RecyclerActivity extends BaseActivityToolbar {
         mRecyclerview = (RecyclerView) findViewById(R.id.activity_recycler_recyclerview);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerview.setLayoutManager(mLayoutManager);
-        mRecyclerview.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerview.setItemAnimator(new DefaultItemAnimator());//条目动画
+        mRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));//list的分割线
 
         mAdapter = new AdapterRecyclerHeader();
         mRecyclerview.setAdapter(mAdapter);

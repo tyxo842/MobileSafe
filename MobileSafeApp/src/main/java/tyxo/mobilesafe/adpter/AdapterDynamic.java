@@ -14,7 +14,7 @@ import tyxo.mobilesafe.R;
 /**
  * Created by LY on 2016/7/26 09: 34.
  * Mail      1577441454@qq.com
- * Describe :
+ * Describe : recycler activity 界面的 gridView 适配器,可拖动条目
  */
 public class AdapterDynamic extends BaseDynamicGridAdapter {
 

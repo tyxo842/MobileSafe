@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -118,6 +119,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         main_up_tv_1 = (TextView) findViewById(R.id.main_up_tv_1);
         tv_main_up_recycler_1 = (TextView) findViewById(R.id.tv_main_up_recycler_1);
+        mRecyclerView = (WrapRecyclerView) findViewById(R.id.rv_main_recyclerview);
+        swipeRL_recyclerActivity = (SwipeRefreshLayout) findViewById(R.id.swipeRL_recyclerActivity);
+
         /** 开启土豪金颜色 */
         if (shimmer != null && shimmer.isAnimating()) {
             shimmer.cancel();
@@ -130,25 +134,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .setDirection(Shimmer.ANIMATION_DIRECTION_LTR);
             shimmer.start(textView);
         }
-        mRecyclerView = (WrapRecyclerView) findViewById(R.id.rv_main_recyclerview);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));  // 设置布局管理器
         //mRecyclerView.setLayoutManager(new GridLayoutManager(this,4));
         //mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL));//4列,竖着滑动,分割线要配合DividerGridItemDecoration使用
         //mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.HORIZONTAL));//4行,横着滑动
-        swipeRL_recyclerActivity = (SwipeRefreshLayout) findViewById(R.id.swipeRL_recyclerActivity);
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        //AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,AbsListView.LayoutParams.WRAP_CONTENT);
-        //ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        View header = inflater.inflate(R.layout.layout_main_header, null);
-        View headerGridView = inflater.inflate(R.layout.layout_main_header_gridview, null);
-        //header.setLayoutParams(params);
-        //headerGridView.setLayoutParams(params);
-        mGridView = (GridViewMy) headerGridView.findViewById(R.id.main_header_gridview);
-        //mRecyclerView.addHeaderView(header);
-        mRecyclerView.addHeaderView(headerGridView);
-
-        editText = (EditText) header.findViewById(R.id.et_main_1);
+        setRecyclerHeader();/** 设置 recyclerView 头布局 */
         initEditText();     /** 初始化 输入框 默认弹出效果 等*/
 
         SpannableString ss = new SpannableString(this.getResources().getString(R.string.spannablestring_tv));
@@ -167,30 +159,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         textView_title_left.setOnClickListener(this);
         tv_main_up_recycler_1.setOnClickListener(this);
 
-        // 设置进度条 颜色变化，最多可以设置4种颜色
-        swipeRL_recyclerActivity.setColorSchemeResources(R.color.gray, R.color.green, R.color.order_text_code_color_2b5fc5);
-        //swipeRL_recyclerActivity.setSize(SwipeRefreshLayout.LARGE);                //进度条大小,只有两个选择
-        swipeRL_recyclerActivity.setProgressBackgroundColor(R.color.order_bg_f0f3f5);//进度条背景颜色
-        /*第一个参数scale就是就是刷新那个圆形进度是是否缩放,如果为true表示缩放,圆形进度图像就会从小到大展示出来,为false就不缩放;
-        第二个参数start和end就是那刷新进度条展示的相对于默认的展示位置,start和end组成一个范围，
-        在这个y轴范围就是那个圆形进度ProgressView展示的位置*/
-        swipeRL_recyclerActivity.setProgressViewOffset(true, 100, 200);
-        swipeRL_recyclerActivity.setDistanceToTriggerSync(50);//设置手势操作下拉多少距离之后开始刷新数据
-        swipeRL_recyclerActivity.setProgressViewEndTarget(true, 100);
-
-        //swipeRL_recyclerActivity.setPadding(20, 20, 20, 20);
-        swipeRL_recyclerActivity.setOnRefreshListener(this);
-        // 第一次进入页面的时候显示加载进度条 ,调整进度条距离屏幕顶部的距离
-        swipeRL_recyclerActivity.setProgressViewOffset(false, 0, (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
-
-        initRecyclerViewOnloadMoreListener();   /** 初始化 上拉加载 监听*/
+        setBarStyle();                          /** 设置进度条 */
+        initRecyclerViewOnloadMoreListener();   /** 初始化 上拉加载 监听 */
 
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        initGridViewListener();
+        initGridViewListener();                 /** 初始化 gridview 监听 拖动,点击,长按 */
     }
 
     protected void initData() {
@@ -207,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             gvListInfos.add(bean);
         }
         mAdapter = new AdapterMainRecycler(getApplicationContext(), mDatas);
-        mGridAdapter = new AdapterMainGridView(this, gvListInfos);
+        mGridAdapter = new AdapterMainGridView(this, gvListInfos,3);
         mGridView.setAdapter(mGridAdapter);
         AnimationUtil.setMainGridAnimtion(this,mGridView);  //gridView 设置动画
         mRecyclerView.setAdapter(mAdapter);
@@ -217,6 +193,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         handler = new MyHandler();
         exitDetector = new DoubleClickExitDetector(this);
+        mAdapter.setOnItemClickListener(this);  /** recyclerView 设置 条目点击 监听 */
     }
 
     @Override
@@ -251,12 +228,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onItemClick(View view, int position) {
-
+        ToastUtil.showToastS(this,"条目 "+position+" 点击了");
     }
 
     @Override
     public void onItemLongClick(View view, int position) {
-
+        ToastUtil.showToastS(this,"条目 "+position+" 长按了");
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -298,6 +275,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         msg.what = 1;
         handler.sendMessageDelayed(msg, 1000);
         ToastUtil.showToastS(getBaseContext(), "下拉刷新");
+    }
+
+    private void setBarStyle() {
+        // 设置进度条 颜色变化，最多可以设置4种颜色
+        swipeRL_recyclerActivity.setColorSchemeResources(R.color.gray, R.color.green, R.color.order_text_code_color_2b5fc5);
+        //swipeRL_recyclerActivity.setSize(SwipeRefreshLayout.LARGE);                //进度条大小,只有两个选择
+        swipeRL_recyclerActivity.setProgressBackgroundColor(R.color.order_bg_f0f3f5);//进度条背景颜色
+        /*第一个参数scale就是就是刷新那个圆形进度是是否缩放,如果为true表示缩放,圆形进度图像就会从小到大展示出来,为false就不缩放;
+        第二个参数start和end就是那刷新进度条展示的相对于默认的展示位置,start和end组成一个范围，
+        在这个y轴范围就是那个圆形进度ProgressView展示的位置*/
+        swipeRL_recyclerActivity.setProgressViewOffset(true, 100, 200);
+        swipeRL_recyclerActivity.setDistanceToTriggerSync(50);//设置手势操作下拉多少距离之后开始刷新数据
+        swipeRL_recyclerActivity.setProgressViewEndTarget(true, 100);
+
+        //swipeRL_recyclerActivity.setPadding(20, 20, 20, 20);
+        swipeRL_recyclerActivity.setOnRefreshListener(this);
+        // 第一次进入页面的时候显示加载进度条 ,调整进度条距离屏幕顶部的距离
+        swipeRL_recyclerActivity.setProgressViewOffset(false, 0, (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+    }
+
+    private void setRecyclerHeader() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        //AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,AbsListView.LayoutParams.WRAP_CONTENT);
+        //ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        View header = inflater.inflate(R.layout.layout_main_header, null);
+        View headerGridView = inflater.inflate(R.layout.layout_main_header_gridview, null);
+        //header.setLayoutParams(params);
+        //headerGridView.setLayoutParams(params);
+        mGridView = (GridViewMy) headerGridView.findViewById(R.id.main_header_gridview);
+        mRecyclerView.addHeaderView(header);
+        //mRecyclerView.addHeaderView(headerGridView);
+
+        editText = (EditText) header.findViewById(R.id.et_main_1);
     }
 
     private void initRecyclerViewOnloadMoreListener() {
@@ -388,9 +399,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //初始化 gridview 监听
     private void initGridViewListener() {
-        /*
         //拖拽 监听
-        mGridView.setOnDragListener(new DynamicGridView.OnDragListener() {
+        mGridView.setOnDragListener(new GridViewMy.OnDragListener() {
             @Override
             public void onDragStarted(int position) {
                 HLog.v("tyxo","gridView 拖拽 start position: "+position);
@@ -417,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ToastUtil.showToastS(MainActivity.this,parent.getAdapter().getItem(position).toString());
             }
-        });*/
+        });
     }
 
     /*// 隐藏toolbar
@@ -478,18 +488,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (mGridView.isEditMode()|| drawer.isDrawerOpen(GravityCompat.START)) {
+            mGridView.stopEditMode();
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (exitDetector.onClick()) {
                 super.onBackPressed();
             }
         }
-        /*if (mGridView.isEditMode()) {
-            mGridView.stopEditMode();
-        } else {
-            super.onBackPressed();
-        }*/
     }
 
     @Override

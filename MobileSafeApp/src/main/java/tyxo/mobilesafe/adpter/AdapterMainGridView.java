@@ -3,9 +3,10 @@ package tyxo.mobilesafe.adpter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 
 import java.util.List;
 
@@ -19,17 +20,23 @@ import tyxo.mobilesafe.widget.BadgeView;
  * Mail      1577441454@qq.com
  * Describe : 主界面 gridview item 适配器
  */
-public class AdapterMainGridView extends BaseAdapter{
+public class AdapterMainGridView extends BaseDynamicGridAdapter {
 
     private Context context;
     private List<MainGVItemBean> gvListInfos;
 
-    public AdapterMainGridView(Context context, List<MainGVItemBean> gvListInfos) {
+    public AdapterMainGridView(Context context, List<?> items, int columnCount) {
+        super(context, items, columnCount);
         this.context = context;
-        this.gvListInfos = gvListInfos;
+        this.gvListInfos = (List<MainGVItemBean>) items;
     }
 
-    @Override
+    /*public AdapterMainGridView(Context context, List<MainGVItemBean> gvListInfos) {
+        this.context = context;
+        this.gvListInfos = gvListInfos;
+    }*/
+
+   /* @Override
     public int getCount() {
         return gvListInfos.size();
     }
@@ -42,7 +49,7 @@ public class AdapterMainGridView extends BaseAdapter{
     @Override
     public long getItemId(int position) {
         return position;
-    }
+    }*/
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
