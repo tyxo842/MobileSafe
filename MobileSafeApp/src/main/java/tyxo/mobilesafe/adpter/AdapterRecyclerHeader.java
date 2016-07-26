@@ -6,9 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import tyxo.mobilesafe.R;
 
 /**
@@ -16,9 +13,29 @@ import tyxo.mobilesafe.R;
  * Mail      1577441454@qq.com
  * Describe : 可添加头布局的 recycler 适配器,原理是type
  */
-public class AdapterRecyclerHeader extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterRecyclerHeader extends BaseRecyclerAdapter {
+    @Override
+    public RecyclerView.ViewHolder onCreate(ViewGroup parent, int viewType) {
+        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_item_recycler,parent,false);
+        return new Holder(layout);
+    }
 
-    private static final int TYPE_HEADER = 0;
+    @Override
+    public void onBind(RecyclerView.ViewHolder viewHolder, int RealPosition, Object data) {
+        if (viewHolder instanceof Holder) {
+            ((Holder) viewHolder).text.setText((String)data);
+        }
+    }
+
+    class Holder extends RecyclerView.ViewHolder{
+        TextView text;
+        public Holder(View itemView) {
+            super(itemView);
+            text = (TextView) itemView.findViewById(R.id.id_num);
+        }
+    }
+
+    /*private static final int TYPE_HEADER = 0;
     private static final int TYPE_NORMAL = 1;
     private List<String> mDatas = new ArrayList<>();
     private View mHeaderView;
@@ -107,6 +124,33 @@ public class AdapterRecyclerHeader extends RecyclerView.Adapter<RecyclerView.Vie
         return mHeaderView==null?mDatas.size():mDatas.size()+1;
     }
 
+    *//** 当recycler为grid layoutManager类型时候, 要添加这个方法,否则会很难看 *//*
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager instanceof GridLayoutManager) {
+            final GridLayoutManager gridManager = (GridLayoutManager) manager;
+            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return getItemViewType(position)==TYPE_HEADER?gridManager.getSpanCount():1;
+                }
+            });
+        }
+    }
+
+    *//** 当recycler为staggeredgrid layoutManager类型时候, 要添加这个方法,否则会很难看 *//*
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+        if (lp!=null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+            StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) lp;
+            params.setFullSpan(holder.getLayoutPosition()==0);
+        }
+    }
+
     public int getRealPosition(RecyclerView.ViewHolder holder){
         int position = holder.getLayoutPosition();
         return mHeaderView == null?position:position-1;
@@ -123,7 +167,7 @@ public class AdapterRecyclerHeader extends RecyclerView.Adapter<RecyclerView.Vie
             }
             text = (TextView) itemView.findViewById(R.id.id_num);
         }
-    }
+    }*/
 }
 
 

@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -32,7 +32,7 @@ import tyxo.mobilesafe.widget.GridViewMy;
 public class RecyclerActivity extends BaseActivityToolbar {
 
     private RecyclerView mRecyclerview;
-    private LinearLayoutManager mLayoutManager;
+    private GridLayoutManager mLayoutManager;
     private AdapterRecyclerHeader mAdapter;
     private GridViewMy mGridView;
     private AdapterDynamic mGridAdapter;
@@ -50,14 +50,15 @@ public class RecyclerActivity extends BaseActivityToolbar {
     protected void initView(View contentView) {
         super.initView(contentView);
         mRecyclerview = (RecyclerView) findViewById(R.id.activity_recycler_recyclerview);
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        //mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mLayoutManager = new GridLayoutManager(this,2);
         mRecyclerview.setLayoutManager(mLayoutManager);
         mRecyclerview.setItemAnimator(new DefaultItemAnimator());//条目动画
         mRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));//list的分割线
 
         mAdapter = new AdapterRecyclerHeader();
-        mRecyclerview.setAdapter(mAdapter);
         mAdapter.addDatas(getAdapterData(10));
+        mRecyclerview.setAdapter(mAdapter);
         setHeader();    /** 添加 头布局 可拖拽的 GridView*/
 
         swipeRL = (SwipeRefreshLayout) findViewById(R.id.recycler_swipeRL_recyclerActivity);
