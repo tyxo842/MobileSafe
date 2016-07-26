@@ -30,3 +30,26 @@ public class GridViewMy extends GridView{
         //super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tyxo.mobilesafe.activity.ImageViewerActivity;
+import tyxo.mobilesafe.activity.RecyclerActivity;
 import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
 import tyxo.mobilesafe.adpter.AdapterMainGridView;
 import tyxo.mobilesafe.adpter.AdapterMainRecycler;
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);           //et 默认数字软键盘,可输入字母汉字等
 
         SpannableString ss = new SpannableString(this.getResources().getString(R.string.spannablestring_tv));
-        ViewUtil.setSpannableStringStyle(this, ss);                      //设置 SpannableString 的样式
+        ViewUtil.setSpannableStringStyle(this, ss); /** 设置 SpannableString 的样式 */
         main_up_tv_1.setMovementMethod(LinkMovementMethod.getInstance());//如果设置点击,必须加,否则没效果!!
         //main_up_tv_1.setHighlightColor(Color.parseColor("#666666"));   //控制点击的背景色
         main_up_tv_1.setText(ss);
@@ -499,7 +500,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-//            ToastUtil.showToastS();
+            //ToastUtil.showToastS("设置");
+            Intent intent = new Intent(this, RecyclerActivity.class);
+            startActivity(intent);
             return true;
         }
         switch (id) {

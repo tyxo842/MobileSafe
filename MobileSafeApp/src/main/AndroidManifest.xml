@@ -47,5 +47,10 @@
             android:label=""
             android:theme="@style/MyToolbarThemeSelector" />
 
+        <activity
+            android:name=".activity.RecyclerActivity"
+            android:label=""
+            android:theme="@style/MyToolbarTheme"/>
+
     </application>
 </manifest>

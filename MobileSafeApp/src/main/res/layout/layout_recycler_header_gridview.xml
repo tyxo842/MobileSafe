@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--<org.askerov.dynamicgrid.DynamicGridView-->
+        <tyxo.mobilesafe.widget.GridViewMy
+            android:id="@+id/main_header_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="3"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:layout_marginBottom="10dp"/>
+        <!--android:numColumns="3" 表示有多少列
+            android:verticalSpacing="10dp" 上下的间距
+            android:horizontalSpacing="10dp" 左右的间距-->
+
+    </LinearLayout>
+
+</RelativeLayout>
