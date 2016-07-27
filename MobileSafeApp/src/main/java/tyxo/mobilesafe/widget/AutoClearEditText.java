@@ -124,4 +124,11 @@ public class AutoClearEditText extends AutoCompleteTextView implements OnFocusCh
 		translateAnimation.setDuration(1000);
 		return translateAnimation;
 	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
+		super.onMeasure(widthMeasureSpec, expandSpec);
+		//super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
 }

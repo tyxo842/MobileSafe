@@ -300,13 +300,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         //AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,AbsListView.LayoutParams.WRAP_CONTENT);
         //ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         View header = inflater.inflate(R.layout.layout_main_header, null);
         View headerGridView = inflater.inflate(R.layout.layout_main_header_gridview, null);
-        //header.setLayoutParams(params);
-        //headerGridView.setLayoutParams(params);
+        //header.setLayoutParams(params);           //不管用,回头查查代码设置重绘
+        //headerGridView.setLayoutParams(params);   //不管用,回头查查代码设置重绘
         mGridView = (GridViewMy) headerGridView.findViewById(R.id.main_header_gridview);
-        mRecyclerView.addHeaderView(header);
-        //mRecyclerView.addHeaderView(headerGridView);
+        /** 添加两个头不成功,此方法不行,可以尝试在adapter内重写getItemViewType 参考AdapterRecyclerHeader 注释掉部分*/
+        //mRecyclerView.addHeaderView(header);
+        mRecyclerView.addHeaderView(headerGridView);
+        mRecyclerView.addFootView(header);
 
         editText = (EditText) header.findViewById(R.id.et_main_1);
     }

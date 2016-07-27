@@ -115,7 +115,8 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
             case R.id.tv_iv_layout_1:
                 HLog.i("tyxo","url 1 : "+url);
                 Glide.with( this )
-                        .load( url )
+//                        .load( url )
+                        .load( R.drawable.glide_photo )
                         .asBitmap()
                         .placeholder(R.drawable.loading) //占位符 也就是加载中的图片，可放个gif
                         .error(R.drawable.icon_zanwu) //失败图片

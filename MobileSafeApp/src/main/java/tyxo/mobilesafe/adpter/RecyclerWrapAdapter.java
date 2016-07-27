@@ -33,7 +33,7 @@ public class RecyclerWrapAdapter extends RecyclerView.Adapter implements IWrappe
         } else {
             this.mHeaderViews = mHeaderViews;
         }
-        if (mHeaderViews == null) {
+        if (mFootViews == null) { //原来判断是HeaderViews,现在改为mFootViews
             this.mFootViews = EMPTY_INFO_LIST;
         } else {
             this.mFootViews = mFootViews;
