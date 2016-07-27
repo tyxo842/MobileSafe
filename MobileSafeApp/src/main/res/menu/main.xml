@@ -6,4 +6,17 @@
         android:orderInCategory="100"
         android:title="跳转到RecyclerActivity"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings_fix"
+        android:orderInCategory="100"
+        android:title="打补丁"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings_test"
+        android:orderInCategory="100"
+        android:title="测试 吐司"
+        app:showAsAction="never" />
+
 </menu>

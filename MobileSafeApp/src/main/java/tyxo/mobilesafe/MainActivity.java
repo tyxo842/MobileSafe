@@ -1,5 +1,6 @@
 package tyxo.mobilesafe;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -38,10 +39,13 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import dodola.hotfixlib.HotFix;
 import tyxo.mobilesafe.activity.ImageViewerActivity;
+import dodola.hotfix.LoadBugClass;
 import tyxo.mobilesafe.activity.RecyclerActivity;
 import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
 import tyxo.mobilesafe.adpter.AdapterMainGridView;
@@ -51,6 +55,7 @@ import tyxo.mobilesafe.utils.AnimationUtil;
 import tyxo.mobilesafe.utils.StringUtils;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.ViewUtil;
+import tyxo.mobilesafe.utils.hotfix.Utils;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.DividerItemDecoration;
 import tyxo.mobilesafe.widget.DoubleClickExitDetector;
@@ -523,6 +528,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         switch (id) {
+            case R.id.action_settings_fix:
+                //准备补丁,从assert里拷贝到dex里
+                File dexPath = new File(getDir("dex", Context.MODE_PRIVATE), "path_dex.jar");
+                Utils.prepareDex(this.getApplicationContext(), dexPath, "path_dex.jar");
+                //DexInjector.inject(dexPath.getAbsolutePath(), defaultDexOptPath, "dodola.hotfix.BugClass");
+                HotFix.patch(this, dexPath.getAbsolutePath(), "dodola.hotfix.BugClass");
+                break;
+            case R.id.action_settings_test:
+                LoadBugClass bugClass = new LoadBugClass();
+                ToastUtil.showToastS(this,"测试调用方法:" + bugClass.getBugString());
+                break;
             case R.id.action_delete:
                 mAdapter.removeData(0);
                 break;
@@ -530,7 +546,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mAdapter.addData(0);
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

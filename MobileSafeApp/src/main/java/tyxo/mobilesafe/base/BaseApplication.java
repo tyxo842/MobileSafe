@@ -5,7 +5,12 @@ import android.content.Context;
 
 import java.io.File;
 
+import dodola.hotfixlib.HotFix;
+import tyxo.mobilesafe.utils.hotfix.Utils;
+
 public class BaseApplication extends Application {
+
+	private static BaseApplication instance;
 
 	@Override
 	public void onCreate() {
@@ -13,16 +18,14 @@ public class BaseApplication extends Application {
 		instance = this;
 
 		File dexPath = new File(getDir("dex", Context.MODE_PRIVATE), "hackdex_dex.jar");
-		//Utils.prepareDex(this.getApplicationContext(),dexPath,"hackdex_dex.jar");
-		//HotFix.path(this,dexPath.getAbsolutePath(),"dodola.hackdex.AntilazyLoad");
+		Utils.prepareDex(this.getApplicationContext(),dexPath,"hackdex_dex.jar");
+		HotFix.patch(this,dexPath.getAbsolutePath(),"dodola.hackdex.AntilazyLoad");
 		try {
 			this.getClassLoader().loadClass("dadala.hackdex.AntilazyLoad");
-		} catch (Exception e ) {
+		} catch (ClassNotFoundException e ) {
 			e.printStackTrace();
 		}
 	}
-
-	private static BaseApplication instance;
 
 	public static BaseApplication getInstance() {
 		return instance;
