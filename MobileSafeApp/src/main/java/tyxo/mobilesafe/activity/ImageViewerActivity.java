@@ -123,6 +123,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
                         .into( target ) ;
                 //Glide.with(this).load(R.drawable.ic_launceher).centerCrop().transform(new GlideRoundTransform(this)).into(iv_demo);
                 HLog.i("tyxo","url 2 : "+url);
+                //ToastUtil.showToastS(this,"修改自己项目里面的东东,拦截操作改为toast,先打补丁再测");
                 break;
             case R.id.imageActivity_btn_setBadge:
             {

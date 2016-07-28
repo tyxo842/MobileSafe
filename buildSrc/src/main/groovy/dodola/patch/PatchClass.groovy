@@ -8,9 +8,9 @@ import javassist.CtNewConstructor
 import javassist.CtNewMethod
 
 /**
- *  这个项目是使用Groovy开发的，需要配置Groovy SDK才可以编译成功。
+ *  这个项目是使用Groovy开发的，用来实现修改class文件的操作.(需要配置Groovy SDK才可以编译成功).
  *  配置项目user Library即可.
- *  用来向指定类的构造函数注入代码：
+ *  ps: 防止某个类,被打上了CLASS_ISPREERIFIED这个标志,向这个类的构造函数插入一段代码：
  * */
 public class PatchClass {
     /**
@@ -26,6 +26,8 @@ public class PatchClass {
         classes.appendClassPath(lib)
 
         //下面的操作比较容易理解,在将需要关联的类的构造方法中插入引用代码
+        //CtClass c = classes.getCtClass("tyxo.mobilesafe.activity.ImageViewerActivity")
+        //CtClass c = classes.getCtClass("tyxo.mobilesafe.MainActivity")
         CtClass c = classes.getCtClass("dodola.hotfix.BugClass")
         if (c.isFrozen()) {
             c.defrost()

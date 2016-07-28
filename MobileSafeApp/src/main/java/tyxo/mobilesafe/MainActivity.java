@@ -43,9 +43,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import dodola.hotfix.LoadBugClass;
 import dodola.hotfixlib.HotFix;
 import tyxo.mobilesafe.activity.ImageViewerActivity;
-import dodola.hotfix.LoadBugClass;
 import tyxo.mobilesafe.activity.RecyclerActivity;
 import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
 import tyxo.mobilesafe.adpter.AdapterMainGridView;
@@ -527,13 +527,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
             return true;
         }
+        /**注意 : 如果先点击测试，再点击打补丁，再测试是不会变化的，因为类一旦加载以后，不会重新再去重新加载了。*/
         switch (id) {
             case R.id.action_settings_fix:
                 //准备补丁,从assert里拷贝到dex里
-                File dexPath = new File(getDir("dex", Context.MODE_PRIVATE), "path_dex2.jar");
-                Utils.prepareDex(this.getApplicationContext(), dexPath, "path_dex2.jar");
+                File dexPath = new File(getDir("dex", Context.MODE_PRIVATE), "path_dex3.jar");
+                Utils.prepareDex(this.getApplicationContext(), dexPath, "path_dex3.jar");
+                HotFix.patch(this, dexPath.getAbsolutePath(), "tyxo.mobilesafe.activity.ImageViewerActivity");
+//                HotFix.patch(this, dexPath.getAbsolutePath(), "dodola.hotfix.BugClass");
                 //DexInjector.inject(dexPath.getAbsolutePath(), defaultDexOptPath, "dodola.hotfix.BugClass");
-                HotFix.patch(this, dexPath.getAbsolutePath(), "dodola.hotfix.BugClass");
                 break;
             case R.id.action_settings_test:
                 LoadBugClass bugClass = new LoadBugClass();

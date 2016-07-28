@@ -18,7 +18,8 @@ import dalvik.system.PathClassLoader;
 /**
 * @author ly
 * @created at 2016/7/28 11:26
-* @des :
+* @des : 将heck_dex.jar动态插入到dexElements的方法。
+ *       这个module最终会被app关联，里面提供实现热补丁的核心方法
 */
 public final class HotFix {
     public static void patch(Context context, String patchDexFile, String patchClassName) {
@@ -101,6 +102,8 @@ public final class HotFix {
         obj.loadClass(str2);
     }
 
+    /** 将dex注入dexElements数组中 */
+    //根据context拿到PathClassLoader，然后通过getPathList(pathClassLoader)，拿到PathClassLoader中的pathList对象，在调用getDexElements通过pathList取到dexElements对象.
     private static void injectAboveEqualApiLevel14(Context context, String str, String str2)
         throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         PathClassLoader pathClassLoader = (PathClassLoader) context.getClassLoader();
@@ -112,15 +115,18 @@ public final class HotFix {
         pathClassLoader.loadClass(str2);
     }
 
+    /** 通过PathClassLoader拿到pathList */
     private static Object getPathList(Object obj) throws ClassNotFoundException, NoSuchFieldException,
         IllegalAccessException {
         return getField(obj, Class.forName("dalvik.system.BaseDexClassLoader"), "pathList");
     }
 
+    /** 通过pathList取得dexElements对象 */
     private static Object getDexElements(Object obj) throws NoSuchFieldException, IllegalAccessException {
         return getField(obj, obj.getClass(), "dexElements");
     }
 
+    /** 通过反射拿到指定对象 */
     private static Object getField(Object obj, Class cls, String str)
         throws NoSuchFieldException, IllegalAccessException {
         Field declaredField = cls.getDeclaredField(str);
@@ -128,6 +134,7 @@ public final class HotFix {
         return declaredField.get(obj);
     }
 
+    /** 通过反射设置属性 */
     private static void setField(Object obj, Class cls, String str, Object obj2)
         throws NoSuchFieldException, IllegalAccessException {
         Field declaredField = cls.getDeclaredField(str);
@@ -135,7 +142,8 @@ public final class HotFix {
         declaredField.set(obj, obj2);
     }
 
-    //两个数组合并，只需要注意一件事，将hack_dex.jar里面的dexElements放到新数组前面即可
+    /** 两个数组合并，只需要注意一件事，将hack_dex.jar里面的dexElements放到新数组前面即可 */
+    //系统中PathClassLoader对象的间接引用dexElements，以及我们的hack_dex.jar中的dexElements，接下来就是合并这两个数组了。
     private static Object combineArray(Object obj, Object obj2) {
         Class componentType = obj2.getClass().getComponentType();
         int length = Array.getLength(obj2);
@@ -151,6 +159,7 @@ public final class HotFix {
         return newInstance;
     }
 
+    /** 添加到数组 */
     private static Object appendArray(Object obj, Object obj2) {
         Class componentType = obj.getClass().getComponentType();
         int length = Array.getLength(obj);
