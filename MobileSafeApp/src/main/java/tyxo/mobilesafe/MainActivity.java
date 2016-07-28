@@ -530,8 +530,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case R.id.action_settings_fix:
                 //准备补丁,从assert里拷贝到dex里
-                File dexPath = new File(getDir("dex", Context.MODE_PRIVATE), "path_dex.jar");
-                Utils.prepareDex(this.getApplicationContext(), dexPath, "path_dex.jar");
+                File dexPath = new File(getDir("dex", Context.MODE_PRIVATE), "path_dex2.jar");
+                Utils.prepareDex(this.getApplicationContext(), dexPath, "path_dex2.jar");
                 //DexInjector.inject(dexPath.getAbsolutePath(), defaultDexOptPath, "dodola.hotfix.BugClass");
                 HotFix.patch(this, dexPath.getAbsolutePath(), "dodola.hotfix.BugClass");
                 break;

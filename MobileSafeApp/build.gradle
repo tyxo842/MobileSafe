@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-task('processWithJavassist') << {
+task('processWithJavassist') << {//plugin version 1.3.0,新版本不支持
     String classPath = file('build/intermediates/classes/debug')//项目编译class所在目录
     dodola.patch.PatchClass.process(classPath, project(':hackdex').buildDir
             .absolutePath + '/intermediates/classes/debug')//第二个参数是hackdex的class所在目录
@@ -27,6 +27,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    //plugin version 1.3.0,新版本不支持
     applicationVariants.all { variant ->
         variant.dex.dependsOn << processWithJavassist //在执行dx命令之前将代码打入到class中
     }

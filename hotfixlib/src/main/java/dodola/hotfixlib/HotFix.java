@@ -3,17 +3,23 @@
  */
 package dodola.hotfixlib;
 
+import android.annotation.TargetApi;
+import android.content.Context;
+
 import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
-import android.annotation.TargetApi;
-import android.content.Context;
 import dalvik.system.DexClassLoader;
 import dalvik.system.PathClassLoader;
 
 /* compiled from: ProGuard */
+/**
+* @author ly
+* @created at 2016/7/28 11:26
+* @des :
+*/
 public final class HotFix {
     public static void patch(Context context, String patchDexFile, String patchClassName) {
         if (patchDexFile != null && new File(patchDexFile).exists()) {
@@ -129,6 +135,7 @@ public final class HotFix {
         declaredField.set(obj, obj2);
     }
 
+    //两个数组合并，只需要注意一件事，将hack_dex.jar里面的dexElements放到新数组前面即可
     private static Object combineArray(Object obj, Object obj2) {
         Class componentType = obj2.getClass().getComponentType();
         int length = Array.getLength(obj2);

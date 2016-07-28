@@ -11,6 +11,7 @@ package dodola.hotfix;
 public class BugClass {
 
     public String bug() {
+//        return "我的修改 fixed 之后";
         return "bug class";
     }
 }

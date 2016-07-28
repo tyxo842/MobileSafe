@@ -14,7 +14,7 @@ import java.io.OutputStream;
 
 /**
 * @author tyxo
-* @des : 热修复 工具类
+* @des : 热修复 工具类 反射去修改dexElements.
 */
 public class Utils {
     private static final int BUF_SIZE = 2048;
