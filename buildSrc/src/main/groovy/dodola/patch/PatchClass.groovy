@@ -7,6 +7,11 @@ import javassist.CtMethod
 import javassist.CtNewConstructor
 import javassist.CtNewMethod
 
+/**
+ *  这个项目是使用Groovy开发的，需要配置Groovy SDK才可以编译成功。
+ *  配置项目user Library即可.
+ *  用来向指定类的构造函数注入代码：
+ * */
 public class PatchClass {
     /**
      * 植入代码
