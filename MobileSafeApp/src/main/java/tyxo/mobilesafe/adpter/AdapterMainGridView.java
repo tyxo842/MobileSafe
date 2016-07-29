@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 import tyxo.mobilesafe.R;
@@ -24,11 +25,13 @@ public class AdapterMainGridView extends BaseDynamicGridAdapter {
 
     private Context context;
     private List<MainGVItemBean> gvListInfos;
+    private List<HashMap<String, Object>> dataSourceList;
 
     public AdapterMainGridView(Context context, List<?> items, int columnCount) {
         super(context, items, columnCount);
         this.context = context;
         this.gvListInfos = (List<MainGVItemBean>) items;
+        //this.dataSourceList = (List<HashMap<String, Object>>) items;
     }
 
     /*public AdapterMainGridView(Context context, List<MainGVItemBean> gvListInfos) {
@@ -66,6 +69,8 @@ public class AdapterMainGridView extends BaseDynamicGridAdapter {
         MainGVItemBean bean = gvListInfos.get(position);
         main_header_gv_item_iv.setImageResource(bean.getIcon());
         main_header_gv_item_tv.setText(bean.getTitle());
+        //main_header_gv_item_iv.setImageResource((Integer) dataSourceList.get(position).get("item_image"));
+        //main_header_gv_item_tv.setText(dataSourceList.get(position).get("item_text").toString());
 
         if (2 == position) {
             main_header_gv_item_iv_num.setVisibility(View.VISIBLE);

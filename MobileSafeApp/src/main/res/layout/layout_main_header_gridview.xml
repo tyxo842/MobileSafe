@@ -9,6 +9,7 @@
         android:orientation="vertical">
 
         <!--<org.askerov.dynamicgrid.DynamicGridView-->
+        <!--<tyxo.mobilesafe.widget.dragGridView.DragGridView-->
         <tyxo.mobilesafe.widget.GridViewMy
             android:id="@+id/main_header_gridview"
             android:layout_width="match_parent"
@@ -17,6 +18,7 @@
             android:verticalSpacing="10dp"
             android:horizontalSpacing="10dp"
             android:layout_marginBottom="10dp"/>
+        <!--GridViewMy 有bug: 拖动之后,图标恢复之前,但数据已变-->
         <!--android:numColumns="3" 表示有多少列
             android:verticalSpacing="10dp" 上下的间距
             android:horizontalSpacing="10dp" 左右的间距-->

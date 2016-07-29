@@ -54,8 +54,19 @@
     focusable(针对物理键)与focusableInTouchMode(针对手指)要同时设置
     marqueeRepeatLimit设置文本一直滚动-->
 
-    <com.romainpiel.shimmer.ShimmerTextView
+    <tyxo.mobilesafe.widget.dragGridView.DragGridView
+        android:visibility="gone"
         android:layout_below="@id/main_up_tv_1"
+        android:id="@+id/main_DragGridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="4"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <com.romainpiel.shimmer.ShimmerTextView
+        android:layout_below="@id/main_DragGridView"
         android:id="@+id/tv_main_up_recycler_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

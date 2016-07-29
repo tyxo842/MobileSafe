@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -41,6 +42,8 @@ import com.romainpiel.shimmer.ShimmerTextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import dodola.hotfix.LoadBugClass;
@@ -61,6 +64,7 @@ import tyxo.mobilesafe.widget.DividerItemDecoration;
 import tyxo.mobilesafe.widget.DoubleClickExitDetector;
 import tyxo.mobilesafe.widget.GridViewMy;
 import tyxo.mobilesafe.widget.WrapRecyclerView;
+import tyxo.mobilesafe.widget.dragGridView.DragGridView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, AdapterMainRecycler.OnItemClickListener {
@@ -87,8 +91,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MyHandler handler;
     private EditText editText;
     private TextView main_up_tv_1;              //滚动炫酷的的TextView
-    private GridViewMy mGridView;               //主界面gridview
-    private AdapterMainGridView mGridAdapter;   //主界面gridview 的适配器
+    private GridViewMy mGridView;               //主界面 header gridview
+    private DragGridView mDragGridView;         //主界面 可拖动 gridview
+    private AdapterMainGridView mGridAdapter;   //主界面 header gridview 的适配器
+    private SimpleAdapter mDragGridAdapter;     //主界面 可拖动 gridview 的适配器
     private List<MainGVItemBean> gvListInfos;   //用于填充gridview的数据集合
     private DoubleClickExitDetector exitDetector;//双击返回退出
     private Shimmer shimmer;
@@ -96,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int[] iconIDs = {R.drawable.app_financial, R.drawable.app_donate, R.drawable.app_essential,
             R.drawable.app_citycard, R.drawable.app_inter_transfer, R.drawable.app_facepay};
     private String[] titles = {"手机防盗", "骚扰拦截", "软件管理", "进程管理", "流量统计", "缓存清理"};
+    private List<HashMap<String, Object>> dataSourceList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,11 +192,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             MainGVItemBean bean = new MainGVItemBean();
             bean.setIcon(iconIDs[i]);
             bean.setTitle(titles[i]);
+            bean.setId(i);
             gvListInfos.add(bean);
+        }
+        for (int i =0;i<4;i++) {
+            HashMap<String, Object> itemHashMap = new HashMap<>();
+            itemHashMap.put("item_image",R.drawable.app_financial);
+            itemHashMap.put("item_text", "拖拽 " + Integer.toString(i));
+            dataSourceList.add(itemHashMap);
         }
         mAdapter = new AdapterMainRecycler(getApplicationContext(), mDatas);
         mGridAdapter = new AdapterMainGridView(this, gvListInfos,3);
+        mDragGridAdapter = new SimpleAdapter(this, dataSourceList,
+                R.layout.layout_main_griditem, new String[] { "item_image", "item_text" },
+                new int[] { R.id.main_header_gv_item_iv, R.id.main_header_gv_item_tv });
         mGridView.setAdapter(mGridAdapter);
+        mDragGridView.setAdapter(mDragGridAdapter);
         AnimationUtil.setMainGridAnimtion(this,mGridView);  //gridView 设置动画
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));//list的分割线
@@ -311,6 +329,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //header.setLayoutParams(params);           //不管用,回头查查代码设置重绘
         //headerGridView.setLayoutParams(params);   //不管用,回头查查代码设置重绘
         mGridView = (GridViewMy) headerGridView.findViewById(R.id.main_header_gridview);
+        mDragGridView = (DragGridView)findViewById(R.id.main_DragGridView);
+        mDragGridView.setVisibility(View.VISIBLE);
         /** 添加两个头不成功,此方法不行,可以尝试在adapter内重写getItemViewType 参考AdapterRecyclerHeader 注释掉部分*/
         //mRecyclerView.addHeaderView(header);
         mRecyclerView.addHeaderView(headerGridView);
@@ -428,12 +448,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             }
         });
+        mDragGridView.setOnChangeListener(new DragGridView.OnChanageListener() {
+            @Override
+            public void onChange(int form, int to) {
+                HashMap<String, Object> temp = dataSourceList.get(form);
+                //直接交互item
+//              dataSourceList.set(from, dataSourceList.get(to));
+//              dataSourceList.set(to, temp);
+//              dataSourceList.set(to, temp);
+
+                //这里的处理需要注意下
+                if(form < to){
+                    for(int i=form; i<to; i++){
+                        Collections.swap(dataSourceList, i, i+1);
+                    }
+                }else if(form > to){
+                    for(int i=form; i>to; i--){
+                        Collections.swap(dataSourceList, i, i-1);
+                    }
+                }
+                dataSourceList.set(to, temp);
+                mDragGridAdapter.notifyDataSetChanged();
+            }
+        });
 
         //条目点击 监听
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ToastUtil.showToastS(MainActivity.this,parent.getAdapter().getItem(position).toString());
+                MainGVItemBean itemBean = (MainGVItemBean) parent.getAdapter().getItem(position);
+                //{"手机防盗", "骚扰拦截", "软件管理", "进程管理", "流量统计", "缓存清理"}
+                switch (itemBean.getId()) {
+                    case 0:
+                        HLog.v("tyxo",itemBean.getTitle());
+                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"手机防盗");
+                        break;
+                    case 1:
+                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"骚扰拦截");
+                        break;
+                    case 2:
+                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"软件管理");
+                        break;
+                    case 3:
+                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"进程管理");
+                        break;
+                    case 4:
+                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"流量统计");
+                        break;
+                    case 5:
+                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"缓存清理");
+                        break;
+                }
             }
         });
     }
@@ -496,7 +562,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if (mGridView.isEditMode()|| drawer.isDrawerOpen(GravityCompat.START)) {
+        if ( mGridView.isEditMode() ||drawer.isDrawerOpen(GravityCompat.START)) {
             mGridView.stopEditMode();
             drawer.closeDrawer(GravityCompat.START);
         } else {
