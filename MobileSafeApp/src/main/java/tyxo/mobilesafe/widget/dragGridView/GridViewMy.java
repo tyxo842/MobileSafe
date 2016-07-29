@@ -1,4 +1,4 @@
-package tyxo.mobilesafe.widget;
+package tyxo.mobilesafe.widget.dragGridView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -38,7 +38,7 @@ import java.util.Stack;
 /**
  * Created by LY on 2016/7/21 16: 50.
  * Mail      1577441454@qq.com
- * Describe : 重绘,否则添加头布局,会显示不全.
+ * Describe : 原来继承 DynamicGridView, 有问题,重写copy代码; 后加重绘方法,否则添加头布局,会显示不全.
  */
 public class GridViewMy extends GridView{
 

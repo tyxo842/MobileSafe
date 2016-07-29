@@ -10,7 +10,7 @@
 
         <!--<GridView-->
         <!--<org.askerov.dynamicgrid.DynamicGridView-->
-        <tyxo.mobilesafe.widget.GridViewMy
+        <tyxo.mobilesafe.widget.dragGridView.GridViewMy
             android:id="@+id/recycler_header_gridview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

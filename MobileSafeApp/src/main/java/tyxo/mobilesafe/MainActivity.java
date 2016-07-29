@@ -62,9 +62,9 @@ import tyxo.mobilesafe.utils.hotfix.Utils;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.DividerItemDecoration;
 import tyxo.mobilesafe.widget.DoubleClickExitDetector;
-import tyxo.mobilesafe.widget.GridViewMy;
 import tyxo.mobilesafe.widget.WrapRecyclerView;
 import tyxo.mobilesafe.widget.dragGridView.DragGridView;
+import tyxo.mobilesafe.widget.dragGridView.GridViewMy;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, AdapterMainRecycler.OnItemClickListener {
@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //headerGridView.setLayoutParams(params);   //不管用,回头查查代码设置重绘
         mGridView = (GridViewMy) headerGridView.findViewById(R.id.main_header_gridview);
         mDragGridView = (DragGridView)findViewById(R.id.main_DragGridView);
-        mDragGridView.setVisibility(View.VISIBLE);
+        //mDragGridView.setVisibility(View.VISIBLE);
         /** 添加两个头不成功,此方法不行,可以尝试在adapter内重写getItemViewType 参考AdapterRecyclerHeader 注释掉部分*/
         //mRecyclerView.addHeaderView(header);
         mRecyclerView.addHeaderView(headerGridView);
@@ -428,7 +428,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //初始化 gridview 监听
     private void initGridViewListener() {
         //拖拽 监听
-        mGridView.setOnDragListener(new GridViewMy.OnDragListener() {
+        /*mGridView.setOnDragListener(new GridViewMy.OnDragListener() {
             @Override
             public void onDragStarted(int position) {
                 HLog.v("tyxo","gridView 拖拽 start position: "+position);
@@ -438,13 +438,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onDragPositionsChanged(int oldPosition, int newPosition) {
                 HLog.v("tyxo",String.format("拖拽 位置 position 从 %d 到 %d",oldPosition,newPosition));
             }
-        });
+        });*/
 
         // 长按 监听
         mGridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                mGridView.startEditMode(position);
+                //mGridView.startEditMode(position); //开启可拖动模式
                 return true;
             }
         });

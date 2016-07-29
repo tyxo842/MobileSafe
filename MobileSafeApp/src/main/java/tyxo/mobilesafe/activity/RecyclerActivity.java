@@ -22,7 +22,7 @@ import tyxo.mobilesafe.base.BaseActivityToolbar;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.DividerItemDecoration;
-import tyxo.mobilesafe.widget.GridViewMy;
+import tyxo.mobilesafe.widget.dragGridView.GridViewMy;
 
 /**
  * Created by LY on 2016/7/26 10: 49.
