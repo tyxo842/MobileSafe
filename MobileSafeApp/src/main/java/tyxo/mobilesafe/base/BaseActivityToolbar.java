@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import java.lang.reflect.Method;
 
 import tyxo.mobilesafe.R;
 
@@ -82,6 +86,22 @@ public abstract class BaseActivityToolbar extends AppCompatActivity {
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (menu!=null) {
+			if (menu.getClass()== MenuBuilder.class) {
+				try{
+					Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible",Boolean.TYPE);
+					m.setAccessible(true);
+					m.invoke(menu, true);
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 	/** 结束Activity */

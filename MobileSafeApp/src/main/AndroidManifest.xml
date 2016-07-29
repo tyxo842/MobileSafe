@@ -54,5 +54,26 @@
             android:label=""
             android:theme="@style/MyToolbarTheme"/>
 
+        <activity
+            android:name=".activity.activityGrid.Aciticity1"
+            android:label=""
+            android:theme="@style/MyToolbarTheme" />
+        <activity
+            android:name=".activity.activityGrid.Aciticity2"
+            android:label=""
+            android:theme="@style/MyToolbarTheme" />
+        <activity
+            android:name=".activity.activityGrid.Aciticity3"
+            android:label=""
+            android:theme="@style/MyToolbarTheme" />
+        <activity
+            android:name=".activity.activityGrid.Aciticity4"
+            android:label=""
+            android:theme="@style/MyToolbarTheme" />
+        <activity
+            android:name=".activity.activityGrid.Aciticity5"
+            android:label=""
+            android:theme="@style/MyToolbarTheme" />
+
     </application>
 </manifest>

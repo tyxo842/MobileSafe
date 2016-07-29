@@ -51,6 +51,7 @@ import dodola.hotfixlib.HotFix;
 import tyxo.mobilesafe.activity.ImageViewerActivity;
 import tyxo.mobilesafe.activity.RecyclerActivity;
 import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
+import tyxo.mobilesafe.activity.activityGrid.Aciticity1;
 import tyxo.mobilesafe.adpter.AdapterMainGridView;
 import tyxo.mobilesafe.adpter.AdapterMainRecycler;
 import tyxo.mobilesafe.bean.MainGVItemBean;
@@ -482,21 +483,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 switch (itemBean.getId()) {
                     case 0:
                         HLog.v("tyxo",itemBean.getTitle());
+                        Intent intent0 = new Intent(MainActivity.this,Aciticity1.class);
+                        startActivity(intent0);
                         ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"手机防盗");
                         break;
                     case 1:
+                        Intent intent1 = new Intent(MainActivity.this,Aciticity1.class);
+                        startActivity(intent1);
                         ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"骚扰拦截");
                         break;
                     case 2:
+                        Intent intent2 = new Intent(MainActivity.this,Aciticity1.class);
+                        startActivity(intent2);
                         ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"软件管理");
                         break;
                     case 3:
+                        Intent intent3 = new Intent(MainActivity.this,Aciticity1.class);
+                        startActivity(intent3);
                         ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"进程管理");
                         break;
                     case 4:
+                        Intent intent4 = new Intent(MainActivity.this,Aciticity1.class);
+                        startActivity(intent4);
                         ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"流量统计");
                         break;
                     case 5:
+                        Intent intent5 = new Intent(MainActivity.this,Aciticity1.class);
+                        startActivity(intent5);
                         ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"缓存清理");
                         break;
                 }
@@ -542,8 +555,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     TextWatcher watcher = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -556,8 +568,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         @Override
-        public void afterTextChanged(Editable s) {
-        }
+        public void afterTextChanged(Editable s) { }
     };
 
     @Override

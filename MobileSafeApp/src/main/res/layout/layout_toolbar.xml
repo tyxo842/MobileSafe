@@ -10,8 +10,11 @@
         android:id="@+id/id_tool_bar"
         android:background="#3F51B5"
         app:navigationIcon="?attr/homeAsUpIndicator"
+        android:theme="@style/Theme.ToolBar.Menu"
         >
-    <!--app:navigationIcon="?attr/homeAsUpIndicator" 返回按钮的图标
+    <!--android:theme="@style/Theme.ToolBar.Menu"
+    app:popupTheme="@style/AppTheme.PopupOverlay"
+    app:navigationIcon="?attr/homeAsUpIndicator" 返回按钮的图标
     android:navigationIcon="@drawable/navigationIcon" 网上说的修改图标:不管用
      android:background="?attr/colorPrimary"-->
 
