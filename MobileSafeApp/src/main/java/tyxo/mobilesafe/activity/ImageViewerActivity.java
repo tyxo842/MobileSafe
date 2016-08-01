@@ -167,18 +167,21 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     }
 
     /** 与发布者在同一个线程 */
+    @Subscribe
     public void onEvent(Object event){ }
 
     /**
      * 执行在子线程，如果发布者是子线程则直接执行，如果发布者不是子线程，则创建一个再执行,
      * 此处可能会有线程阻塞问题。
      */
+    @Subscribe
     public void onEventBackgroundThread(Object event){ }
 
     /**
      * 执行在在一个新的子线程,
      * 适用于多个线程任务处理， 内部有线程池管理。
      */
+    @Subscribe
     public void onEventAsync(Object event){ }
 
 
