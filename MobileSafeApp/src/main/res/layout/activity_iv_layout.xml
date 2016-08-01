@@ -17,6 +17,16 @@
             >
 
             <TextView
+                android:id="@+id/tv_iv_layout_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:clickable="true"
+                android:padding="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="接收消息: "/>
+
+            <TextView
                 android:id="@+id/tv_iv_layout_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

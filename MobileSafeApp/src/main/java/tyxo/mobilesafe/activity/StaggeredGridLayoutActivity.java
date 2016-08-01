@@ -41,7 +41,7 @@ public class StaggeredGridLayoutActivity extends BaseActivityToolbar {
     @Override
     protected void initView(View contentView) {
         super.initView(contentView);
-        mToolbarTitle.setText("recyclerView");
+        mToolbarTitle.setText("StaggeredGrid");
         // menu 按键的点击效果在 theme里面 style
         // mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.xxxx));//设置返回键图标
         mToolbar.getChildAt(0).setBackgroundResource(R.drawable.seloctor_btn_commit_unradian);//设置返回键点击效果

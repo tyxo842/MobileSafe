@@ -17,8 +17,8 @@
           android:icon="@drawable/abc_ic_menu_selectall_mtrl_alpha"
           >
             <item android:icon="@drawable/abc_ic_menu_cut_mtrl_alpha"
-                  android:title="角功能1"
-                  android:id="@+id/action_cut"
+                  android:title="跳转到recyclerActivity"
+                  android:id="@+id/image_action_1"
                   app:showAsAction="never"/>
             <item android:icon="@drawable/abc_ic_menu_cut_mtrl_alpha"
                   android:title="角功能2"

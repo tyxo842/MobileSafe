@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +25,9 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,10 +58,12 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     private AutoClearEditText numInput; // badge数字输入框
     private Button button;              // 设置按钮
     private Button removeBadgeBtn;      // 清除按钮
+    private TextView tv_iv_layout_2;    // 接收 eventBus 发送的消息
 
     @Override
     protected void setMyContentView() {
         setContentView(R.layout.activity_iv_layout);
+        EventBus.getDefault().register(this);   //注册EventBus
 
         url = getIntent().getStringExtra("url");
 
@@ -75,6 +81,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     protected void initView(View contentView) {
         super.initView(contentView);
         image = (TouchImageView) contentView.findViewById(R.id.picture);
+        tv_iv_layout_2 = (TextView) contentView.findViewById(R.id.tv_iv_layout_2);
         tv_iv_layout_1 = (TextView) contentView.findViewById(R.id.tv_iv_layout_1);
         iv_iv_layout_1 = (ImageView) contentView.findViewById(R.id.iv_iv_layout_1);
         ViewUtil.setAimation(iv_iv_layout_1);    //设置属性动画
@@ -89,24 +96,6 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         tv_iv_layout_1.setOnClickListener(this);
         button.setOnClickListener(this);
         removeBadgeBtn.setOnClickListener(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        /*getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem itemCompat = menu.findItem(R.id.action_search) ;
-        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(itemCompat);
-        mSearchView.setIconified(false);
-        mSearchView.setIconifiedByDefault(false);*/
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public void onCreateCustomToolbar(Toolbar toolbar) {
-        super.onCreateCustomToolbar(toolbar);
-        TextView tv_toolbar_title = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
-        tv_toolbar_title.setText("点击切换 测试");
     }
 
     @Override
@@ -164,6 +153,66 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         builder.show();
 
         return true;
+    }
+
+    /**
+     * 显示为灰色,但是已经调用了,eventBus .
+     * 执行在主线程,
+     * 非常实用，可以在这里将子线程加载到的数据直接设置到界面中。
+     * */
+    @Subscribe
+    public void onEventMainThread(Object event){
+        String msg = (String) event;
+        tv_iv_layout_2.setText(msg);
+    }
+
+    /** 与发布者在同一个线程 */
+    public void onEvent(Object event){ }
+
+    /**
+     * 执行在子线程，如果发布者是子线程则直接执行，如果发布者不是子线程，则创建一个再执行,
+     * 此处可能会有线程阻塞问题。
+     */
+    public void onEventBackgroundThread(Object event){ }
+
+    /**
+     * 执行在在一个新的子线程,
+     * 适用于多个线程任务处理， 内部有线程池管理。
+     */
+    public void onEventAsync(Object event){ }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        /*getMenuInflater().inflate(R.menu.menu_imageactivity, menu);
+        MenuItem itemCompat = menu.findItem(R.id.action_search) ;
+        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(itemCompat);
+        mSearchView.setIconified(false);
+        mSearchView.setIconifiedByDefault(false);*/
+        getMenuInflater().inflate(R.menu.menu_imageactivity, menu);
+        return true;
+    }
+
+    @Override
+    public void onCreateCustomToolbar(Toolbar toolbar) {
+        super.onCreateCustomToolbar(toolbar);
+        TextView tv_toolbar_title = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title.setText("ImageActivity");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        /*if (id == R.id.action_settings) {
+            return true;
+        }*/
+        switch (id) {
+            case R.id.image_action_1:   //跳转到recyclerActivity
+                Intent intent = new Intent(this, RecyclerActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private SimpleTarget target = new SimpleTarget() {
@@ -233,15 +282,6 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         tv_toolbar_title.setText("点击切换 测试");
     }*/
 
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -258,5 +298,11 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this); //反注册EventBus
     }
 }

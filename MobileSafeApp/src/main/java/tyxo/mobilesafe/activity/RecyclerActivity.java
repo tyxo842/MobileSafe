@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ import tyxo.mobilesafe.widget.dragGridView.GridViewMy;
  * Mail      1577441454@qq.com
  * Describe :
  */
-public class RecyclerActivity extends BaseActivityToolbar {
+public class RecyclerActivity extends BaseActivityToolbar implements View.OnClickListener {
 
     private RecyclerView mRecyclerview;
     private GridLayoutManager mLayoutManager;
@@ -40,6 +42,7 @@ public class RecyclerActivity extends BaseActivityToolbar {
     private SwipeRefreshLayout swipeRL;
     private MyHandler handler;
     private int lastVisibleItem;
+    private TextView tv_recycler_up_recycler_1; //顶部按钮
 
     @Override
     protected void setMyContentView() {
@@ -49,6 +52,7 @@ public class RecyclerActivity extends BaseActivityToolbar {
     @Override
     protected void initView(View contentView) {
         super.initView(contentView);
+        tv_recycler_up_recycler_1 = (TextView) findViewById(R.id.tv_recycler_up_recycler_1);
         mRecyclerview = (RecyclerView) findViewById(R.id.activity_recycler_recyclerview);
         //mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mLayoutManager = new GridLayoutManager(this,2);
@@ -69,6 +73,7 @@ public class RecyclerActivity extends BaseActivityToolbar {
     @Override
     protected void initListener() {
         super.initListener();
+        tv_recycler_up_recycler_1.setOnClickListener(this);
         initOnRefreshListener();    //初始化下拉刷新监听
         initOnLoadMoreListener();   //初始化上拉加载监听
     }
@@ -87,6 +92,15 @@ public class RecyclerActivity extends BaseActivityToolbar {
         mGridView.setAdapter(mGridAdapter);
         initGridViewListener();     /** 初始化 GridView 监听*/
         mAdapter.setHeaderView(header);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_recycler_up_recycler_1:
+                EventBus.getDefault().post("从 RecyclerActivity 发送的消息");
+                break;
+        }
     }
 
     private void initGridViewListener() {

@@ -11,9 +11,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp"
+        android:clickable="true"
         android:background="@drawable/seloctor_btn_commit_unradian"
         android:textColor="@color/white"
-        android:text="点击跳转"/>
+        android:text="eventBus 发送 数据"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/recycler_swipeRL_recyclerActivity"
