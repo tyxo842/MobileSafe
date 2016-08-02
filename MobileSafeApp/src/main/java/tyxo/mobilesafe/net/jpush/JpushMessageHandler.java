@@ -185,7 +185,6 @@ public class JpushMessageHandler {
                             for (PlatMessage.MessageDetailEntity entry : platMessage.getMessageDetail()) {
                                 entry.setUserId(MyApp.getInstance().getCurrentUser().userId);
 
-                                //TODO 解决消息数据重复问题 2016-4-7 09:58:23
                                 PlatMessage.MessageDetailEntity mOnlyModel = HDbManager.create(context)
                                         .findFirst(Selector.from(PlatMessage.MessageDetailEntity.class)
                                                 .where("msgId", "=", entry.getMsgId()).orderBy("createDate", true));

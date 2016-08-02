@@ -7,13 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.EditText;
 
 import tyxo.mobilesafe.R;
 
 
 /**
  * Created by tyxo on 2016/4/18 15:48.
+ * 相机\相册 跳转dialog
  */
 public class DialogCamera extends Dialog {
 
@@ -28,16 +28,8 @@ public class DialogCamera extends Dialog {
     public static class Builder {
         private Context context;
         private int layouId;
-        private String msg;
         private OnClickListener item1CameraClickListener;
         private OnClickListener item2CameraClickListener;
-
-        public EditText getEditText(int layouId,int etID){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(layouId, null);
-            EditText editText = (EditText) layout.findViewById(etID);
-            return editText;
-        }
 
         public Builder(Context context) {
             this.context = context;

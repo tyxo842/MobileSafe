@@ -43,7 +43,6 @@ public class MyApp extends BaseApplication {
 		//Initialize ImageLoader with configuration.
 		ImageLoader.getInstance().init(configuration);
 
-		// TODO: 2016/7/6
 //		startService(new Intent(getAppContext(),MonitorUserService.class));
 	}
 
