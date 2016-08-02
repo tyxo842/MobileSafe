@@ -53,12 +53,12 @@
         <activity
             android:name=".activity.RecyclerActivity"
             android:label=""
-            android:theme="@style/MyToolbarTheme"/>
+            android:theme="@style/MyRecyclerActivityTheme"/>
 
         <activity
             android:name=".activity.activityGrid.Aciticity1"
             android:label=""
-            android:theme="@style/MyToolbarTheme" />
+            android:theme="@style/MyAciticity1Theme" />
         <activity
             android:name=".activity.activityGrid.Aciticity2"
             android:label=""

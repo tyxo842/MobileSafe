@@ -1,11 +1,20 @@
 package tyxo.mobilesafe.utils;
 
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
+import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.URLSpan;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+
+import tyxo.mobilesafe.widget.SystemBarTintManager;
 
 /**
  * Created by LY on 2016/7/21 11: 14.
@@ -105,6 +114,59 @@ public class ViewUtil {
         animator.setDuration(3000);                 //设置动画时间
         animator.setRepeatCount(animator.INFINITE); //设置无限旋转
         animator.start();
+    }
+
+    /***
+     * 设置状态栏颜色
+     * @param context
+     */
+    public static void setStateBar(Activity context, int colorId){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setTranslucentStatus(context,true);
+            SystemBarTintManager tintManager = new SystemBarTintManager(context);
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarTintResource(colorId);//通知栏所需颜色
+        }
+    }
+    @TargetApi(19)
+    public static void setTranslucentStatus(Activity context, boolean on) {
+        Window win = context.getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
+    }
+
+    /**
+     * 设置状态栏高度(对应上边方法设置颜色后,全屏显示问题)
+     * @param viewGroup
+     */
+    public static void setStateBarHeight(Activity activity,ViewGroup viewGroup){
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT) {
+            viewGroup.setPadding(0,getStateBarHeight(activity),0,0);
+        }
+    }
+    public static int getStateBarHeight(Activity activity){  //状态栏高度算法
+        int stateHeight = 0;
+        Rect localRect = new Rect();
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(localRect);
+        stateHeight = localRect.top;
+        if (0==stateHeight) {
+            Class<?> localClass;
+            try {
+                localClass = Class.forName("com.android.internal.R$dimen");
+                Object localObject = localClass.newInstance();
+                int i5 = Integer.parseInt(localClass.getField("status_bar_height").get(localObject).toString());
+                stateHeight = activity.getResources().getDimensionPixelSize(i5);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return stateHeight;
     }
 }
 

@@ -51,6 +51,7 @@ public abstract class BaseActivityToolbar extends AppCompatActivity {
 		setSupportActionBar(mToolbar);
 		// 自定义的一些操作
 		onCreateCustomToolbar(mToolbar);
+		//ViewUtil.setStateBar(this,R.color.bg_green);/** 设置状态栏颜色 */
 
 		initView(mToolbarHelper.getContentView());		// 初始化 view
 		initListener();	// 初始化 监听

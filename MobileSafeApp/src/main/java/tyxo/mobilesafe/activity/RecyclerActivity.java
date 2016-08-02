@@ -46,6 +46,7 @@ public class RecyclerActivity extends BaseActivityToolbar implements View.OnClic
 
     @Override
     protected void setMyContentView() {
+        //ViewUtil.setStateBar(this,R.color.bg_green);  /** 设置状态栏颜色 此activity通过样式设置的全屏 此处代码设置会遮挡,在布局加fitsys*/
         setContentView(R.layout.activity_recycler);
     }
 

@@ -108,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ViewUtil.setStateBar(this,R.color.bg_green);/** 设置状态栏颜色 */
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -116,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initView();         // 初始化View
         initListener();     // 初始化监听
         initData();         // 初始化数据
-
     }
 
     protected void initView() {

@@ -4,20 +4,24 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- 状态栏颜色 如果放在了toolbar里面,记得配合AppTheme.NoActionBar(mainActivity),否则会全屏(RecyclerActivity)-->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--<item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>-->
+        <!--<item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>-->
+        <!-- toolbar（actionbar）背景颜色 -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="colorControlActivated">@color/colorPrimary</item>-->
+        <!-- 底部导航栏的颜色 -->
+        <!--<item name="android:navigationBarColor" tools:targetApi="lollipop">@color/navigationBarColor</item>-->
+    </style>
+
+    <!--状态栏设置-->
+    <style name="AppThemeScan" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- 状态栏颜色 -->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
         <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
-        <!-- toolbar（actionbar）背景颜色 -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
-        <!-- 底部导航栏的颜色 -->
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/navigationBarColor</item>
-    </style>
-    <style name="AppThemeScan" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- 状态栏颜色 -->
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!-- toolbar（actionbar）背景颜色 -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
@@ -35,7 +39,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!--自定义 menu 弹窗-->
+    <!--自定义 menu 弹窗 使用:在toolBar里面设置 android:theme="@style/Theme.ToolBar.Menu"-->
     <!--<style name="Theme.ToolBar.Menu" parent="Theme.AppCompat.Light.NoActionBar">-->
     <style name="Theme.ToolBar.Menu" parent="AppTheme.PopupOverlay">
         <item name="android:colorBackground">#4f4f4f</item><!--设置弹窗背景颜色-->
@@ -66,16 +70,6 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <!--配套 toolbar 使用的 无actionbar 主题-->
-    <style name="MyToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--<item name="colorPrimary">@android:color/holo_red_light</item>-->
-    </style>
-
-    <!-- menu的item点击效果 返回键通过getchildAt(0) -->
-    <style name="MyToolbarThemeSelector" parent="MyToolbarTheme">
-        <item name="android:actionBarItemBackground">@drawable/seloctor_btn_commit_unradian</item>
-    </style>
-
     <!-- Dialog 对话框风格 -->
     <style name="CustomDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
@@ -104,9 +98,40 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
-    <!-- recyclerView divider 样式-->
+    <!--配套 toolbar 使用的 无actionbar 主题 状态栏颜色 全屏-->
+    <style name="MyToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
+
+    <!-- menu的item点击效果 返回键通过getchildAt(0) 继承自全屏-->
+    <style name="MyToolbarThemeSelector" parent="MyToolbarTheme">
+        <item name="android:actionBarItemBackground">@drawable/seloctor_btn_commit_unradian</item>
+    </style>
+
+    <!-- recyclerView divider 样式 代码设置的状态栏颜色,如果parent是AppTheme.NoActionBar,只需ViewUtil.setStateBar() -->
     <style name="MyRecyclerMainTheme" parent="AppTheme.NoActionBar">
         <!--<item name="android:listDivider">@drawable/divider_bg</item>-->
+    </style>
+
+    <!--RecyclerActivity-->
+    <!--配套 toolbar 使用的 , 状态栏颜色样式设置处未起作用,并全屏-->
+    <style name="MyRecyclerActivityTheme" parent="AppThemeScan">
+        <item name="colorPrimaryDark">@color/bg_green</item>    <!--状态栏 颜色-->
+        <item name="colorPrimary">@color/bg_green</item>        <!--toolbar 颜色-->
+    </style>
+
+    <!--ImageViewerActivity-->
+    <!--配套 toolbar 使用  状态栏颜色设置要代码设置,不全屏要ViewUtil.setStateBarHeight(this,(ViewGroup)findViewById(R.id.rl));-->
+    <style name="MyAciticity1Theme" parent="MyToolbarTheme">
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">@color/bg_green</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+        <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
+        <!-- toolbar（actionbar）背景颜色 -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <!-- 底部导航栏的颜色 -->
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/navigationBarColor</item>
     </style>
 
 </resources>
