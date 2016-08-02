@@ -30,6 +30,7 @@ public class DialogUtil {
             @Override
             public void onClick(DialogInterface mdialog, int which) {
                 ToastUtil.showToastS(context,"跳转到相机");
+                ViewUtil.getImageFromCameraBig(context);
                 mdialog.dismiss();
             }
         });

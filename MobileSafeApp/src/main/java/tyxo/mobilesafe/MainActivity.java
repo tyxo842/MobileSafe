@@ -3,6 +3,8 @@ package tyxo.mobilesafe;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -269,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            DialogUtil.showDialogCamera(this);
+            DialogUtil.showDialogCamera(MainActivity.this);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -630,11 +632,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+    有时候我们会发现用相机拍摄获取照片的时候，得到的 uri 是 null 的，这是因为android把拍摄的图片封装到bundle中传递回来，
+    但是根据不同的机器获得相片的方式不太一样，可能有的相机能够通过 inten.getData()获取到uri ,
+    然后再根据uri获取数据的路径，在封装成bitmap，但有时候有的相机获取到的是null的，这时候我们该怎么办呢？
+    其实这时候我们就应该从bundle中获取数据，通过 (Bitmap) bundle.get("data") 获取到相机图片的bitmap数据。
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CODE_REQUEST_IMAGE) {
-        } else if (requestCode == Constants.CODE_REQUEST_CAMERA) {
+            Uri uri = data.getData();
+        } else if (requestCode == Constants.CODE_REQUEST_CAMERABIG) {
+            Uri uri = data.getData();//.NullPointerException: Attempt to invoke virtual method 'android.net.Uri android.content.Intent.getData()'
+            Bundle bun = data.getExtras();
+            //String spath = ConstValues.SAVE_IMAGE_DIR_PATH;
+            String spath = ConstValues.SAVE_IMAGE_DIR_PATH +System.currentTimeMillis()+ ".jpg";
+            if (uri == null) {
+                if (bun != null) {
+                    Bitmap photo = (Bitmap) bun.get("data");//get bitmap
+                    // spath :生成图片取个名字和路径包含类型
+                    //ViewUtil.saveImage(photo, spath);//保存的是压缩之后的
+                    iv_left_header1.setImageBitmap(photo);
+                } else {
+                    ToastUtil.showToastS(this, "failed");
+                    return;
+                }
+            } else {
+                // to do find the path of pic by uri
+                Bitmap photo = BitmapFactory.decodeFile(uri.getPath());
+                if (photo == null) {
+                    photo = (Bitmap) bun.get("data");
+                } else {
+                    ToastUtil.showToastS(this,"失败");
+                    return;
+                }
+                //ViewUtil.saveImage(photo, spath);
+            }
         }
     }
 }

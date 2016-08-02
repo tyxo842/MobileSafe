@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Environment;
@@ -16,6 +17,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+
+import tyxo.mobilesafe.ConstValues;
 import tyxo.mobilesafe.Constants;
 import tyxo.mobilesafe.widget.SystemBarTintManager;
 
@@ -192,7 +198,7 @@ public class ViewUtil {
         intent.setType("image/*");//相片类型
         context.startActivityForResult(intent, Constants.CODE_REQUEST_IMAGE);
     }
-    /** 从照相机获取照片 */
+    /** 从照相机获取照片 图片被压缩*/
     public static void getImageFromCamera(Activity activity){
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
@@ -201,6 +207,39 @@ public class ViewUtil {
         } else {
             ToastUtil.showToastS(activity,"请确认已经插入SD卡");
         }
+    }
+
+    /** 从照相机获取照片 */
+    public static void getImageFromCameraBig(Activity activity){
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+            String out_file_path = ConstValues.SAVE_IMAGE_DIR_PATH;
+            File dir = new File(out_file_path);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            String capturePath = ConstValues.SAVE_IMAGE_DIR_PATH +System.currentTimeMillis()+ ".jpg";
+            //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(capturePath)));
+            //intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);//加上这两句,onActivityResult里的data会报空
+            activity.startActivityForResult(intent, Constants.CODE_REQUEST_CAMERABIG);
+        } else {
+            ToastUtil.showToastS(activity,"请确认已经插入SD卡");
+        }
+    }
+
+    /** 保存从相机返回的图片 :通过bitmap转化成相应的图片文件了,不过得到最终的图片是被压缩了的。 */
+    public static boolean saveImage(Bitmap photo, String spath){
+        try{
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(spath, false));
+            photo.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bos.flush();
+            bos.close();
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true ;
     }
 
 }
