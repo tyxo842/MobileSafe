@@ -59,6 +59,7 @@ import tyxo.mobilesafe.utils.AnimationUtil;
 import tyxo.mobilesafe.utils.StringUtils;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.ViewUtil;
+import tyxo.mobilesafe.utils.dialog.DialogUtil;
 import tyxo.mobilesafe.utils.hotfix.Utils;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.DividerItemDecoration;
@@ -268,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            DialogUtil.showDialogCamera(this);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

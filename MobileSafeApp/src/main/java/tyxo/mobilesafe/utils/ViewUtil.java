@@ -168,6 +168,21 @@ public class ViewUtil {
         }
         return stateHeight;
     }
+
+    /*
+    //一步一步退回到首页之后，就不能再往后退出了。想要到首页之后，在往后退出的时候，进入主程序，关闭这个内置的webview
+    public static void goBack(Context context,WebView mWebView,String url){//判断是否是刚才的url
+        if (mWebView.canGoBack()) {
+            if (mWebView.getUrl().contains(url)) {
+                super.onBackPressed();
+            } else {
+                mWebView.goBack();
+            }
+        } else {
+            super.onBackPressed();
+        }
+    }*/
+
 }
 
 

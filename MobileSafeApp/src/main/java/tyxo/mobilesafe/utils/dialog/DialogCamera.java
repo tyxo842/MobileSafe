@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 
 import tyxo.mobilesafe.R;
@@ -29,9 +28,9 @@ public class DialogCamera extends Dialog {
     public static class Builder {
         private Context context;
         private int layouId;
-        private OnClickListener negativeButtonClickListener;
-        private OnClickListener positiveClickListener;
         private String msg;
+        private OnClickListener item1CameraClickListener;
+        private OnClickListener item2CameraClickListener;
 
         public EditText getEditText(int layouId,int etID){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -49,53 +48,38 @@ public class DialogCamera extends Dialog {
             this.layouId = layouId;
         }
 
-        public Builder setPositiveButton(OnClickListener listener) {
-            this.positiveClickListener = listener;
-            return this;
+        public void setItem1ClickListener(OnClickListener click){
+            this.item1CameraClickListener = click;
         }
 
-        public Builder setNegativeButton(OnClickListener listener) {
-            this.negativeButtonClickListener = listener;
-            return this;
-        }
-
-        public Builder setMessage(String msg){
-            this.msg = msg;
-            return this;
+        public void setItem2ClickListener(OnClickListener click){
+            this.item2CameraClickListener = click;
         }
 
         public DialogCamera create() {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            // instantiate the dialog with the custom Theme
             final DialogCamera dialog = new DialogCamera(context, R.style.my_dialog_bg);
-//            final CustomDialog dialog = new CustomDialog(context);
+            //final CustomDialog dialog = new CustomDialog(context);
             View layout = inflater.inflate(layouId, null);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.addContentView(layout, new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            if (null != item1CameraClickListener) {
+                layout.findViewById(R.id.camera_tv_camera).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        item1CameraClickListener.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
+                    }
+                });
+            }
 
-            /*final EditText bill_num = (EditText) layout.findViewById(R.id.bill_num);
-            final EditText remarks = (EditText) layout.findViewById(R.id.remarks);
-
-            //确定按钮点击事件
-            if (positiveButtonClickListener != null) {
-                ((Button) layout.findViewById(R.id.positiveButton))
-                        .setOnClickListener(new View.OnClickListener() {
-                            public void onClick(View v) {
-                                positiveButtonClickListener.textContent(bill_num.getText().toString(), remarks.getText().toString());
-                                positiveButtonClickListener.onClick(dialog,DialogInterface.BUTTON_POSITIVE);
-                            }
-                        });
-            }*/
-
-            //取消按钮的点击事件
-            if (negativeButtonClickListener != null) {
-                ((Button) layout.findViewById(R.id.negativeButton))
-                        .setOnClickListener(new View.OnClickListener() {
-                            public void onClick(View v) {
-                                negativeButtonClickListener.onClick(dialog,DialogInterface.BUTTON_NEGATIVE);
-                            }
-                        });
+            if (null != item2CameraClickListener) {
+                layout.findViewById(R.id.camera_tv_photo).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        item2CameraClickListener.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
+                    }
+                });
             }
 
             dialog.setContentView(layout);

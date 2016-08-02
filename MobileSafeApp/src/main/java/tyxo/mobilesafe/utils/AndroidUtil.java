@@ -13,6 +13,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -26,10 +28,17 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
 
@@ -642,4 +651,184 @@ public class AndroidUtil {
         }
         return false;
     }
+
+    /** 根据Wifi信息获取本地Mac */
+    public static String getLocalMacAddressFromWifiInfo(Context context){
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifi.getConnectionInfo();
+        return info.getMacAddress();
+    }
+
+    /** 根据busybox获取本地Mac ; busybox: linux内的瑞士军刀 */
+    public static String getLocalMacAddressFromBusybox(){
+        String result = "";
+        String Mac = "";
+        result = callCmd("busybox ifconfig","HWaddr");
+
+        //如果返回的result == null，则说明网络不可取
+        if(result==null){
+            return "网络出错，请检查网络";
+        }
+
+        //对该行数据进行解析
+        //例如：eth0      Link encap:Ethernet  HWaddr 00:16:E8:3E:DF:67
+        if(result.length()>0 && result.contains("HWaddr")==true){
+            Mac = result.substring(result.indexOf("HWaddr")+6, result.length()-1);
+            HLog.v("test","Mac:"+Mac+" Mac.length: "+Mac.length());
+
+             /*if(Mac.length()>1){
+                 Mac = Mac.replaceAll(" ", "");
+                 result = "";
+                 String[] tmp = Mac.split(":");
+                 for(int i = 0;i<tmp.length;++i){
+                     result +=tmp[i];
+                 }
+             }*/
+            result = Mac;
+            HLog.v("test",result+" result.length: "+result.length());
+        }
+        return result;
+    }
+    private static String callCmd(String cmd,String filter) {
+        String result = "";
+        String line = "";
+        try {
+            Process proc = Runtime.getRuntime().exec(cmd);
+            InputStreamReader is = new InputStreamReader(proc.getInputStream());
+            BufferedReader br = new BufferedReader (is);
+
+            //执行命令cmd，只取结果中含有filter的这一行
+            while ((line = br.readLine ()) != null && line.contains(filter)== false) {
+                //result += line;
+                HLog.v("test","line: "+line);
+            }
+
+            result = line;
+            HLog.v("test","result: "+result);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /** 根据IP获取本地Mac 2.3以上才有该 NetworkInterface 接口 */
+    public static String getLocalMacAddressFromIp(Context context) {
+        String mac_s= "";
+        try {
+            byte[] mac;
+            NetworkInterface ne=NetworkInterface.getByInetAddress(InetAddress.getByName(getLocalIpAddress()));
+            mac = ne.getHardwareAddress();
+            mac_s = byte2hex(mac);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return mac_s;
+    }
+    public static  String byte2hex(byte[] b) {
+        StringBuffer hs = new StringBuffer(b.length);
+        String stmp = "";
+        int len = b.length;
+        for (int n = 0; n < len; n++) {
+            stmp = Integer.toHexString(b[n] & 0xFF);
+            if (stmp.length() == 1)
+                hs = hs.append("0").append(stmp);
+            else {
+                hs = hs.append(stmp);
+            }
+        }
+        return String.valueOf(hs);
+    }
+
+    /** 获取本地IP */
+    public static String getLocalIpAddress() {
+        try {
+            String ipv4;
+            List nList = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            HLog.e("tyxo WifiPreference IpAddress", ex.toString());
+        }
+        return null;
+    }
+
+    /*public static String getLocalIpAddressModify() {
+        try {
+            String ipv4;
+            List nList = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface ni : nList) {
+                List iaList = Collections.list(ni.getInetAddresses());
+                for (InetAddress address : iaList) {
+                    if (!address.isLoopbackAddress()&& InetAddressUtils.isIPv4Address(ipv4=address.getHostAddress())) {
+                        return ipv4;
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            HLog.e("tyxo WifiPreference IpAddress", ex.toString());
+        }
+        return null;
+    }*/
+
+    /** 获取本地IP,解决android4.0获取IP错误的问题: */
+    public static String getLocalIpAddressHim() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface
+                    .getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf
+                        .getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            HLog.e("tyxo WifiPreference IpAddress", ex.toString());
+        }
+        return null;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

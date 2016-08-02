@@ -8,6 +8,8 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 
+import tyxo.mobilesafe.R;
+import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.db.DataCleanManager;
 
 
@@ -19,6 +21,26 @@ public class DialogUtil {
 
     private static MyDialog mDialog;
     private static AlertDialog mAlertDialog;
+
+    public static void showDialogCamera(final Context context){
+        DialogCamera.Builder builder = new DialogCamera.Builder(context, R.layout.dialog_camera);
+        builder.setItem1ClickListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface mdialog, int which) {
+                ToastUtil.showToastS(context,"跳转到相机");
+                mdialog.dismiss();
+            }
+        });
+        builder.setItem2ClickListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface mdialog, int which) {
+                ToastUtil.showToastS(context,"跳转到相册");
+                mdialog.dismiss();
+            }
+        });
+        DialogCamera dialog = builder.create();
+        dialog.show();
+    }
 
     /** 缓存清理 */
     public static void showDialogClear(final Context context, String title, int icon,
