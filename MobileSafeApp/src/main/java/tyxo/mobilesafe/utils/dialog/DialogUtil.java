@@ -1,5 +1,6 @@
 package tyxo.mobilesafe.utils.dialog;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.text.TextUtils;
 
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.utils.ToastUtil;
+import tyxo.mobilesafe.utils.ViewUtil;
 import tyxo.mobilesafe.utils.db.DataCleanManager;
 
 
@@ -22,7 +24,7 @@ public class DialogUtil {
     private static MyDialog mDialog;
     private static AlertDialog mAlertDialog;
 
-    public static void showDialogCamera(final Context context){
+    public static void showDialogCamera(final Activity context){
         DialogCamera.Builder builder = new DialogCamera.Builder(context, R.layout.dialog_camera);
         builder.setItem1ClickListener(new DialogInterface.OnClickListener() {
             @Override
@@ -35,6 +37,7 @@ public class DialogUtil {
             @Override
             public void onClick(DialogInterface mdialog, int which) {
                 ToastUtil.showToastS(context,"跳转到相册");
+                ViewUtil.getImageFromAlbum(context);
                 mdialog.dismiss();
             }
         });

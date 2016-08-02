@@ -629,6 +629,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.CODE_REQUEST_IMAGE) {
+        } else if (requestCode == Constants.CODE_REQUEST_CAMERA) {
+        }
+    }
 }
 
 

@@ -18,7 +18,6 @@ import tyxo.mobilesafe.base.PlatUser;
 import tyxo.mobilesafe.net.volley.VolleyCallBack;
 import tyxo.mobilesafe.net.volley.VolleyErrorResult;
 import tyxo.mobilesafe.net.volley.VolleyManager;
-import tyxo.mobilesafe.utils.StringUtils;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
 
@@ -42,8 +41,8 @@ public class NetLoginInfo {
 
 
     public static void login(Context context, String userName, String pwd, OnLoginResultHandler handler) {
-        String url = StringUtils.combineURl(ConstValues.BASE_URL_USER, ConstValues.USER_LOGIN_URL);
-        login(context, url, userName, pwd, handler);
+        //String url = StringUtils.combineURl(ConstValues.BASE_URL_USER, ConstValues.USER_LOGIN_URL);
+        //login(context, url, userName, pwd, handler);
     }
 
     /** 用户登录 */

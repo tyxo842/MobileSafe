@@ -4,8 +4,10 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Environment;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.URLSpan;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import tyxo.mobilesafe.Constants;
 import tyxo.mobilesafe.widget.SystemBarTintManager;
 
 /**
@@ -182,6 +185,23 @@ public class ViewUtil {
             super.onBackPressed();
         }
     }*/
+
+    /** 从本地相册获取照片 */
+    public static void getImageFromAlbum(Activity context){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");//相片类型
+        context.startActivityForResult(intent, Constants.CODE_REQUEST_IMAGE);
+    }
+    /** 从照相机获取照片 */
+    public static void getImageFromCamera(Activity activity){
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+            activity.startActivityForResult(intent, Constants.CODE_REQUEST_CAMERA);
+        } else {
+            ToastUtil.showToastS(activity,"请确认已经插入SD卡");
+        }
+    }
 
 }
 
