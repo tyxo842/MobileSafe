@@ -51,4 +51,5 @@ dependencies {
     compile project(':hotfixlib')
     compile files('libs/jpush-android-2.1.0.jar')
     compile 'org.greenrobot:eventbus:3.0.0'
+    //compile 'org.hybridsquad.android.photocropper:library:2.1.0' //没有demo,直接换成了lib
 }

@@ -18,7 +18,7 @@
         android:layout_height="80dp"
         android:clickable="true"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@mipmap/icon_lancher_safe"
+        android:src="@drawable/head"
          />
     <!--android:src="@mipmap/icon_lancher_safe"-->
 

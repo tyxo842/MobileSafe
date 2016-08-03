@@ -10,8 +10,9 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 
 import tyxo.mobilesafe.R;
-import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.ViewUtil;
+import tyxo.mobilesafe.utils.bitmap.CropHelper;
+import tyxo.mobilesafe.utils.bitmap.CropParams;
 import tyxo.mobilesafe.utils.db.DataCleanManager;
 
 
@@ -24,21 +25,65 @@ public class DialogUtil {
     private static MyDialog mDialog;
     private static AlertDialog mAlertDialog;
 
-    public static void showDialogCamera(final Activity context){
+    public static void showDialogCamera(final Activity context, CropParams mCropParams){
         DialogCamera.Builder builder = new DialogCamera.Builder(context, R.layout.dialog_camera);
+        final CropParams mCropParamstTemp = mCropParams;
         builder.setItem1ClickListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface mdialog, int which) {
-                ToastUtil.showToastS(context,"跳转到相机");
-                ViewUtil.getImageFromCameraBig(context);
+                //ViewUtil.getImageFromCameraBig(context);
+                //打开相机 有截图
+                mCropParamstTemp.enable = true;
+                mCropParamstTemp.compress = false;
+                Intent intent = CropHelper.buildCameraIntent(mCropParamstTemp);
+                context.startActivityForResult(intent, CropHelper.REQUEST_CAMERA);
+                /*//打开相机 无截图
+                mCropParams.enable = false;
+                mCropParams.compress = true;
+                Intent intent = CropHelper.buildCameraIntent(mCropParams);
+                context.startActivityForResult(intent, CropHelper.REQUEST_CAMERA);*/
                 mdialog.dismiss();
             }
         });
         builder.setItem2ClickListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface mdialog, int which) {
-                ToastUtil.showToastS(context,"跳转到相册");
+                //ViewUtil.getImageFromAlbum(context);
+                //打开相册 有截图
+                mCropParamstTemp.enable = true;
+                mCropParamstTemp.compress = false;
+                Intent intent = CropHelper.buildGalleryIntent(mCropParamstTemp);
+                //Intent intent = CropHelper.buildCropFromGalleryIntent(mCropParams);
+                context.startActivityForResult(intent, CropHelper.REQUEST_CROP);
+                /*//打开图册 无截图
+                mCropParams.enable = false;
+                mCropParams.compress = true;
+                Intent intent = CropHelper.buildGalleryIntent(mCropParams);
+                context.startActivityForResult(intent, CropHelper.REQUEST_PICK);*/
+                mdialog.dismiss();
+            }
+        });
+        builder.setItem3ClickListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface mdialog, int which) {
+                //打开相机 无截图
+                mCropParamstTemp.enable = false;
+                mCropParamstTemp.compress = true;
+                Intent intent = CropHelper.buildCameraIntent(mCropParamstTemp);
+                context.startActivityForResult(intent, CropHelper.REQUEST_CAMERA);
+                mdialog.dismiss();
+            }
+        });
+        builder.setItem4ClickListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface mdialog, int which) {
                 ViewUtil.getImageFromAlbum(context);
+                /*//打开图册 无截图
+                mCropParamstTemp.enable = false;
+                mCropParamstTemp.compress = true;
+                Intent intent = CropHelper.buildGalleryIntent(mCropParamstTemp);
+                context.startActivityForResult(intent, CropHelper.REQUEST_PICK);
+                */
                 mdialog.dismiss();
             }
         });

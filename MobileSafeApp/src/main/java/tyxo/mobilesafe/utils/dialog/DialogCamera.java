@@ -30,6 +30,8 @@ public class DialogCamera extends Dialog {
         private int layouId;
         private OnClickListener item1CameraClickListener;
         private OnClickListener item2CameraClickListener;
+        private OnClickListener item3CameraClickListener;
+        private OnClickListener item4CameraClickListener;
 
         public Builder(Context context) {
             this.context = context;
@@ -43,9 +45,14 @@ public class DialogCamera extends Dialog {
         public void setItem1ClickListener(OnClickListener click){
             this.item1CameraClickListener = click;
         }
-
         public void setItem2ClickListener(OnClickListener click){
             this.item2CameraClickListener = click;
+        }
+        public void setItem3ClickListener(OnClickListener click){
+            this.item3CameraClickListener = click;
+        }
+        public void setItem4ClickListener(OnClickListener click){
+            this.item4CameraClickListener = click;
         }
 
         public DialogCamera create() {
@@ -56,6 +63,7 @@ public class DialogCamera extends Dialog {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.addContentView(layout, new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
             if (null != item1CameraClickListener) {
                 layout.findViewById(R.id.camera_tv_camera).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -64,12 +72,27 @@ public class DialogCamera extends Dialog {
                     }
                 });
             }
-
             if (null != item2CameraClickListener) {
                 layout.findViewById(R.id.camera_tv_photo).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         item2CameraClickListener.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
+                    }
+                });
+            }
+            if (null != item3CameraClickListener) {
+                layout.findViewById(R.id.camera_tv_camera_nusub).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        item3CameraClickListener.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
+                    }
+                });
+            }
+            if (null != item4CameraClickListener) {
+                layout.findViewById(R.id.camera_tv_photo_nusub).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        item4CameraClickListener.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
                     }
                 });
             }

@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.URLSpan;
@@ -219,9 +221,9 @@ public class ViewUtil {
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            String capturePath = ConstValues.SAVE_IMAGE_DIR_PATH +System.currentTimeMillis()+ ".jpg";
-            //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(capturePath)));
-            //intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);//加上这两句,onActivityResult里的data会报空
+            ConstValues.SAVE_IMAGE_DIR_PATH_TEMP = ConstValues.SAVE_IMAGE_DIR_PATH +System.currentTimeMillis()+ ".jpg";
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getImageFile(ConstValues.SAVE_IMAGE_DIR_PATH_TEMP)));
+            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);//加上这两句,onActivityResult里的data会报空
             activity.startActivityForResult(intent, Constants.CODE_REQUEST_CAMERABIG);
         } else {
             ToastUtil.showToastS(activity,"请确认已经插入SD卡");
@@ -240,6 +242,12 @@ public class ViewUtil {
             return false;
         }
         return true ;
+    }
+
+    /** 获取图片的uri */
+    public static File getImageFile(String capturePath){
+        File file = new File(capturePath);
+        return file;
     }
 
 }

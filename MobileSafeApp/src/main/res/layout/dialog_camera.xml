@@ -13,28 +13,23 @@
 
         <TextView
             android:id="@+id/camera_tv_camera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selector_order_item_unradian"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:padding="15dp"
-            android:text="拍摄照片"
-            android:textColor="@color/order_text_font_h_color_333333"
-            android:textSize="16sp" />
+            style="@style/dialog_camera_item"
+            android:text="拍摄照片(可裁剪)" />
 
         <TextView
             android:id="@+id/camera_tv_photo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selector_order_item_unradian"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:padding="15dp"
-            android:text="选择已有照片"
-            android:textColor="@color/order_text_font_h_color_333333"
-            android:textSize="16sp" />
+            style="@style/dialog_camera_item"
+            android:text="选择已有照片(可裁剪)"/>
 
+        <TextView
+            android:id="@+id/camera_tv_camera_nusub"
+            style="@style/dialog_camera_item"
+            android:text="拍摄照片"/>
+
+        <TextView
+            android:id="@+id/camera_tv_photo_nusub"
+            style="@style/dialog_camera_item"
+            android:text="选择已有照片"/>
     </LinearLayout>
 
 </RelativeLayout>

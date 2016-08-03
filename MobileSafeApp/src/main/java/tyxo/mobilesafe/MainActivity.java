@@ -3,11 +3,11 @@ package tyxo.mobilesafe;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -43,6 +43,7 @@ import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,6 +62,10 @@ import tyxo.mobilesafe.utils.AnimationUtil;
 import tyxo.mobilesafe.utils.StringUtils;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.ViewUtil;
+import tyxo.mobilesafe.utils.bitmap.BitmapUtil;
+import tyxo.mobilesafe.utils.bitmap.CropHandler;
+import tyxo.mobilesafe.utils.bitmap.CropHelper;
+import tyxo.mobilesafe.utils.bitmap.CropParams;
 import tyxo.mobilesafe.utils.dialog.DialogUtil;
 import tyxo.mobilesafe.utils.hotfix.Utils;
 import tyxo.mobilesafe.utils.log.HLog;
@@ -71,7 +76,8 @@ import tyxo.mobilesafe.widget.dragGridView.DragGridView;
 import tyxo.mobilesafe.widget.dragGridView.GridViewMy;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, AdapterMainRecycler.OnItemClickListener {
+        View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, AdapterMainRecycler.OnItemClickListener,
+        CropHandler{
 
     private FloatingActionButton fab;
     private DrawerLayout drawer;
@@ -102,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<MainGVItemBean> gvListInfos;   //用于填充gridview的数据集合
     private DoubleClickExitDetector exitDetector;//双击返回退出
     private Shimmer shimmer;
+    private CropParams mCropParams;
+    //private CropHandler cropHandler;          //获取图片 裁剪 回调
 
     private int[] iconIDs = {R.drawable.app_financial, R.drawable.app_donate, R.drawable.app_essential,
             R.drawable.app_citycard, R.drawable.app_inter_transfer, R.drawable.app_facepay};
@@ -118,6 +126,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mCropParams = new CropParams(this);
+
+        //initCropHandler();  // 初始化图片裁剪(但是只有截图,而且截图之后的内容设置不上)
         initView();         // 初始化View
         initListener();     // 初始化监听
         initData();         // 初始化数据
@@ -271,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            DialogUtil.showDialogCamera(MainActivity.this);
+            DialogUtil.showDialogCamera(MainActivity.this,mCropParams);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -411,7 +422,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             iv_left_header1.setImageBitmap((Bitmap) resource);//第一/二处会报: java.lang.ClassCastException: com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable cannot be cast to android.graphics.Bitmap
         }
     };
-
 
     private class MyHandler extends Handler {
         @Override
@@ -632,6 +642,62 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    //初始化 相机裁剪 Handler
+    @Override
+    public void onPhotoCropped(Uri uri) {
+        if (!mCropParams.compress)
+        iv_left_header1.setImageBitmap(BitmapUtil.decodeUriAsBitmap(MainActivity.this, uri));
+    }
+
+    @Override
+    public void onCompressed(Uri uri) {
+        iv_left_header1.setImageBitmap(BitmapUtil.decodeUriAsBitmap(MainActivity.this, uri));
+    }
+
+    @Override
+    public void onCancel() { }
+
+    @Override
+    public void onFailed(String message) {
+        ToastUtil.showToastS(MainActivity.this,"失败 "+message);
+    }
+
+    @Override
+    public void handleIntent(Intent intent, int requestCode) {
+        startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    public CropParams getCropParams() {
+        return mCropParams;
+    }
+    /*private void initCropHandler(){
+        cropHandler = new CropHandler() {
+            @Override
+            public void onPhotoCropped(Uri uri) {
+                iv_left_header1.setImageBitmap(BitmapUtil.decodeUriAsBitmap(MainActivity.this, uri));
+            }
+
+            @Override
+            public void onCropCancel() {}
+
+            @Override
+            public void onCropFailed(String message) {
+                ToastUtil.showToastS(MainActivity.this,"失败 "+message);
+            }
+
+            @Override
+            public CropParams getCropParams() {
+                return mCropParams;
+            }
+
+            @Override
+            public Activity getContext() {
+                return MainActivity.this;
+            }
+        };
+    }*/
+
     /*
     有时候我们会发现用相机拍摄获取照片的时候，得到的 uri 是 null 的，这是因为android把拍摄的图片封装到bundle中传递回来，
     但是根据不同的机器获得相片的方式不太一样，可能有的相机能够通过 inten.getData()获取到uri ,
@@ -641,35 +707,69 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.CODE_REQUEST_IMAGE) {
+        /*if (requestCode == Constants.CODE_REQUEST_IMAGE) {
             Uri uri = data.getData();
         } else if (requestCode == Constants.CODE_REQUEST_CAMERABIG) {
-            Uri uri = data.getData();//.NullPointerException: Attempt to invoke virtual method 'android.net.Uri android.content.Intent.getData()'
-            Bundle bun = data.getExtras();
-            //String spath = ConstValues.SAVE_IMAGE_DIR_PATH;
-            String spath = ConstValues.SAVE_IMAGE_DIR_PATH +System.currentTimeMillis()+ ".jpg";
-            if (uri == null) {
-                if (bun != null) {
-                    Bitmap photo = (Bitmap) bun.get("data");//get bitmap
-                    // spath :生成图片取个名字和路径包含类型
-                    //ViewUtil.saveImage(photo, spath);//保存的是压缩之后的
+            if (data != null) { //可能尚未指定intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                //返回有缩略图
+                if (data.hasExtra("data")) {
+                    Bitmap photo = data.getParcelableExtra("data");
                     iv_left_header1.setImageBitmap(photo);
-                } else {
-                    ToastUtil.showToastS(this, "failed");
-                    return;
                 }
             } else {
-                // to do find the path of pic by uri
-                Bitmap photo = BitmapFactory.decodeFile(uri.getPath());
-                if (photo == null) {
-                    photo = (Bitmap) bun.get("data");
-                } else {
-                    ToastUtil.showToastS(this,"失败");
-                    return;
+                //由于指定了目标uri，存储在目标uri，intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                // 通过目标uri，找到图片
+                // 对图片的缩放处理
+                // 操作
+                Uri uri = Uri.fromFile(ViewUtil.getImageFile(ConstValues.SAVE_IMAGE_DIR_PATH_TEMP));
+                try {
+                    Bitmap photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    iv_left_header1.setImageBitmap(photo);
+                    //destoryBitmap(photo);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                //ViewUtil.saveImage(photo, spath);
             }
+        }*/
+        //CropHelper.handleResult(cropHandler, requestCode, resultCode, data);
+        CropHelper.handleResult(this, requestCode, resultCode, data);
+
+        //从相册返回数据
+        if (data != null) {
+            Bitmap photo = null;
+            //得到图片的全路径
+            Uri uri = data.getData();
+            try {
+                if (photo!=null) photo.recycle();
+                photo = null;
+                photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                Bitmap photo2 = BitmapUtil.compressImagePercent(photo);
+                iv_left_header1.setImageBitmap(photo);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+
         }
+    }
+
+    //销毁bitmap
+    private void destoryBitmap(Bitmap photo) {
+        if(photo != null && !photo.isRecycled()){
+            photo.recycle();
+            photo = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        CropHelper.clearCacheDir();
+        /*if (cropHandler.getCropParams() != null){
+            CropHelper.clearCachedCropFile(mCropParams.uri);//
+            CropHelper.clearCachedCropFile(cropHandler.getCropParams().uri);//
+        }*/
+        super.onDestroy();
     }
 }
 
