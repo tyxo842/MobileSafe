@@ -9,6 +9,7 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 
+import tyxo.mobilesafe.ConstantsMy;
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.utils.ViewUtil;
 import tyxo.mobilesafe.utils.bitmap.CropHelper;
@@ -32,6 +33,7 @@ public class DialogUtil {
             @Override
             public void onClick(DialogInterface mdialog, int which) {
                 //ViewUtil.getImageFromCameraBig(context);
+                ConstantsMy.isUtil = true;
                 //打开相机 有截图
                 mCropParamstTemp.enable = true;
                 mCropParamstTemp.compress = false;
@@ -49,6 +51,7 @@ public class DialogUtil {
             @Override
             public void onClick(DialogInterface mdialog, int which) {
                 //ViewUtil.getImageFromAlbum(context);
+                ConstantsMy.isUtil = true;
                 //打开相册 有截图
                 mCropParamstTemp.enable = true;
                 mCropParamstTemp.compress = false;
@@ -66,6 +69,7 @@ public class DialogUtil {
         builder.setItem3ClickListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface mdialog, int which) {
+                ConstantsMy.isUtil = true;
                 //打开相机 无截图
                 mCropParamstTemp.enable = false;
                 mCropParamstTemp.compress = true;
@@ -77,6 +81,7 @@ public class DialogUtil {
         builder.setItem4ClickListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface mdialog, int which) {
+                ConstantsMy.isUtil = false;
                 ViewUtil.getImageFromAlbum(context);
                 /*//打开图册 无截图
                 mCropParamstTemp.enable = false;

@@ -4,11 +4,12 @@ package tyxo.mobilesafe;
 * @created at 2016/8/2 16:20
 * @des : 常数类
 */
-public class Constants {
+public class ConstantsMy {
 
 	public static final int CODE_REQUEST_IMAGE = 3;			//从本地相册获取照片
 	public static final int CODE_REQUEST_CAMERA = 4;		//从照相机获取照片
 	public static final int CODE_REQUEST_CAMERABIG = 5;		//从照相机获取照片
+	public static boolean isUtil = true;					//从照相机获取照片,是否通过三方工具类
 
 	public static final String KEY_WHAT = "key_what";		// 数据类别
 	public static final String KEY_ARG1 = "key_arg1";		// 有无数据  1有，0无

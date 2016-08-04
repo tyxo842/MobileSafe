@@ -707,9 +707,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /*if (requestCode == Constants.CODE_REQUEST_IMAGE) {
+        /*if (requestCode == ConstantsMy.CODE_REQUEST_IMAGE) {
             Uri uri = data.getData();
-        } else if (requestCode == Constants.CODE_REQUEST_CAMERABIG) {
+        } else if (requestCode == ConstantsMy.CODE_REQUEST_CAMERABIG) {
             if (data != null) { //可能尚未指定intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 //返回有缩略图
                 if (data.hasExtra("data")) {
@@ -732,25 +732,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }*/
         //CropHelper.handleResult(cropHandler, requestCode, resultCode, data);
-        CropHelper.handleResult(this, requestCode, resultCode, data);
-
-        //从相册返回数据
-        if (data != null) {
-            Bitmap photo = null;
-            //得到图片的全路径
-            Uri uri = data.getData();
-            try {
-                if (photo!=null) photo.recycle();
-                photo = null;
-                photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-
-                Bitmap photo2 = BitmapUtil.compressImagePercent(photo);
-                iv_left_header1.setImageBitmap(photo);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (ConstantsMy.isUtil) {
+            CropHelper.handleResult(this, requestCode, resultCode, data);
         }else {
+            //从相册返回数据
+            if (data != null) {
+                Bitmap photo = null;
+                //得到图片的全路径
+                Uri uri = data.getData();
+                try {
+                    if (photo!=null) photo.recycle();
+                    photo = null;
+                    photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
+                    Bitmap photo2 = BitmapUtil.compressImagePercent(photo); //原图压缩,否则直接设置会影响主线程
+                    iv_left_header1.setImageBitmap(photo2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else {}
         }
     }
 

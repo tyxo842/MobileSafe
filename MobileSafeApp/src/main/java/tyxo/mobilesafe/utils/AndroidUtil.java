@@ -42,7 +42,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
 
-import tyxo.mobilesafe.Constants;
+import tyxo.mobilesafe.ConstantsMy;
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.base.MyApp;
 import tyxo.mobilesafe.utils.log.HLog;
@@ -401,20 +401,20 @@ public class AndroidUtil {
     public static Bundle getBundle(int what, int arg1, int arg2,
                                    Serializable obj) {
         Bundle bundle = new Bundle();
-        bundle.putInt(Constants.KEY_WHAT, what);
-        bundle.putInt(Constants.KEY_ARG1, arg1);
-        bundle.putInt(Constants.KEY_ARG2, arg1);
-        bundle.putSerializable(Constants.KEY_OBJ, obj);
+        bundle.putInt(ConstantsMy.KEY_WHAT, what);
+        bundle.putInt(ConstantsMy.KEY_ARG1, arg1);
+        bundle.putInt(ConstantsMy.KEY_ARG2, arg1);
+        bundle.putSerializable(ConstantsMy.KEY_OBJ, obj);
         return bundle;
     }
 
     /** 数据库 */
     public Bundle getBundle(int what, int arg1, int arg2, byte[] obj) {
         Bundle bundle = new Bundle();
-        bundle.putInt(Constants.KEY_WHAT, what);
-        bundle.putInt(Constants.KEY_ARG1, arg1);
-        bundle.putInt(Constants.KEY_ARG2, arg1);
-        bundle.putByteArray(Constants.KEY_OBJ, obj);
+        bundle.putInt(ConstantsMy.KEY_WHAT, what);
+        bundle.putInt(ConstantsMy.KEY_ARG1, arg1);
+        bundle.putInt(ConstantsMy.KEY_ARG2, arg1);
+        bundle.putByteArray(ConstantsMy.KEY_OBJ, obj);
         return bundle;
     }
 
@@ -431,10 +431,10 @@ public class AndroidUtil {
     public static void sendMsgBroadcst(Context ctx, String action, int what,
                                        int arg1, int arg2, Serializable obj) {
         Intent intent = new Intent(action);
-        intent.putExtra(Constants.KEY_WHAT, what);
-        intent.putExtra(Constants.KEY_ARG1, arg1);
-        intent.putExtra(Constants.KEY_ARG2, arg2);
-        intent.putExtra(Constants.KEY_OBJ, obj);
+        intent.putExtra(ConstantsMy.KEY_WHAT, what);
+        intent.putExtra(ConstantsMy.KEY_ARG1, arg1);
+        intent.putExtra(ConstantsMy.KEY_ARG2, arg2);
+        intent.putExtra(ConstantsMy.KEY_OBJ, obj);
         ctx.sendBroadcast(intent);
     }
 
@@ -451,10 +451,10 @@ public class AndroidUtil {
     public static void sendMsgBroadcst(Context ctx, String action, int what,
                                        int arg1, int arg2, byte[] obj) {
         Intent intent = new Intent(action);
-        intent.putExtra(Constants.KEY_WHAT, what);
-        intent.putExtra(Constants.KEY_ARG1, arg1);
-        intent.putExtra(Constants.KEY_ARG2, arg2);
-        intent.putExtra(Constants.KEY_OBJ, obj);
+        intent.putExtra(ConstantsMy.KEY_WHAT, what);
+        intent.putExtra(ConstantsMy.KEY_ARG1, arg1);
+        intent.putExtra(ConstantsMy.KEY_ARG2, arg2);
+        intent.putExtra(ConstantsMy.KEY_OBJ, obj);
 
         ctx.sendBroadcast(intent);
     }

@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import tyxo.mobilesafe.ConstValues;
-import tyxo.mobilesafe.Constants;
+import tyxo.mobilesafe.ConstantsMy;
 import tyxo.mobilesafe.widget.SystemBarTintManager;
 
 /**
@@ -198,14 +198,14 @@ public class ViewUtil {
     public static void getImageFromAlbum(Activity context){
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");//相片类型
-        context.startActivityForResult(intent, Constants.CODE_REQUEST_IMAGE);
+        context.startActivityForResult(intent, ConstantsMy.CODE_REQUEST_IMAGE);
     }
     /** 从照相机获取照片 图片被压缩*/
     public static void getImageFromCamera(Activity activity){
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
             Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            activity.startActivityForResult(intent, Constants.CODE_REQUEST_CAMERA);
+            activity.startActivityForResult(intent, ConstantsMy.CODE_REQUEST_CAMERA);
         } else {
             ToastUtil.showToastS(activity,"请确认已经插入SD卡");
         }
@@ -224,7 +224,7 @@ public class ViewUtil {
             ConstValues.SAVE_IMAGE_DIR_PATH_TEMP = ConstValues.SAVE_IMAGE_DIR_PATH +System.currentTimeMillis()+ ".jpg";
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getImageFile(ConstValues.SAVE_IMAGE_DIR_PATH_TEMP)));
             intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);//加上这两句,onActivityResult里的data会报空
-            activity.startActivityForResult(intent, Constants.CODE_REQUEST_CAMERABIG);
+            activity.startActivityForResult(intent, ConstantsMy.CODE_REQUEST_CAMERABIG);
         } else {
             ToastUtil.showToastS(activity,"请确认已经插入SD卡");
         }
