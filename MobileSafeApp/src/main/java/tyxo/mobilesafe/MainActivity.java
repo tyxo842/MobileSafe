@@ -11,6 +11,8 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -419,7 +421,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public void onResourceReady(Object resource, GlideAnimation glideAnimation) {
             //图片加载完成
-            iv_left_header1.setImageBitmap((Bitmap) resource);//第一/二处会报: java.lang.ClassCastException: com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable cannot be cast to android.graphics.Bitmap
+            //iv_left_header1.setImageBitmap((Bitmap) resource);//第一/二处会报: java.lang.ClassCastException: com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable cannot be cast to android.graphics.Bitmap
+            //加载圆形图片
+            RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory.create(
+                    MainActivity.this.getResources(), (Bitmap) resource);
+            drawable.setCircular(true);
+            iv_left_header1.setImageDrawable(drawable);
         }
     };
 
