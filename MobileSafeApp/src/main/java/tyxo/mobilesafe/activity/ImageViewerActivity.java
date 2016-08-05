@@ -15,16 +15,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
-import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -34,11 +32,11 @@ import java.io.FileOutputStream;
 import java.util.Date;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
+import tyxo.mobilesafe.ConstValues;
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.base.BaseActivityToolbar;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.ViewUtil;
-import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.AutoClearEditText;
 import tyxo.mobilesafe.widget.TouchImageView;
 
@@ -65,8 +63,6 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         setContentView(R.layout.activity_iv_layout);
         EventBus.getDefault().register(this);   //注册EventBus
 
-        url = getIntent().getStringExtra("url");
-
         //find the home launcher Package
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
@@ -80,7 +76,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     @Override
     protected void initView(View contentView) {
         super.initView(contentView);
-        image = (TouchImageView) contentView.findViewById(R.id.picture);
+        image = (TouchImageView) contentView.findViewById(R.id.image_tiv_picture);
         tv_iv_layout_2 = (TextView) contentView.findViewById(R.id.tv_iv_layout_2);
         tv_iv_layout_1 = (TextView) contentView.findViewById(R.id.tv_iv_layout_1);
         iv_iv_layout_1 = (ImageView) contentView.findViewById(R.id.iv_iv_layout_1);
@@ -88,6 +84,10 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         numInput = (AutoClearEditText) contentView.findViewById(R.id.imageActivity_et_numinput);
         button = (Button) contentView.findViewById(R.id.imageActivity_btn_setBadge);
         removeBadgeBtn = (Button) contentView.findViewById(R.id.imageActivity_btn_setBadge);
+
+        //url = getIntent().getStringExtra("url");
+        url = ConstValues.MYPHOTO_URL;
+        initGlide();
     }
 
     @Override
@@ -102,17 +102,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_iv_layout_1:
-                HLog.i("tyxo","url 1 : "+url);
-                Glide.with( this )
-//                        .load( url )
-                        .load( R.drawable.glide_photo )
-                        .asBitmap()
-                        .placeholder(R.drawable.loading) //占位符 也就是加载中的图片，可放个gif
-                        .error(R.drawable.icon_zanwu) //失败图片
-                        .into( target ) ;
-                //Glide.with(this).load(R.drawable.ic_launceher).centerCrop().transform(new GlideRoundTransform(this)).into(iv_demo);
-                HLog.i("tyxo","url 2 : "+url);
-                //ToastUtil.showToastS(this,"修改自己项目里面的东东,拦截操作改为toast,先打补丁再测");
+                initGlideTarget();
                 break;
             case R.id.imageActivity_btn_setBadge:
             {
@@ -120,7 +110,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
                 try {
                     badgeCount = Integer.parseInt(numInput.getText().toString());
                 } catch (NumberFormatException e) {
-                    Toast.makeText(getApplicationContext(), "Error input", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showToastS(getApplicationContext(),"Error input");
                 }
 
                 boolean success = ShortcutBadger.applyCount(this, badgeCount);
@@ -155,35 +145,13 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         return true;
     }
 
-    /**
-     * 显示为灰色,但是已经调用了,eventBus .
-     * 执行在主线程,
-     * 非常实用，可以在这里将子线程加载到的数据直接设置到界面中。
-     * */
-    @Subscribe
-    public void onEventMainThread(Object event){
-        String msg = (String) event;
-        tv_iv_layout_2.setText(msg);
+    //设置 toolbar 标题等,可删
+    @Override
+    public void onCreateCustomToolbar(Toolbar toolbar) {
+        super.onCreateCustomToolbar(toolbar);
+        TextView tv_toolbar_title = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title.setText("ImageActivity");
     }
-
-    /** 与发布者在同一个线程 */
-    @Subscribe
-    public void onEvent(Object event){ }
-
-    /**
-     * 执行在子线程，如果发布者是子线程则直接执行，如果发布者不是子线程，则创建一个再执行,
-     * 此处可能会有线程阻塞问题。
-     */
-    @Subscribe
-    public void onEventBackgroundThread(Object event){ }
-
-    /**
-     * 执行在在一个新的子线程,
-     * 适用于多个线程任务处理， 内部有线程池管理。
-     */
-    @Subscribe
-    public void onEventAsync(Object event){ }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -197,18 +165,9 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     }
 
     @Override
-    public void onCreateCustomToolbar(Toolbar toolbar) {
-        super.onCreateCustomToolbar(toolbar);
-        TextView tv_toolbar_title = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
-        tv_toolbar_title.setText("ImageActivity");
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
+        /*if (id == R.id.action_settings) { return true; }*/
         switch (id) {
             case R.id.image_action_1:   //跳转到recyclerActivity
                 Intent intent = new Intent(this, RecyclerActivity.class);
@@ -221,26 +180,9 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     private SimpleTarget target = new SimpleTarget() {
         @Override
         public void onResourceReady(Object resource, GlideAnimation glideAnimation) {
-            //图片加载完成
-            iv_iv_layout_1.setImageBitmap((Bitmap) resource);//第一/二处会报: java.lang.ClassCastException: com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable cannot be cast to android.graphics.Bitmap
+            iv_iv_layout_1.setImageBitmap((Bitmap) resource);//图片加载完成,设置到iv
         }
     };
-
-    @Override
-    public boolean onException(Exception e, String model,
-                               com.bumptech.glide.request.target.Target<GlideDrawable> target,
-                               boolean isFirstResource) {
-        return false;
-    }
-
-    @Override
-    public boolean onResourceReady(GlideDrawable resource, String model,
-                                   com.bumptech.glide.request.target.Target<GlideDrawable> target,
-                                   boolean isFromMemoryCache, boolean isFirstResource) {
-        image.setImageDrawable(resource);
-        image.setOnLongClickListener(this);
-        return false;
-    }
 
     private class SaveImageTask extends AsyncTask<Bitmap, Void, String> {
         @Override
@@ -275,6 +217,78 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         }
     }
 
+    /** Glide的toBytes() 和transcode() 两个方法可以用来获取、解码和变换背景图片，并且transcode() 方法还能够改变图片的样式.
+     *  默认选择HttpUrlConnection作为网络协议栈，还可以选择OkHttp和Volley作为网络协议.
+     *  如在图片加载过程中，使用Drawables对象作为占位符、图片请求的优化、图片的宽度和高度可重新设定、缩略图和原图的缓存等功能.
+     * */
+    private void initGlide() {
+        /*
+        //加载(小屏图) 初次 不显示??(因为listener)
+        Glide.with(this)
+                .load(url)
+                //.diskCacheStrategy(DiskCacheStrategy.ALL)//设置磁盘缓存的内容,是个枚举类.all代码缓存源资源和转换后的资源.
+                //.centerCrop()         //显示位置,或大小
+                //.crossFade(0)         //显示时的动画效果(不包括从内存获取图片资源) 淡入淡出动画效果
+                //.thumbnail("缩略比例") //加载一个缩略图,同时加载多张图片的时候用.
+                //.decoder("对原数据的解码")
+                //.cacheDecoder("对磁盘缓存数据进行解码")
+                //.sourceEncoder("对请求的数据进行编码,然后存到缓存里,之后从缓存中拿出的时候要通过解码")
+                //.priority("设置当次请求的优先级")
+                //.transform("设置对资源进行转换的接口")
+                //.dontTransform()      //移除当前的转换
+                //.animate("设置资源加载完成后的动画,不包括从内存缓存中的获取")
+                //.dontAnimate()          //移除设置的动画
+                //.placeholder("设置加载的时候的图片")
+                //.error("设置加载失败后显示的图片")
+                //.skipMemoryCache("设置是否跳过内存缓存")
+                //.override("设置加载资源图片的像素宽 高")
+                //.into(Y)              //用于 预加载
+                //.into(ImageView)      //加载到view上
+                //.into(int ,int )      //用于 预加载
+                //.preload()            //预加载 实际调用的是两个into
+                //.preload(int ,int)    //预加载 实际调用的是两个into
+                .listener(this)         //设置加载监听
+                .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);*/
+
+        Glide.with(this)
+                .load(url)
+                .asBitmap()
+                //.centerCrop()                               //大屏图
+                .fitCenter()                                //适配图(这个也注释后,是小图)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)   //缓存源资源和转换后的资源
+                .placeholder(R.drawable.loading)            //占位符 也就是加载中的图片，可放个gif
+                .error(R.drawable.icon_zanwu)               //失败图片
+                .into(new BitmapImageViewTarget(image));
+    }
+    private void initGlideTarget(){
+        //Glide.with(this).load(R.drawable.ic_launceher).centerCrop().transform(new GlideRoundTransform(this)).into(iv_demo);
+        Glide.with( this )
+//                        .load( url )
+                .load( R.drawable.glide_photo )
+                .asBitmap()
+                .placeholder(R.drawable.loading) //占位符 也就是加载中的图片，可放个gif
+                .error(R.drawable.icon_zanwu) //失败图片
+                .into( target ) ;
+    }
+
+    //glide 加载图片 失败监听
+    @Override
+    public boolean onException(Exception e, String model,
+                               com.bumptech.glide.request.target.Target<GlideDrawable> target,
+                               boolean isFirstResource) {
+        return false;
+    }
+
+    //glide 加载图片监听
+    @Override
+    public boolean onResourceReady(GlideDrawable resource, String model,
+                                   com.bumptech.glide.request.target.Target<GlideDrawable> target,
+                                   boolean isFromMemoryCache, boolean isFirstResource) {
+        image.setImageDrawable(resource);
+        image.setOnLongClickListener(this);
+        return false;
+    }
+
     /*@Override
     public void onCreateCustomToolbar(Toolbar toolbar) {
         super.onCreateCustomToolbar(toolbar);
@@ -285,22 +299,44 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         tv_toolbar_title.setText("点击切换 测试");
     }*/
 
+    /**
+     * 显示为灰色,但是已经调用了,eventBus .
+     * 执行在主线程,
+     * 非常实用，可以在这里将子线程加载到的数据直接设置到界面中。
+     * */
+    @Subscribe
+    public void onEventMainThread(Object event){
+        String msg = (String) event;
+        tv_iv_layout_2.setText(msg);
+    }
+
+    /** 与发布者在同一个线程 */
+    @Subscribe
+    public void onEvent(Object event){ }
+
+    /**
+     * 执行在子线程，如果发布者是子线程则直接执行，如果发布者不是子线程，则创建一个再执行,
+     * 此处可能会有线程阻塞问题。
+     */
+    @Subscribe
+    public void onEventBackgroundThread(Object event){ }
+
+    /**
+     * 执行在在一个新的子线程,
+     * 适用于多个线程任务处理， 内部有线程池管理。
+     */
+    @Subscribe
+    public void onEventAsync(Object event){ }
+
     @Override
     protected void onResume() {
         super.onResume();
-        Glide.with(this)
-                .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .crossFade(0)
-                .listener(this)
-                .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
-        MobclickAgent.onResume(this);
-
+        //MobclickAgent.onResume(this);
     }
 
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this);
+        //MobclickAgent.onPause(this);  //友盟统计
     }
 
     @Override

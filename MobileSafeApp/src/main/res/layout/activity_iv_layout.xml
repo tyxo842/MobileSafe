@@ -37,7 +37,7 @@
                 android:text="点击切换"/>
 
             <tyxo.mobilesafe.widget.TouchImageView
-                android:id="@+id/picture"
+                android:id="@+id/image_tiv_picture"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content" />
