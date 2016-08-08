@@ -470,7 +470,7 @@ public class FloatWindow {
                     if(System.currentTimeMillis() - lastTouchTimeMillis >= 200) {
                         if(!isOpen) {
                             getLayoutParams().alpha = 0.4f;
-                            getWindowManager().updateViewLayout(getContentView(), getLayoutParams());// TODO: 2016/8/8 关闭时点出过bug!!
+                            getWindowManager().updateViewLayout(getContentView(), getLayoutParams());// TODO: 2016/8/8 关闭时点出过bug!!(通过修改判断时间 200)
                             //setContentView(mContentView);//RelativeLayout(2b9864dd)not attached to window manager
                         }
                     } else {

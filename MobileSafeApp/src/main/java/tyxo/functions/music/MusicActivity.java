@@ -1,14 +1,11 @@
 package tyxo.functions.music;
 
-import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -119,14 +116,5 @@ public class MusicActivity extends BaseMusicActivity implements CompoundButton.O
     protected void onStop() {
         unbindService();
         super.onStop();
-    }
-
-    @TargetApi(19)
-    private void setTranslucentStatus() {
-        Window window = getWindow();
-        WindowManager.LayoutParams params = window.getAttributes();
-        params.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        params.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL;    // 设置Activity高亮显示
-        window.setAttributes(params);
     }
 }
