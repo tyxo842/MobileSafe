@@ -34,7 +34,7 @@ public class FloatWindow {
     private final float DISTANCE = 15.0f;  //  点击偏移量   在上、下、左、右这个范围之内都会触发点击事件
     private float offsetX, offsetY;
 
-    private long lastTouchTimeMillis;
+    private long lastTouchTimeMillis;       //切换时间间隔(原判断是3500,容易造成bug,遂改短为200)
     private long downTimeMillis;  //  按下事件  暂未使用，可以拓展长按事件
 
     private boolean mIsShowing;
@@ -467,17 +467,17 @@ public class FloatWindow {
             super.handleMessage(msg);
             switch (msg.what) {
                 case WHAT_HIDE:
-                    if(System.currentTimeMillis() - lastTouchTimeMillis >= 3500) {
+                    if(System.currentTimeMillis() - lastTouchTimeMillis >= 200) {
                         if(!isOpen) {
                             getLayoutParams().alpha = 0.4f;
-                            getWindowManager().updateViewLayout(getContentView(), getLayoutParams());// TODO: 2016/8/8 关闭时点出过bug!!!,改了一个service传入的context,待测
-                            //setContentView(mContentView);
+                            getWindowManager().updateViewLayout(getContentView(), getLayoutParams());// TODO: 2016/8/8 关闭时点出过bug!!
+                            //setContentView(mContentView);//RelativeLayout(2b9864dd)not attached to window manager
                         }
                     } else {
                         if(isOpen) {
-                            lastTouchTimeMillis = System.currentTimeMillis() + 3500;
+                            lastTouchTimeMillis = System.currentTimeMillis() + 200;
                         }
-                        handler.sendEmptyMessageDelayed(WHAT_HIDE, 200);
+                        handler.sendEmptyMessageDelayed(WHAT_HIDE, 10);
                     }
                     break;
             }

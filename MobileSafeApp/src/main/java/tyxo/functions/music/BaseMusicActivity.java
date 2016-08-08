@@ -19,15 +19,13 @@ public class BaseMusicActivity extends BaseActivityToolbar {
         super.onCreate(savedInstanceState);
         //判断SDK版本是否大于等于19，大于就让他显示，小于就要隐藏，不然低版本会多出来一个
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus();
+            //setTranslucentStatus();   //添加上,状态栏就没了
             //还有设置View的高度，因为每个型号的手机状态栏高度都不相同
         }
     }
 
     @Override
-    protected void setMyContentView() {
-
-    }
+    protected void setMyContentView() { }
 
     @TargetApi(19)
     private void setTranslucentStatus() {

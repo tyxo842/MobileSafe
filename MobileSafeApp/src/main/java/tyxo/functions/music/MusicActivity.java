@@ -1,12 +1,14 @@
 package tyxo.functions.music;
 
+import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.os.IBinder;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -29,9 +31,9 @@ public class MusicActivity extends BaseMusicActivity implements CompoundButton.O
     private MusicService musicService;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setMyContentView() {
         setContentView(R.layout.activity_music);
+
         initAllViews();
         bindService();
         startService(serviceIntent);
@@ -44,6 +46,19 @@ public class MusicActivity extends BaseMusicActivity implements CompoundButton.O
 
         versionName = (TextView) findViewById(R.id.main_version_name);
         versionName.setText(ApplicationUtils.getAppVersionName(this));
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(isChecked) {
+            musicService.show();
+        } else {
+            musicService.dismiss();
+        }
+        SharedPreferences preferences = getSharedPreferences("FloatMusicPlayer", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isCheck", isChecked);
+        editor.commit();
     }
 
     private void bindService() {
@@ -106,16 +121,12 @@ public class MusicActivity extends BaseMusicActivity implements CompoundButton.O
         super.onStop();
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(isChecked) {
-            musicService.show();
-        } else {
-            musicService.dismiss();
-        }
-        SharedPreferences preferences = getSharedPreferences("FloatMusicPlayer", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("isCheck", isChecked);
-        editor.commit();
+    @TargetApi(19)
+    private void setTranslucentStatus() {
+        Window window = getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        params.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL;    // 设置Activity高亮显示
+        window.setAttributes(params);
     }
 }
