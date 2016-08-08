@@ -53,6 +53,7 @@ import java.util.List;
 
 import dodola.hotfix.LoadBugClass;
 import dodola.hotfixlib.HotFix;
+import tyxo.functions.music.MusicActivity;
 import tyxo.mobilesafe.activity.ImageViewerActivity;
 import tyxo.mobilesafe.activity.RecyclerActivity;
 import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
@@ -288,7 +289,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
-
+            Intent intent = new Intent(this, MusicActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

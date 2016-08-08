@@ -13,7 +13,7 @@
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="可做成功能3" />
+            android:title="音乐播放" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
