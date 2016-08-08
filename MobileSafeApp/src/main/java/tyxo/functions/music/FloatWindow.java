@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 
 /**
  * Created on 2016/5/24.
+ * describe : 悬浮小窗口
  */
 
 public class FloatWindow {
@@ -44,16 +45,12 @@ public class FloatWindow {
 
     private View mFloatView, mPlayerView;
 
-    /**
-     * 不带布局参数的构造方法
-     * */
+    /** 不带布局参数的构造方法 */
     public FloatWindow(Context context) {
         this(context, null, null);
     }
 
-    /**
-     * 带布局参数的构造方法
-     * */
+    /** 带布局参数的构造方法 */
     public FloatWindow(Context context, View PlayerView, View floatView) {
         this.mContext = context;
         setFloatView(floatView);
@@ -62,9 +59,7 @@ public class FloatWindow {
         initLayoutParams();
     }
 
-    /**
-     * 设置开启状态的布局视图
-     * */
+    /** 设置开启状态的布局视图 */
     public void setPlayerView(View PlayerView) {
         if(PlayerView != null) {
             BackgroundView backgroundView = new BackgroundView(getContext());
@@ -77,9 +72,7 @@ public class FloatWindow {
         }
     }
 
-    /**
-     * 设置关闭状态的布局视图
-     * */
+    /** 设置关闭状态的布局视图 */
     public void setFloatView(View floatView) {
         if(floatView != null) {
             this.mFloatView = floatView;
@@ -87,9 +80,7 @@ public class FloatWindow {
         }
     }
 
-    /**
-     * 设置窗口当前布局
-     * */
+    /** 设置窗口当前布局 */
     private void setContentView(View contentView) {
         if(contentView != null) {
             if(isShowing()) {
@@ -103,9 +94,7 @@ public class FloatWindow {
         }
     }
 
-    /**
-     *  配置布局View， 需要在此处获得View的宽、高，并由此获得偏移量
-     * */
+    /** 配置布局View， 需要在此处获得View的宽、高，并由此获得偏移量 */
     private void createContentView(View contentView) {
         this.mContentView = contentView;
         contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED); // 主动计算视图View的宽高信息
@@ -114,9 +103,7 @@ public class FloatWindow {
         contentView.setOnTouchListener(new WindowTouchListener());
     }
 
-    /**
-     * 获得上下文信息
-     * */
+    /** 获得上下文信息 */
     public Context getContext() {
         return this.mContext;
     }
@@ -128,9 +115,7 @@ public class FloatWindow {
         return mWindowManager;
     }
 
-    /**
-     * 获得WindowManager.LayoutParams参数
-     * */
+    /** 获得WindowManager.LayoutParams参数 */
     public WindowManager.LayoutParams getLayoutParams() {
         if(mLayoutParams == null) {
             mLayoutParams = new WindowManager.LayoutParams();
@@ -139,9 +124,7 @@ public class FloatWindow {
         return mLayoutParams;
     }
 
-    /**
-     * 获得显示信息
-     * */
+    /** 获得显示信息 */
     public DisplayMetrics getDisplayMetrics() {
         if (mDisplayMetrics == null) {
             mDisplayMetrics = getContext().getResources().getDisplayMetrics();
@@ -149,25 +132,19 @@ public class FloatWindow {
         return mDisplayMetrics;
     }
 
-    /**
-     * 获得当前视图
-     * */
+    /** 获得当前视图 */
     public View getContentView() {
         return mContentView;
     }
 
-    /**
-     * 初始化窗口管理器
-     * */
+    /** 初始化窗口管理器 */
     private void initWindowManager() {
         mWindowManager = (WindowManager) getContext().getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         mDisplayMetrics = new DisplayMetrics();
         mWindowManager.getDefaultDisplay().getMetrics(mDisplayMetrics);
     }
 
-    /**
-     * 初始化WindowManager.LayoutParams参数
-     * */
+    /** 初始化WindowManager.LayoutParams参数 */
     private void initLayoutParams() {
         getLayoutParams().flags = getLayoutParams().flags
                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
@@ -186,9 +163,7 @@ public class FloatWindow {
         getLayoutParams().y = (int) (mDisplayMetrics.heightPixels * 1 / 4 - offsetY);
     }
 
-    /**
-     * 获取状态栏的高度
-     * */
+    /** 获取状态栏的高度 */
     public int getStatusBarHeight(Context context) {
         int height = 0;
         int resId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -198,9 +173,7 @@ public class FloatWindow {
         return height;
     }
 
-    /**
-     * 更新窗口的位置
-     * */
+    /** 更新窗口的位置 */
     private void updateLocation(float x, float y, boolean offset) {
         if(getContentView() != null) {
             if(offset) {
@@ -214,9 +187,7 @@ public class FloatWindow {
         }
     }
 
-    /**
-     * 显示窗口
-     * */
+    /** 显示窗口 */
     public void show() {
         if(getContentView() != null && !isShowing()) {
             getWindowManager().addView(getContentView(), getLayoutParams());
@@ -227,9 +198,7 @@ public class FloatWindow {
         }
     }
 
-    /**
-     * 隐藏当前显示窗口
-     * */
+    /** 隐藏当前显示窗口 */
     public void dismiss() {
         if(getContentView() != null && isShowing()) {
             handler.removeMessages(WHAT_HIDE);  //解决频繁切换,崩溃问题.
@@ -238,16 +207,12 @@ public class FloatWindow {
         }
     }
 
-    /**
-     * 判断当前是否有显示窗口
-     * */
+    /** 判断当前是否有显示窗口 */
     public boolean isShowing() {
         return mIsShowing;
     }
 
-    /**
-     * 自动对齐的一个小动画（自定义属性动画），使自动贴边的时候显得不那么生硬
-     * */
+    /** 自动对齐的一个小动画（自定义属性动画），使自动贴边的时候显得不那么生硬 */
     private ValueAnimator alignAnimator(float x, float y) {
         ValueAnimator animator = null;
         if(x <= getDisplayMetrics().widthPixels / 2) {
@@ -276,9 +241,7 @@ public class FloatWindow {
         return animator;
     }
 
-    /**
-     *
-     * */
+    /**  */
     public class PointEvaluator implements TypeEvaluator {
 
         @Override
@@ -292,9 +255,7 @@ public class FloatWindow {
         }
     }
 
-    /**
-     * 打开选项菜单
-     * */
+    /** 打开选项菜单 */
     public void showPlayer() {
         if(isOpen) {
             return ;
@@ -309,9 +270,7 @@ public class FloatWindow {
         isOpen = true;
     }
 
-    /**
-     * 关闭选项菜单
-     * */
+    /** 关闭选项菜单 */
     public void turnMini() {
         if(!isOpen) {
             return ;
@@ -328,9 +287,7 @@ public class FloatWindow {
         handler.sendEmptyMessage(WHAT_HIDE);
     }
 
-    /**
-     * 带有按键监听事件和触摸事件的BackgroundView
-     * */
+    /** 带有按键监听事件和触摸事件的BackgroundView */
     class BackgroundView extends RelativeLayout {
 
         public BackgroundView(Context context) {
@@ -423,9 +380,7 @@ public class FloatWindow {
         }
     }
 
-    /**
-     * 按下事件处理
-     * */
+    /** 按下事件处理 */
     private void down(MotionEvent event) {
         downX = event.getRawX();
         downY = event.getRawY();
@@ -436,17 +391,13 @@ public class FloatWindow {
 //        updateLocation(event.getRawX(), event.getRawY(), true);
     }
 
-    /**
-     * 移动事件处理
-     * */
+    /** 移动事件处理 */
     private void move(MotionEvent event) {
         lastTouchTimeMillis = System.currentTimeMillis();
         updateLocation(event.getRawX(), event.getRawY(), true);
     }
 
-    /**
-     * 抬起事件处理
-     * */
+    /** 抬起事件处理 */
     private void up(MotionEvent event) {
         float x = event.getRawX();
         float y = event.getRawY();
@@ -469,7 +420,7 @@ public class FloatWindow {
             super.handleMessage(msg);
             switch (msg.what) {
                 case WHAT_HIDE:
-                    if(System.currentTimeMillis() - lastTouchTimeMillis >= 3500) {
+                    if(System.currentTimeMillis() - lastTouchTimeMillis >= 1500) {
                         if(!isOpen) {
                             getLayoutParams().alpha = 0.4f;
                             getWindowManager().updateViewLayout(getContentView(), getLayoutParams());// TODO: 2016/8/8 关闭时点出过bug!!(通过修改判断时间 200)
@@ -477,7 +428,7 @@ public class FloatWindow {
                         }
                     } else {
                         if(isOpen) {
-                            lastTouchTimeMillis = System.currentTimeMillis() + 3500;
+                            lastTouchTimeMillis = System.currentTimeMillis() + 1500;
                         }
                         handler.sendEmptyMessageDelayed(WHAT_HIDE, 50);
                     }
