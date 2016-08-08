@@ -1,17 +1,18 @@
 package tyxo.functions.music;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import tyxo.mobilesafe.base.BaseActivityToolbar;
+
 /**
  * Created on 2016/5/30.
  */
 
-public class BaseMusicActivity extends Activity {
+public class BaseMusicActivity extends BaseActivityToolbar {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,11 @@ public class BaseMusicActivity extends Activity {
             setTranslucentStatus();
             //还有设置View的高度，因为每个型号的手机状态栏高度都不相同
         }
+    }
+
+    @Override
+    protected void setMyContentView() {
+
     }
 
     @TargetApi(19)

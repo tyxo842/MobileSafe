@@ -38,6 +38,7 @@ public class MusicActivity extends BaseMusicActivity implements CompoundButton.O
     }
 
     private void initAllViews() {
+        mToolbarTitle.setText("悬浮迷你音乐盒");
         checkBox = (CheckBox) findViewById(R.id.main_check_box);
         checkBox.setOnCheckedChangeListener(this);
 

@@ -470,7 +470,8 @@ public class FloatWindow {
                     if(System.currentTimeMillis() - lastTouchTimeMillis >= 3500) {
                         if(!isOpen) {
                             getLayoutParams().alpha = 0.4f;
-                            getWindowManager().updateViewLayout(getContentView(), getLayoutParams());// TODO: 2016/8/8 点出过bug!!!
+                            getWindowManager().updateViewLayout(getContentView(), getLayoutParams());// TODO: 2016/8/8 关闭时点出过bug!!!,改了一个service传入的context,待测
+                            //setContentView(mContentView);
                         }
                     } else {
                         if(isOpen) {

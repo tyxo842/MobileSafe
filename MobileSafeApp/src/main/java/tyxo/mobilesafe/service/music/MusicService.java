@@ -98,7 +98,7 @@ public class MusicService extends Service implements PlayerInterface, View.OnCli
         imgCD = (ImageView) floatView.findViewById(R.id.mini_cd);
         imgController = (ImageView) floatView.findViewById(R.id.mini_handle);
 
-        floatWindow = new FloatWindow(this);
+        floatWindow = new FloatWindow(getApplicationContext());
         floatWindow.setFloatView(floatView);
         floatWindow.setPlayerView(menuView);
     }

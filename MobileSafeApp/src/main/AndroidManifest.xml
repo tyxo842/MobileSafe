@@ -84,8 +84,8 @@
 
         <activity
             android:name="tyxo.functions.music.MusicActivity"
-            android:label="悬浮迷你音乐盒"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label=""
+            android:theme="@style/MyToolbarTheme"/>
 
         <service android:name="tyxo.mobilesafe.service.music.MusicService" />
 
