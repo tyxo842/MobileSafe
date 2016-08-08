@@ -171,7 +171,8 @@ public class FloatWindow {
     private void initLayoutParams() {
         getLayoutParams().flags = getLayoutParams().flags
                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE; //解决频繁切换,崩溃问题(主要是下边一步).
         getLayoutParams().dimAmount = 0.2f;   
         getLayoutParams().type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         getLayoutParams().height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -231,6 +232,7 @@ public class FloatWindow {
      * */
     public void dismiss() {
         if(getContentView() != null && isShowing()) {
+            handler.removeMessages(WHAT_HIDE);  //解决频繁切换,崩溃问题.
             getWindowManager().removeView(getContentView());
             mIsShowing = false;
         }
@@ -467,17 +469,17 @@ public class FloatWindow {
             super.handleMessage(msg);
             switch (msg.what) {
                 case WHAT_HIDE:
-                    if(System.currentTimeMillis() - lastTouchTimeMillis >= 200) {
+                    if(System.currentTimeMillis() - lastTouchTimeMillis >= 3500) {
                         if(!isOpen) {
                             getLayoutParams().alpha = 0.4f;
                             getWindowManager().updateViewLayout(getContentView(), getLayoutParams());// TODO: 2016/8/8 关闭时点出过bug!!(通过修改判断时间 200)
-                            //setContentView(mContentView);//RelativeLayout(2b9864dd)not attached to window manager
+                            //RelativeLayout(2b9864dd)not attached to window manager
                         }
                     } else {
                         if(isOpen) {
-                            lastTouchTimeMillis = System.currentTimeMillis() + 200;
+                            lastTouchTimeMillis = System.currentTimeMillis() + 3500;
                         }
-                        handler.sendEmptyMessageDelayed(WHAT_HIDE, 10);
+                        handler.sendEmptyMessageDelayed(WHAT_HIDE, 50);
                     }
                     break;
             }
