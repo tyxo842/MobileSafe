@@ -12,15 +12,24 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import tyxo.mobilesafe.R;
+import tyxo.mobilesafe.TaskHelp;
 import tyxo.mobilesafe.adpter.AdapterDynamic;
 import tyxo.mobilesafe.adpter.AdapterRecyclerHeader;
 import tyxo.mobilesafe.base.BaseActivityToolbar;
+import tyxo.mobilesafe.bean.MainGVItemBean;
+import tyxo.mobilesafe.net.volley.VolleyCallBack;
+import tyxo.mobilesafe.net.volley.VolleyErrorResult;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.DividerItemDecoration;
@@ -131,6 +140,7 @@ public class RecyclerActivity extends BaseActivityToolbar implements View.OnClic
         });
     }
 
+    //上拉加载
     private void initOnLoadMoreListener() {
         mRecyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -158,6 +168,7 @@ public class RecyclerActivity extends BaseActivityToolbar implements View.OnClic
         });
     }
 
+    //下拉刷新
     private void initOnRefreshListener() {
         swipeRL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -166,7 +177,28 @@ public class RecyclerActivity extends BaseActivityToolbar implements View.OnClic
                 Message msg = new Message();
                 msg.what = 0;
                 handler.sendMessageDelayed(msg, 1000);
+                requestNet();
                 ToastUtil.showToastS(getBaseContext(), "下拉刷新");
+            }
+        });
+    }
+
+    /** 网络请求 */
+    private void requestNet() {
+        TaskHelp task = new TaskHelp();
+        task.orderModifyState(mContext, "", "", new VolleyCallBack<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+               Type type = new TypeToken<MainGVItemBean>() {}.getType();
+                MainGVItemBean bean = new Gson().fromJson(response.toString(), type);
+                /*处理 返回 数据 bean
+                * ...判空,增减,刷新ui等等操作....
+                * */
+            }
+
+            @Override
+            public void onErrorResponse(VolleyErrorResult result) {
+                HLog.e("tyxo","请求失败 error : "+result);
             }
         });
     }
