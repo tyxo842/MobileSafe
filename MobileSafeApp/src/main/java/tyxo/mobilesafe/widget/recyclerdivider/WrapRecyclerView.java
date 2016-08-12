@@ -1,4 +1,4 @@
-package tyxo.mobilesafe.widget;
+package tyxo.mobilesafe.widget.recyclerdivider;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

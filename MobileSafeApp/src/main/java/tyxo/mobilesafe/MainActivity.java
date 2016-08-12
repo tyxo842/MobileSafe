@@ -10,7 +10,6 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
@@ -72,17 +71,19 @@ import tyxo.mobilesafe.utils.bitmap.CropParams;
 import tyxo.mobilesafe.utils.dialog.DialogUtil;
 import tyxo.mobilesafe.utils.hotfix.Utils;
 import tyxo.mobilesafe.utils.log.HLog;
-import tyxo.mobilesafe.widget.DividerItemDecoration;
-import tyxo.mobilesafe.widget.DoubleClickExitDetector;
-import tyxo.mobilesafe.widget.WrapRecyclerView;
+import tyxo.mobilesafe.widget.GooeyMenu;
 import tyxo.mobilesafe.widget.dragGridView.DragGridView;
 import tyxo.mobilesafe.widget.dragGridView.GridViewMy;
+import tyxo.mobilesafe.widget.recyclerdivider.DividerItemDecoration;
+import tyxo.mobilesafe.widget.recyclerdivider.DoubleClickExitDetector;
+import tyxo.mobilesafe.widget.recyclerdivider.WrapRecyclerView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, AdapterMainRecycler.OnItemClickListener,
-        CropHandler{
+        CropHandler,GooeyMenu.GooeyMenuInterface{
 
     private FloatingActionButton fab;
+    private GooeyMenu gooey_menu;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     protected void initView() {
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        gooey_menu = (GooeyMenu) findViewById(R.id.gooey_menu);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.left_open, R.string.left_close);
@@ -183,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     protected void initListener() {
         fab.setOnClickListener(this);
+        gooey_menu.setOnMenuListener(this);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
@@ -247,7 +250,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             break;
             case R.id.fab:
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                //Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
                 break;
             case R.id.iv_left_header1:
                 Intent intent = new Intent(this, ImageViewerActivity.class);
@@ -309,6 +313,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void menuOpen() {    //googlemenu
+        //ToastUtil.showToastS(this,"Menu Open ");
+    }
+
+    @Override
+    public void menuClose() {   //googlemenu
+        //ToastUtil.showToastS(this,"Menu Close ");
+    }
+
+    @Override
+    public void menuItemClicked(int menuNumber) {   //googlemenu
+        ToastUtil.showToastS(this,"Menu item clicked : " + menuNumber);
+        gooey_menu.startHideAnimate();
     }
 
     /** recyclerView 上拉下拉 监听 */

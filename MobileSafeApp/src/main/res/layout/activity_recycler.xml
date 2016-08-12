@@ -31,7 +31,7 @@
             android:divider="@color/order_bg_f0f3f5"
             android:dividerHeight="10dp"
             />
-        <!--<tyxo.mobilesafe.widget.WrapRecyclerView
+        <!--<tyxo.mobilesafe.widget.recyclerdivider.WrapRecyclerView
             android:id="@+id/rv_main_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -32,7 +32,7 @@ import tyxo.mobilesafe.net.volley.VolleyCallBack;
 import tyxo.mobilesafe.net.volley.VolleyErrorResult;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
-import tyxo.mobilesafe.widget.DividerItemDecoration;
+import tyxo.mobilesafe.widget.recyclerdivider.DividerItemDecoration;
 import tyxo.mobilesafe.widget.dragGridView.GridViewMy;
 
 /**

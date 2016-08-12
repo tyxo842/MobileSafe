@@ -68,4 +68,10 @@
     <dimen name="margin">8dp</dimen>
     <dimen name="title_text_size">18sp</dimen>
     <dimen name="sacn_top_margin">90dp</dimen>
+
+    <!--googlemenu-->
+    <dimen name="min_height">160dp</dimen>
+    <dimen name="big_circle_radius">40dp</dimen>
+    <dimen name="small_circle_radius">20dp</dimen>
+    <dimen name="min_gap">80dp</dimen>
 </resources>
