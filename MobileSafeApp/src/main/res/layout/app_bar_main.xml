@@ -25,15 +25,19 @@
 
     <include layout="@layout/content_main" />
 
+    <!--系统原生自带-->
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
         android:visibility="gone"
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_dialog_email" />
+
+    <!--第三方 貌似只能 中间位置-->
     <tyxo.mobilesafe.widget.GooeyMenu
+        android:visibility="gone"
         android:id="@+id/gooey_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

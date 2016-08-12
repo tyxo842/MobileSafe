@@ -53,4 +53,5 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     //compile 'org.hybridsquad.android.photocropper:library:2.1.0' //没有demo,直接换成了lib
     compile files('libs/alipaySdk-20160111.jar')
+    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'  //右下角menu
 }

@@ -1,6 +1,7 @@
 package tyxo.mobilesafe.utils;
 
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -18,14 +19,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 import tyxo.mobilesafe.ConstValues;
 import tyxo.mobilesafe.ConstantsMy;
+import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.widget.SystemBarTintManager;
+import tyxo.mobilesafe.widget.annotation.SlideInAnimationHandler;
 
 /**
  * Created by LY on 2016/7/21 11: 14.
@@ -250,6 +262,210 @@ public class ViewUtil {
         return file;
     }
 
+    /** 设置页面右下角 白色menu 图标 动画 */
+    public static void initBottomRightMenu(Activity activity) {
+        final ImageView fabIconNew = new ImageView(activity);
+        fabIconNew.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_jia_new_light));
+        FloatingActionButton rightLButton = new FloatingActionButton.Builder(activity)
+                .setContentView(fabIconNew)
+                .build();
+        SubActionButton.Builder rLSubBuilder = new SubActionButton.Builder(activity);
+        ImageView rlIcon1 = new ImageView(activity);
+        ImageView rlIcon2 = new ImageView(activity);
+        ImageView rlIcon3 = new ImageView(activity);
+        ImageView rlIcon4 = new ImageView(activity);
+
+        rlIcon1.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_action_chat_light));
+        rlIcon2.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_action_camera_light));
+        rlIcon3.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_action_video_light));
+        rlIcon4.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_action_place_light));
+
+        final FloatingActionMenu rightLowerMenu = new FloatingActionMenu.Builder(activity)
+                .addSubActionView(rLSubBuilder.setContentView(rlIcon1).build())
+                .addSubActionView(rLSubBuilder.setContentView(rlIcon2).build())
+                .addSubActionView(rLSubBuilder.setContentView(rlIcon3).build())
+                .addSubActionView(rLSubBuilder.setContentView(rlIcon4).build())
+                .attachTo(rightLButton)
+                .build();
+        rightLowerMenu.setStateChangeListener(new FloatingActionMenu.MenuStateChangeListener() {
+            @Override
+            public void onMenuOpened(FloatingActionMenu floatingActionMenu) {
+                fabIconNew.setRotation(0);
+                PropertyValuesHolder pvhR = PropertyValuesHolder.ofFloat(View.ROTATION,45);
+                ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(fabIconNew,pvhR);
+                animator.start();
+            }
+
+            @Override
+            public void onMenuClosed(FloatingActionMenu floatingActionMenu) {
+                fabIconNew.setRotation(45);
+                PropertyValuesHolder pvhR = PropertyValuesHolder.ofFloat(View.ROTATION,0);
+                ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(fabIconNew, pvhR);
+                animator.start();
+            }
+        });
+
+        ArrayList<FloatingActionMenu.Item> itemList = rightLowerMenu.getSubActionItems();
+
+        rlIcon4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rightLowerMenu.close(true);
+            }
+        });
+    }
+
+    /** 设置页面右下角 彩色menu 图标 动画 */
+    public static void initCenterColorMenu(Activity activity) {
+        int redActionButtonSize = activity.getResources().getDimensionPixelSize(R.dimen.red_action_button_size2);
+        int redActionButtonMargin = activity.getResources().getDimensionPixelOffset(R.dimen.action_button_margin);
+        int redActionButtonContentSize = activity.getResources().getDimensionPixelSize(R.dimen.red_action_button_content_size);
+        int redActionButtonContentMargin = activity.getResources().getDimensionPixelSize(R.dimen.red_action_button_content_margin);
+        int redActionMenuRadius = activity.getResources().getDimensionPixelSize(R.dimen.red_action_menu_radius);
+        int blueSubActionButtonSize = activity.getResources().getDimensionPixelSize(R.dimen.blue_sub_action_button_size);
+        int blueSubActionButtonContentMargin = activity.getResources().getDimensionPixelSize(R.dimen.blue_sub_action_button_content_margin);
+
+        ImageView fabIconStar = new ImageView(activity);
+        fabIconStar.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_important));
+
+        FloatingActionButton.LayoutParams starParams = new FloatingActionButton.LayoutParams(redActionButtonSize, redActionButtonSize);
+        starParams.setMargins(redActionButtonMargin,
+                redActionButtonMargin,
+                redActionButtonMargin,
+                redActionButtonMargin);
+        fabIconStar.setLayoutParams(starParams);
+
+        FloatingActionButton.LayoutParams fabIconStarParams = new FloatingActionButton.LayoutParams(redActionButtonContentSize, redActionButtonContentSize);
+        fabIconStarParams.setMargins(redActionButtonContentMargin,
+                redActionButtonContentMargin,
+                redActionButtonContentMargin,
+                redActionButtonContentMargin);
+
+        final FloatingActionButton leftCenterButton = new FloatingActionButton.Builder(activity)
+                .setContentView(fabIconStar, fabIconStarParams)
+                .setBackgroundDrawable(R.drawable.button_action_red_selector)
+                .setPosition(FloatingActionButton.POSITION_LEFT_CENTER)
+                .setLayoutParams(starParams)
+                .build();
+
+        // Set up customized SubActionButtons for the right center menu
+        SubActionButton.Builder lCSubBuilder = new SubActionButton.Builder(activity);
+        lCSubBuilder.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.button_action_blue_selector));
+
+        FrameLayout.LayoutParams blueContentParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        blueContentParams.setMargins(blueSubActionButtonContentMargin,
+                blueSubActionButtonContentMargin,
+                blueSubActionButtonContentMargin,
+                blueSubActionButtonContentMargin);
+        lCSubBuilder.setLayoutParams(blueContentParams);
+        // Set custom layout params
+        FrameLayout.LayoutParams blueParams = new FrameLayout.LayoutParams(blueSubActionButtonSize, blueSubActionButtonSize);
+        lCSubBuilder.setLayoutParams(blueParams);
+
+        ImageView lcIcon1 = new ImageView(activity);
+        ImageView lcIcon2 = new ImageView(activity);
+        ImageView lcIcon3 = new ImageView(activity);
+        ImageView lcIcon4 = new ImageView(activity);
+        ImageView lcIcon5 = new ImageView(activity);
+
+        lcIcon1.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_camera));
+        lcIcon2.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_picture));
+        lcIcon3.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_video));
+        lcIcon4.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_location_found));
+        lcIcon5.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_headphones));
+
+        // Build another menu with custom options
+        final FloatingActionMenu leftCenterMenu = new FloatingActionMenu.Builder(activity)
+                .addSubActionView(lCSubBuilder.setContentView(lcIcon1, blueContentParams).build())
+                .addSubActionView(lCSubBuilder.setContentView(lcIcon2, blueContentParams).build())
+                .addSubActionView(lCSubBuilder.setContentView(lcIcon3, blueContentParams).build())
+                .addSubActionView(lCSubBuilder.setContentView(lcIcon4, blueContentParams).build())
+                .addSubActionView(lCSubBuilder.setContentView(lcIcon5, blueContentParams).build())
+                .setRadius(redActionMenuRadius)
+                .setStartAngle(70)
+                .setEndAngle(-70)
+                .attachTo(leftCenterButton)
+                .build();
+    }
+
+    /** 设置页面底部中央 彩色menu 图标 动画 */
+    public static void initCenterBottomMenu(Activity activity) {
+        ImageView fabContent = new ImageView(activity);
+        fabContent.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_settings));
+
+        FloatingActionButton darkButton = new FloatingActionButton.Builder(activity)
+                .setTheme(FloatingActionButton.THEME_DARK)
+                .setContentView(fabContent)
+                .setPosition(FloatingActionButton.POSITION_BOTTOM_CENTER)
+                .build();
+
+        SubActionButton.Builder rLSubBuilder = new SubActionButton.Builder(activity)
+                .setTheme(SubActionButton.THEME_DARK);
+        ImageView rlIcon1 = new ImageView(activity);
+        ImageView rlIcon2 = new ImageView(activity);
+        ImageView rlIcon3 = new ImageView(activity);
+        ImageView rlIcon4 = new ImageView(activity);
+        ImageView rlIcon5 = new ImageView(activity);
+
+        rlIcon1.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_chat));
+        rlIcon2.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_camera));
+        rlIcon3.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_video));
+        rlIcon4.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_place));
+        rlIcon5.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_headphones));
+
+        // Set 4 SubActionButtons
+        FloatingActionMenu centerBottomMenu = new FloatingActionMenu.Builder(activity)
+                .setStartAngle(0)
+                .setEndAngle(-180)
+                .setAnimationHandler(new SlideInAnimationHandler())
+                .addSubActionView(rLSubBuilder.setContentView(rlIcon1).build())
+                .addSubActionView(rLSubBuilder.setContentView(rlIcon2).build())
+                .addSubActionView(rLSubBuilder.setContentView(rlIcon3).build())
+                .addSubActionView(rLSubBuilder.setContentView(rlIcon4).build())
+                .addSubActionView(rLSubBuilder.setContentView(rlIcon5).build())
+                .attachTo(darkButton)
+                .build();
+    }
+
+    /** 设置页面中央 圆形包围menu 图标 动画 有bug待解决 */
+    public static void initCircleMenu(Activity activity){
+        Button centerActionButton = new Button(activity);
+        //Button centerActionButton = (Button) activity.findViewById(R.id.music_menu_btn);
+        TextView a = new TextView(activity); a.setText("a"); a.setBackgroundResource(android.R.drawable.btn_default_small);
+        TextView b = new TextView(activity); b.setText("b"); b.setBackgroundResource(android.R.drawable.btn_default_small);
+        TextView c = new TextView(activity); c.setText("c"); c.setBackgroundResource(android.R.drawable.btn_default_small);
+        TextView d = new TextView(activity); d.setText("d"); d.setBackgroundResource(android.R.drawable.btn_default_small);
+        TextView e = new TextView(activity); e.setText("e"); e.setBackgroundResource(android.R.drawable.btn_default_small);
+        TextView f = new TextView(activity); f.setText("f"); f.setBackgroundResource(android.R.drawable.btn_default_small);
+        TextView g = new TextView(activity); g.setText("g"); g.setBackgroundResource(android.R.drawable.btn_default_small);
+        TextView h = new TextView(activity); h.setText("h"); h.setBackgroundResource(android.R.drawable.btn_default_small);
+        FrameLayout.LayoutParams tvParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        a.setLayoutParams(tvParams);
+        b.setLayoutParams(tvParams);
+        c.setLayoutParams(tvParams);
+        d.setLayoutParams(tvParams);
+        e.setLayoutParams(tvParams);
+        f.setLayoutParams(tvParams);
+        g.setLayoutParams(tvParams);
+        h.setLayoutParams(tvParams);
+
+        SubActionButton.Builder subBuilder = new SubActionButton.Builder(activity);
+
+        FloatingActionMenu circleMenu = new FloatingActionMenu.Builder(activity)
+                .setStartAngle(0) // A whole circle!
+                .setEndAngle(360)
+                .setRadius(activity.getResources().getDimensionPixelSize(R.dimen.radius_large))
+                .addSubActionView(a)
+                .addSubActionView(b)
+                .addSubActionView(c)
+                .addSubActionView(d)
+                .addSubActionView(e)
+                .addSubActionView(f)
+                .addSubActionView(g)
+                .addSubActionView(h)
+                .attachTo(centerActionButton)
+                .build();
+    }
 }
 
 

@@ -2,7 +2,6 @@ package tyxo.mobilesafe;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,12 +26,12 @@ public class TaskHelp {
     private String userName;
     private String orgId;
     private PlatUser platUser;
-    private SharedPreferences mSpUser = MyApp.getAppContext().getSharedPreferences(ConstValues.USER_DATA_FILE, Context.MODE_PRIVATE);
-    private String userPWD = mSpUser.getString("pwd", "");
-    private String userLoginName = mSpUser.getString("userName", "");
+    //private SharedPreferences mSpUser = MyApp.getAppContext().getSharedPreferences(ConstValues.USER_DATA_FILE, Context.MODE_PRIVATE);
+    //private String userPWD = mSpUser.getString("pwd", "");
+    //private String userLoginName = mSpUser.getString("userName", "");
 
     public TaskHelp() {
-        getPlatUserNameOrOrgid(MyApp.getInstance());
+        //getPlatUserNameOrOrgid(MyApp.getInstance());
     }
 
     // platUser 为null时,跳转到splash重新登陆
@@ -58,8 +57,7 @@ public class TaskHelp {
                                  VolleyCallBack<JSONObject> callback) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userName", userName);
-            jsonObject.put("userPwd", userPWD);
+            jsonObject.put("userName", "tyxo");
             jsonObject.put("orgId", orgId);
             jsonObject.put("orderId", orderId);
             jsonObject.put("orderState", orderState);

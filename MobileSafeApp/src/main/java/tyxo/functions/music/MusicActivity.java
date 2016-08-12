@@ -13,6 +13,7 @@ import android.widget.TextView;
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.service.music.MusicService;
 import tyxo.mobilesafe.utils.ApplicationUtils;
+import tyxo.mobilesafe.utils.ViewUtil;
 
 /**
  * Created on 2016/5/24.
@@ -34,6 +35,10 @@ public class MusicActivity extends BaseMusicActivity implements CompoundButton.O
         initAllViews();
         bindService();
         startService(serviceIntent);
+
+        ViewUtil.initCenterColorMenu(this);     //初始化menu CircularFloatingActionMenu
+        ViewUtil.initCenterBottomMenu(this);    //初始化menu CircularFloatingActionMenu
+        //ViewUtil.initCircleMenu(this);          //初始化menu CircularFloatingActionMenu  有bug
     }
 
     private void initAllViews() {
