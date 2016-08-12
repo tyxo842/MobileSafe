@@ -57,6 +57,7 @@ import tyxo.mobilesafe.activity.ImageViewerActivity;
 import tyxo.mobilesafe.activity.RecyclerActivity;
 import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
 import tyxo.mobilesafe.activity.activityGrid.Aciticity1;
+import tyxo.mobilesafe.activity.activityGrid.Aciticity2;
 import tyxo.mobilesafe.adpter.AdapterMainGridView;
 import tyxo.mobilesafe.adpter.AdapterMainRecycler;
 import tyxo.mobilesafe.bean.MainGVItemBean;
@@ -531,7 +532,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"手机防盗");
                         break;
                     case 1:
-                        Intent intent1 = new Intent(MainActivity.this,Aciticity1.class);
+                        Intent intent1 = new Intent(MainActivity.this,Aciticity2.class);
                         startActivity(intent1);
                         ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"骚扰拦截");
                         break;

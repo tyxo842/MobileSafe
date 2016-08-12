@@ -88,4 +88,9 @@
     <dimen name="radius_small">30dp</dimen>
     <dimen name="radius_medium">72dp</dimen>
 
+    <!--ArcMenu-->
+    <item name="menuFromDegrees" format="float" type="dimen">180.0</item>
+    <item name="menuToDegrees" format="float" type="dimen">360.0</item>
+    <dimen name="menuChildSize">30dp</dimen>
+
 </resources>
