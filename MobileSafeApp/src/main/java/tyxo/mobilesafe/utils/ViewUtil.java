@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -388,7 +387,7 @@ public class ViewUtil {
                 .build();
     }
 
-    /** 设置页面底部中央 彩色menu 图标 动画 */
+    /** 设置页面底部中央 menu 图标 动画 */
     public static void initCenterBottomMenu(Activity activity) {
         ImageView fabContent = new ImageView(activity);
         fabContent.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_settings));
@@ -429,8 +428,6 @@ public class ViewUtil {
 
     /** 设置页面中央 圆形包围menu 图标 动画 有bug待解决 */
     public static void initCircleMenu(Activity activity){
-        Button centerActionButton = new Button(activity);
-        //Button centerActionButton = (Button) activity.findViewById(R.id.music_menu_btn);
         TextView a = new TextView(activity); a.setText("a"); a.setBackgroundResource(android.R.drawable.btn_default_small);
         TextView b = new TextView(activity); b.setText("b"); b.setBackgroundResource(android.R.drawable.btn_default_small);
         TextView c = new TextView(activity); c.setText("c"); c.setBackgroundResource(android.R.drawable.btn_default_small);
@@ -449,10 +446,28 @@ public class ViewUtil {
         g.setLayoutParams(tvParams);
         h.setLayoutParams(tvParams);
 
-        SubActionButton.Builder subBuilder = new SubActionButton.Builder(activity);
+        int redActionButtonSize = activity.getResources().getDimensionPixelSize(R.dimen.action_center_size);
+        int marginL = activity.getResources().getDimensionPixelOffset(R.dimen.action_center_l);
+        int marginT = activity.getResources().getDimensionPixelOffset(R.dimen.action_center_t);
+        int marginR = activity.getResources().getDimensionPixelOffset(R.dimen.action_center_r);
+        int marginB = activity.getResources().getDimensionPixelOffset(R.dimen.action_center_b);
+
+        ImageView ivStar = new ImageView(activity);
+        ivStar.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_action_important));
+
+        FloatingActionButton.LayoutParams starParams = new FloatingActionButton.LayoutParams(redActionButtonSize, redActionButtonSize);
+        starParams.setMargins(marginL,marginT,marginR, marginB);
+        ivStar.setLayoutParams(starParams);
+
+        FloatingActionButton centerButton = new FloatingActionButton.Builder(activity)
+                .setContentView(ivStar)
+                .setBackgroundDrawable(R.drawable.button_action_red_selector)
+                .setPosition(FloatingActionButton.POSITION_LEFT_CENTER)
+                .setLayoutParams(starParams)
+                .build();
 
         FloatingActionMenu circleMenu = new FloatingActionMenu.Builder(activity)
-                .setStartAngle(0) // A whole circle!
+                .setStartAngle(0)
                 .setEndAngle(360)
                 .setRadius(activity.getResources().getDimensionPixelSize(R.dimen.radius_large))
                 .addSubActionView(a)
@@ -463,7 +478,7 @@ public class ViewUtil {
                 .addSubActionView(f)
                 .addSubActionView(g)
                 .addSubActionView(h)
-                .attachTo(centerActionButton)
+                .attachTo(centerButton)
                 .build();
     }
 }

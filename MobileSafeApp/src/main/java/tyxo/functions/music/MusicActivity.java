@@ -38,7 +38,7 @@ public class MusicActivity extends BaseMusicActivity implements CompoundButton.O
 
         ViewUtil.initCenterColorMenu(this);     //初始化menu CircularFloatingActionMenu
         ViewUtil.initCenterBottomMenu(this);    //初始化menu CircularFloatingActionMenu
-        //ViewUtil.initCircleMenu(this);          //初始化menu CircularFloatingActionMenu  有bug
+        ViewUtil.initCircleMenu(this);          //初始化menu CircularFloatingActionMenu
     }
 
     private void initAllViews() {
@@ -78,9 +78,7 @@ public class MusicActivity extends BaseMusicActivity implements CompoundButton.O
                 }
 
                 @Override
-                public void onServiceDisconnected(ComponentName name) {
-
-                }
+                public void onServiceDisconnected(ComponentName name) { }
             };
             bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE);
         }
