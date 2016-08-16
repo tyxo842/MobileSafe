@@ -4,6 +4,13 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ApplicationAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- 状态栏颜色 如果放在了toolbar里面,记得配合AppTheme.NoActionBar(mainActivity),否则会全屏(RecyclerActivity)-->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!--<item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>-->

@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
@@ -53,5 +54,17 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     //compile 'org.hybridsquad.android.photocropper:library:2.1.0' //没有demo,直接换成了lib
     compile files('libs/alipaySdk-20160111.jar')
-    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'  //右下角menu
+    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    //右下角menu
+
+    //Retrofit-RxJava-MPAndroidChart 显示天气
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    //compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1' //下载不成,改为了jar包
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.orhanobut:logger:1.11'
+    compile project(':JNChartLib')
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
 }

@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.util.Date;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
+import tyxo.functions.weather.WeatherActivity;
 import tyxo.mobilesafe.ConstValues;
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.base.BaseActivityToolbar;
@@ -173,6 +174,9 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
             case R.id.image_action_1:   //跳转到recyclerActivity
                 Intent intent = new Intent(this, RecyclerActivity.class);
                 startActivity(intent);
+            case R.id.image_action_weather:   //跳转到 weatherActivity
+                Intent intent2 = new Intent(this, WeatherActivity.class);
+                startActivity(intent2);
                 break;
         }
         return super.onOptionsItemSelected(item);

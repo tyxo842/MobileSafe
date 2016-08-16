@@ -21,8 +21,8 @@
                   android:id="@+id/image_action_1"
                   app:showAsAction="never"/>
             <item android:icon="@drawable/abc_ic_menu_cut_mtrl_alpha"
-                  android:title="角功能2"
-                  android:id="@+id/action_cut1"
+                  android:title="查看天气(温度)"
+                  android:id="@+id/image_action_weather"
                   app:showAsAction="never"/>
       </item>
 </menu>

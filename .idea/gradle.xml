@@ -8,6 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/JNChartLib" />
             <option value="$PROJECT_DIR$/MobileSafeApp" />
             <option value="$PROJECT_DIR$/ShortcutBadger" />
             <option value="$PROJECT_DIR$/buildSrc" />
@@ -18,6 +19,7 @@
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/JNChartLib" />
             <option value="$PROJECT_DIR$/MobileSafeApp" />
             <option value="$PROJECT_DIR$/ShortcutBadger" />
             <option value="$PROJECT_DIR$/buildSrc" />

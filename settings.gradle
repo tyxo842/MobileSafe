@@ -1,3 +1,4 @@
 include ':MobileSafeApp'
 include ':ShortcutBadger'
 include ':hackdex','buildSrc',':hotfixlib'
+include ':JNChartLib'
