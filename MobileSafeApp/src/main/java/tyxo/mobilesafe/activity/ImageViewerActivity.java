@@ -174,6 +174,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
             case R.id.image_action_1:   //跳转到recyclerActivity
                 Intent intent = new Intent(this, RecyclerActivity.class);
                 startActivity(intent);
+                break;
             case R.id.image_action_weather:   //跳转到 weatherActivity
                 Intent intent2 = new Intent(this, WeatherActivity.class);
                 startActivity(intent2);
