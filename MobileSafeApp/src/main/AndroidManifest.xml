@@ -8,7 +8,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />                  <!--网络-->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>      <!--sd卡权限-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>     <!--sd卡权限-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
 
     <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
@@ -92,6 +94,24 @@
             android:theme="@style/MyToolbarTheme"/>
 
         <service android:name="tyxo.mobilesafe.service.music.MusicService" />
+
+        <!--图片功能 Rxjava+Retrofit+...-->
+        <activity
+            android:name="tyxo.functions.prettygirls.splash.SplashActivityPG"
+            android:theme="@style/AppTheme.Splash"/>
+        <activity
+            android:name="tyxo.functions.prettygirls.home.HomeActivity"
+            android:label="PrettyGirls"
+            android:theme="@style/MyToolbarTheme"/>
+        <activity
+            android:name="tyxo.functions.prettygirls.girl.GirlActivity"
+            android:theme="@style/MyToolbarTheme"/>
+        <activity
+            android:name="tyxo.functions.prettygirls.about.AboutActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <meta-data
+            android:name="tyxo.functions.prettygirls.app.CustomCachingGlideModule"
+            android:value="GlideModule"/>
 
     </application>
 </manifest>

@@ -31,10 +31,26 @@ android {
     applicationVariants.all { variant ->
         variant.dex.dependsOn << processWithJavassist //在执行dx命令之前将代码打入到class中
     }
+
+    android {
+        packagingOptions {
+            exclude 'META-INF/DEPENDENCIES.txt'
+            exclude 'META-INF/LICENSE.txt'
+            exclude 'META-INF/NOTICE.txt'
+            exclude 'META-INF/NOTICE'
+            exclude 'META-INF/LICENSE'
+            exclude 'META-INF/DEPENDENCIES'
+            exclude 'META-INF/notice.txt'
+            exclude 'META-INF/license.txt'
+            exclude 'META-INF/dependencies.txt'
+            exclude 'META-INF/LGPL2.1'
+
+            exclude 'META-INF/services/javax.annotation.processing.Processor'
+        }
+    }
 }
 
 dependencies {
-
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
@@ -58,13 +74,23 @@ dependencies {
     //右下角menu
 
     //Retrofit-RxJava-MPAndroidChart 显示天气
+    compile 'com.orhanobut:logger:1.11'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     //compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1' //下载不成,改为了jar包
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'com.orhanobut:logger:1.11'
-    compile project(':JNChartLib')
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile project(':JNChartLib')
+
+    //pretygirl
+    compile 'com.android.support:palette-v7:23.4.0'
+    compile 'com.android.support:cardview-v7:23.+'
+    compile 'com.jude:easyrecyclerview:4.0.2'
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
+    compile 'com.jakewharton:butterknife:8.1.0'
+    compile 'com.jakewharton:butterknife-compiler:8.1.0'
+    compile project(':pgirllibrary')
+
 }

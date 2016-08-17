@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
+import tyxo.functions.prettygirls.splash.SplashActivityPG;
 import tyxo.mobilesafe.ConstValues;
 import tyxo.mobilesafe.ConstantsMy;
 import tyxo.mobilesafe.R;
@@ -262,7 +263,7 @@ public class ViewUtil {
     }
 
     /** 设置页面右下角 白色menu 图标 动画 */
-    public static void initBottomRightMenu(Activity activity) {
+    public static void initBottomRightMenu(final Activity activity) {
         final ImageView fabIconNew = new ImageView(activity);
         fabIconNew.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_jia_new_light));
         FloatingActionButton rightLButton = new FloatingActionButton.Builder(activity)
@@ -309,6 +310,14 @@ public class ViewUtil {
         rlIcon4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rightLowerMenu.close(true);
+            }
+        });
+        rlIcon3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, SplashActivityPG.class);
+                activity.startActivity(intent);
                 rightLowerMenu.close(true);
             }
         });

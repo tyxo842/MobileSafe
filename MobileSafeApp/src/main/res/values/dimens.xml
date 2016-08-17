@@ -99,4 +99,7 @@
     <item name="menuToDegrees" format="float" type="dimen">360.0</item>
     <dimen name="menuChildSize">30dp</dimen>
 
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
 </resources>

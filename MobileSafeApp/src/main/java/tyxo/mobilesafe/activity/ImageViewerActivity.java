@@ -89,7 +89,8 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         //url = getIntent().getStringExtra("url");
         url = ConstValues.MYPHOTO_URL;
         initGlide();
-        ViewUtil.initBottomRightMenu(this);
+
+        ViewUtil.initBottomRightMenu(this);/** 初始化 底部 右下角menu图标 */
     }
 
     @Override
