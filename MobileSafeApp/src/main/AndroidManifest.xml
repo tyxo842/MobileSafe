@@ -102,7 +102,7 @@
         <activity
             android:name="tyxo.functions.prettygirls.home.HomeActivity"
             android:label="PrettyGirls"
-            android:theme="@style/MyToolbarTheme"/>
+            android:theme="@style/GirlsHome"/>
         <activity
             android:name="tyxo.functions.prettygirls.girl.GirlActivity"
             android:theme="@style/MyToolbarTheme"/>
