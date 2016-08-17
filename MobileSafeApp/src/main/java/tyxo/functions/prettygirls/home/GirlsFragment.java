@@ -23,6 +23,7 @@ import tyxo.functions.prettygirls.data.bean.GirlsBean;
 import tyxo.functions.prettygirls.girl.GirlActivity;
 import tyxo.functions.prettygirls.util.LogUtil;
 import tyxo.mobilesafe.R;
+import tyxo.mobilesafe.utils.log.HLog;
 
 /**
  * Created by oracleen on 2016/6/21.
@@ -121,6 +122,7 @@ public class GirlsFragment extends BaseFragment implements GirlsContract.View, S
 
     @Override
     public void refresh(List<GirlsBean.ResultsEntity> datas) {
+        HLog.i("tyxo","refresh 返回 datas : "+datas);
         data.clear();
         data.addAll(datas);
         mAdapter.clear();
@@ -129,6 +131,7 @@ public class GirlsFragment extends BaseFragment implements GirlsContract.View, S
 
     @Override
     public void load(List<GirlsBean.ResultsEntity> datas) {
+        HLog.i("tyxo","load 返回 datas : "+datas);
         data.addAll(datas);
         mAdapter.addAll(datas);
     }

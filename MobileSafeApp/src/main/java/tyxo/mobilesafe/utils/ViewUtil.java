@@ -32,7 +32,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
-import tyxo.functions.prettygirls.splash.SplashActivityPG;
+import tyxo.functions.prettygirls.home.HomeActivity;
 import tyxo.mobilesafe.ConstValues;
 import tyxo.mobilesafe.ConstantsMy;
 import tyxo.mobilesafe.R;
@@ -316,7 +316,8 @@ public class ViewUtil {
         rlIcon3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, SplashActivityPG.class);
+                //Intent intent = new Intent(activity, SplashActivityPG.class);
+                Intent intent = new Intent(activity, HomeActivity.class);
                 activity.startActivity(intent);
                 rightLowerMenu.close(true);
             }

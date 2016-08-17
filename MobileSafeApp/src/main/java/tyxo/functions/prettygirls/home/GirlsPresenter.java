@@ -5,6 +5,7 @@ import android.util.Log;
 import tyxo.functions.prettygirls.data.bean.GirlsBean;
 import tyxo.functions.prettygirls.data.source.GirlsDataSource;
 import tyxo.functions.prettygirls.data.source.GirlsResponsitory;
+import tyxo.mobilesafe.utils.log.HLog;
 
 
 /**
@@ -33,6 +34,7 @@ public class GirlsPresenter implements GirlsContract.Presenter {
         mGirlsResponsitory.getGirls(page, size, new GirlsDataSource.LoadGirlsCallback() {
             @Override
             public void onGirlsLoaded(GirlsBean girlsBean) {
+                HLog.i("tyxo","onGirlsLoaded girlsBean : "+girlsBean);
                 if (isRefresh) {
                     mView.refresh(girlsBean.getResults());
                 } else {

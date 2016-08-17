@@ -25,12 +25,12 @@ public class RemoteGirlsDataSource implements GirlsDataSource {
                 .subscribe(new Observer<GirlsBean>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         callback.onDataNotAvailable();
+                        Log.i("tyxo","RemoteGirlsDataSource onError : "+e.toString());
                     }
 
                     @Override
