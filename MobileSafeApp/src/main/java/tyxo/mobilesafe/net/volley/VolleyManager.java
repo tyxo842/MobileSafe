@@ -22,6 +22,9 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import tyxo.mobilesafe.R;
@@ -170,8 +173,7 @@ public class VolleyManager {
 
             @Override
             public void onResponse(JSONObject response) {
-                // HLog.i(TAG, "onResponse  response = " +
-                // response.toString());
+                 HLog.i(TAG, "onResponse  response = " + response.toString());
                 if (callBack != null)
                     callBack.onResponse(response);
             }
@@ -184,6 +186,61 @@ public class VolleyManager {
                     callBack.onErrorResponse(getErrorResult(error));
             }
         });
+        jsonObjectRequest.setTag(VOLLEY_TAG);
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 6, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        mRequestQueue.add(jsonObjectRequest);
+    }
+
+    /**
+     * 发送Get请求 带Header
+     *
+     * @param url      访问url
+     * @param callBack 回调接口
+     */
+    public void getJsonWithHeader(String url, final VolleyCallBack<JSONObject> callBack, final Map <String,String> header) {
+        MyJsonRequest jsonObjectRequest = new MyJsonRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                 HLog.i(TAG, "onResponse  response = " + response.toString());
+                if (callBack != null)
+                    callBack.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                HLog.i(TAG, "onErrorResponse error = " + error);
+                if (callBack != null)
+                    callBack.onErrorResponse(getErrorResult(error));
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = super.getHeaders();
+                if (headers==null || headers.equals(Collections.emptyMap())) {
+                    headers = new HashMap<>();
+                }
+                if (header != null || !headers.equals(Collections.emptyMap())) {
+                    Iterator it = header.entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry entry = (Map.Entry) it.next();
+                        Object key = entry.getKey();
+                        Object value = entry.getValue();
+                        headers.put((String)key, (String) value);
+                    }
+                } else {
+                    //headers.put("apikey","2600907be4021f9979ecc9554a4065ac");
+                }
+                //headers.put("Charset", "UTF-8");
+                //headers.put("Content-Type", "application/x-javascript");
+                //headers.put("Accept-Encoding", "gzip,deflate");
+                return headers;
+                //return super.getHeaders();
+            }
+        };
         jsonObjectRequest.setTag(VOLLEY_TAG);
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 6, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 

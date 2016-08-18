@@ -11,7 +11,11 @@ import com.jn.chart.charts.LineChart;
 import com.jn.chart.data.Entry;
 import com.jn.chart.manager.LineChartManager;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -25,6 +29,10 @@ import tyxo.functions.weather.bean.WeatherInfoReq;
 import tyxo.functions.weather.bean.WeatherResult;
 import tyxo.functions.weather.model.WeatherInfoModel;
 import tyxo.mobilesafe.R;
+import tyxo.mobilesafe.TaskHelp;
+import tyxo.mobilesafe.net.volley.VolleyCallBack;
+import tyxo.mobilesafe.net.volley.VolleyErrorResult;
+import tyxo.mobilesafe.utils.log.HLog;
 
 public class WeatherActivity extends Activity {
     private Button request;
@@ -42,9 +50,11 @@ public class WeatherActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
         weatherInfoModel = WeatherInfoModel.getInstance(getApplicationContext());
-        initViews();
-        initParams();
+        initViews();    // 初始化控件
+        initParams();   // 初始化请求参数
         initEvent();
+
+        initWeather();  // 访问网络 请求天气数据
     }
 
     /*
@@ -63,6 +73,24 @@ public class WeatherActivity extends Activity {
     private void initViews() {
         request = (Button) this.findViewById(R.id.request);
         chart = (LineChart) this.findViewById(R.id.weatherChart);
+    }
+
+    // 访问网络 请求天气数据
+    private void initWeather() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("apikey","2600907be4021f9979ecc9554a4065ac");
+
+        TaskHelp.requstWeatherDatas(this, new VolleyCallBack<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                HLog.i("tyxo","WeatherActivity response: "+ response);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyErrorResult result) {
+                HLog.i("tyxo","WeatherActivity result: "+ result);
+            }
+        },headers);
     }
 
     private void initEvent() {
@@ -112,6 +140,7 @@ public class WeatherActivity extends Activity {
 
                             @Override
                             public void onNext(DailyForecast dailyForecast) {
+                                HLog.i("tyxo","WeatherActivity dailyForecast 返回: "+dailyForecast);
                                 int j = i++;
                                 xValues.add(dailyForecast.getDate());
                                 yValues2Max.add(new Entry(Float.valueOf(dailyForecast.getTmp().getMaxTem()), j));

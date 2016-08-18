@@ -26,4 +26,12 @@ public class Temperature {
     public void setMinTem(String minTem) {
         this.minTem = minTem;
     }
+
+    @Override
+    public String toString() {
+        return "Temperature{" +
+                "maxTem='" + maxTem + '\'' +
+                ", minTem='" + minTem + '\'' +
+                '}';
+    }
 }

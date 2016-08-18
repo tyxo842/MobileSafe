@@ -6,6 +6,8 @@ import android.content.Intent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 import tyxo.mobilesafe.activity.SplashActivity;
 import tyxo.mobilesafe.base.MyApp;
 import tyxo.mobilesafe.base.PlatUser;
@@ -78,4 +80,70 @@ public class TaskHelp {
         VolleyManager.getInstance(context).postJson(url, jsonObject, callback);
         HLog.i("lynet:", "企业  请求url: "+url+"\n请求参数: "+jsonObject.toString());
     }
+
+    public static void requstWeatherDatas(Context context, VolleyCallBack<JSONObject> callback, Map<String,String> header){
+        String url = "http://apis.baidu.com/heweather/weather/free?city=beijing";
+        VolleyManager.getInstance(context).getJsonWithHeader(url,callback,header);
+        /*
+        // 原代码 设置, 需要封装
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                HLog.i("tyxo","TaskHelp jsonObject: "+ jsonObject);
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                HLog.e("tyxo","TaskHelp volleyError: "+ volleyError);
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://apis.baidu.com/heweather/weather/free?city=beijing";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, listener, errorListener){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = super.getHeaders();
+                if (headers==null || headers.equals(Collections.emptyMap())) {
+                    headers = new HashMap<>();
+                }
+                headers.put("apikey","2600907be4021f9979ecc9554a4065ac");
+                //headers.put("Charset", "UTF-8");
+                //headers.put("Content-Type", "application/x-javascript");
+                //headers.put("Accept-Encoding", "gzip,deflate");
+                return headers;
+                //return super.getHeaders();
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //request.setTag(TAG);
+        //request.setShouldCache(true);
+
+        queue.add(request);
+        //queue.start();*/
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
