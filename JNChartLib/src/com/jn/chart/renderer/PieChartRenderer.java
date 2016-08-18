@@ -101,7 +101,6 @@ public class PieChartRenderer extends DataRenderer {
 
     @Override
     public void initBuffers() {
-        // TODO Auto-generated method stub
     }
 
     @Override
