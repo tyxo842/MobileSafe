@@ -42,13 +42,17 @@ import tyxo.mobilesafe.utils.log.HLog;
 public class WeatherActivity extends Activity {
     private Button request;
     private LineChart chart;
+    private LineChart weatherChart_rain;
     private WeatherInfoModel weatherInfoModel;
     private int i = 0;
     private ProgressDialog pd;
 
-    private ArrayList<String> xValues = new ArrayList<>();
-    private ArrayList<Entry> yValues2Max = new ArrayList<Entry>();
-    private ArrayList<Entry> yValues2Min = new ArrayList<Entry>();
+    private ArrayList<String> xValues ;
+    private ArrayList<Entry> yValues2Max ;
+    private ArrayList<Entry> yValues2Min ;
+    private ArrayList<String> xValues_rain ;
+    private ArrayList<Entry> yValues2Max_rain ;
+    private ArrayList<Entry> yValues2Min_rain ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,7 @@ public class WeatherActivity extends Activity {
         setContentView(R.layout.activity_weather);
         weatherInfoModel = WeatherInfoModel.getInstance(getApplicationContext());
         initViews();    // 初始化控件
+        initData();
         initParams();   // 初始化请求参数
         initEvent();
 
@@ -78,10 +83,21 @@ public class WeatherActivity extends Activity {
     private void initViews() {
         request = (Button) this.findViewById(R.id.request);
         chart = (LineChart) this.findViewById(R.id.weatherChart);
+        weatherChart_rain = (LineChart) this.findViewById(R.id.weatherChart_rain);
+    }
+
+    private void initData(){
+        xValues = new ArrayList<>();
+        yValues2Max = new ArrayList<Entry>();
+        yValues2Min = new ArrayList<Entry>();
+        xValues_rain = new ArrayList<>();
+        yValues2Max_rain = new ArrayList<Entry>();
+        yValues2Min_rain = new ArrayList<Entry>();
     }
 
     // volley 访问网络 请求天气数据
     private void initWeather() {
+        clearDataRain();
         pd = new ProgressDialog(WeatherActivity.this);
         pd.setMessage("请稍后...");
         pd.show();
@@ -98,17 +114,16 @@ public class WeatherActivity extends Activity {
                 List<WeatherBean.DailyForecastBean> dailyForecastList = bean.getDaily_forecast();
 
                 for (int k = 0; k < dailyForecastList.size(); k++) {
-                    xValues.add(bean.getDaily_forecast().get(k).getDate());
-                    yValues2Max.add(new Entry(Float.valueOf(bean.getDaily_forecast().get(k).getTmp().getMax()), k));
-                    yValues2Min.add(new Entry(Float.valueOf(bean.getDaily_forecast().get(k).getTmp().getMin()), k));
+                    xValues_rain.add(bean.getDaily_forecast().get(k).getDate());
+                    yValues2Max_rain.add(new Entry(Float.valueOf(bean.getDaily_forecast().get(k).getTmp().getMax()), k));
+                    yValues2Min_rain.add(new Entry(Float.valueOf(bean.getDaily_forecast().get(k).getTmp().getMin()), k));
                 }
 
                 pd.dismiss();
-                chart.setDescription("北京气温预测");
+                weatherChart_rain.setDescription("北京气温预测");
                 LineChartManager.setLineName("最高温度");
                 LineChartManager.setLineName1("最低温度");
-                LineChartManager.initDoubleLineChart(WeatherActivity.this, chart, xValues, yValues2Max, yValues2Min);
-
+                LineChartManager.initDoubleLineChart(WeatherActivity.this, weatherChart_rain, xValues_rain, yValues2Max_rain, yValues2Min_rain);
             }
 
             @Override
@@ -122,6 +137,7 @@ public class WeatherActivity extends Activity {
         request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clearData();
                 //创建访问的API请求
                 weatherInfoModel.queryWeatherByRxJava(initParams())
                         .subscribeOn(Schedulers.io())// 指定观察者在io线程（第一次指定观察者线程有效）
@@ -150,10 +166,15 @@ public class WeatherActivity extends Activity {
                             @Override
                             public void onCompleted() {
                                 pd.dismiss();
+                                /*if ( xValues==null || xValues.isEmpty()) {
+                                    return;
+                                }*/
+                                HLog.v("tyxo","xValues size: "+xValues.size()+" ;max size: "+yValues2Max.size()+" ;min size: "+yValues2Min.size());
                                 //chart.setDescription("广州气温预测");
                                 chart.setDescription("北京气温预测");
                                 LineChartManager.setLineName("最高温度");
                                 LineChartManager.setLineName1("最低温度");
+                                chart.notifyDataSetChanged();
                                 LineChartManager.initDoubleLineChart(WeatherActivity.this, chart, xValues, yValues2Max, yValues2Min);
                             }
 
@@ -175,5 +196,19 @@ public class WeatherActivity extends Activity {
         });
     }
 
-
+    private void clearData(){
+        xValues.clear();
+        yValues2Max.clear();
+        yValues2Min.clear();
+//        xValues = new ArrayList<>();
+//        yValues2Max = new ArrayList<Entry>();
+//        yValues2Min = new ArrayList<Entry>();
+//        chart.clear();
+    }
+    private void clearDataRain(){
+        xValues_rain.clear();
+        yValues2Max_rain.clear();
+        yValues2Min_rain.clear();
+        //weatherChart_rain.clear();
+    }
 }
