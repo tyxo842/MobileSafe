@@ -7,14 +7,17 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jn.chart.charts.LineChart;
 import com.jn.chart.data.Entry;
 import com.jn.chart.manager.LineChartManager;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
@@ -24,6 +27,8 @@ import rx.functions.Action0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import tyxo.functions.weather.bean.DailyForecast;
+import tyxo.functions.weather.bean.WeatherBean;
+import tyxo.functions.weather.bean.WeatherBeanResult;
 import tyxo.functions.weather.bean.WeatherInfo;
 import tyxo.functions.weather.bean.WeatherInfoReq;
 import tyxo.functions.weather.bean.WeatherResult;
@@ -54,7 +59,7 @@ public class WeatherActivity extends Activity {
         initParams();   // 初始化请求参数
         initEvent();
 
-        initWeather();  // 访问网络 请求天气数据
+        initWeather();  // volley 访问网络 请求天气数据
     }
 
     /*
@@ -75,8 +80,11 @@ public class WeatherActivity extends Activity {
         chart = (LineChart) this.findViewById(R.id.weatherChart);
     }
 
-    // 访问网络 请求天气数据
+    // volley 访问网络 请求天气数据
     private void initWeather() {
+        pd = new ProgressDialog(WeatherActivity.this);
+        pd.setMessage("请稍后...");
+        pd.show();
         Map<String, String> headers = new HashMap<>();
         headers.put("apikey","2600907be4021f9979ecc9554a4065ac");
 
@@ -84,6 +92,23 @@ public class WeatherActivity extends Activity {
             @Override
             public void onResponse(JSONObject response) {
                 HLog.i("tyxo","WeatherActivity response: "+ response);
+                Type type = new TypeToken<WeatherBeanResult>() {}.getType();
+                WeatherBeanResult beanResult = new Gson().fromJson(response.toString(), type);
+                WeatherBean bean = beanResult.getWeatherBean().get(0);
+                List<WeatherBean.DailyForecastBean> dailyForecastList = bean.getDaily_forecast();
+
+                for (int k = 0; k < dailyForecastList.size(); k++) {
+                    xValues.add(bean.getDaily_forecast().get(k).getDate());
+                    yValues2Max.add(new Entry(Float.valueOf(bean.getDaily_forecast().get(k).getTmp().getMax()), k));
+                    yValues2Min.add(new Entry(Float.valueOf(bean.getDaily_forecast().get(k).getTmp().getMin()), k));
+                }
+
+                pd.dismiss();
+                chart.setDescription("北京气温预测");
+                LineChartManager.setLineName("最高温度");
+                LineChartManager.setLineName1("最低温度");
+                LineChartManager.initDoubleLineChart(WeatherActivity.this, chart, xValues, yValues2Max, yValues2Min);
+
             }
 
             @Override
@@ -94,7 +119,6 @@ public class WeatherActivity extends Activity {
     }
 
     private void initEvent() {
-        final Gson gson = new Gson();
         request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,7 +171,6 @@ public class WeatherActivity extends Activity {
                                 yValues2Min.add(new Entry(Float.valueOf(dailyForecast.getTmp().getMinTem()), j));
                             }
                         });
-
             }
         });
     }
