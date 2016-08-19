@@ -102,4 +102,6 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
+    <dimen name="edit_padding_top">0dp</dimen>
+
 </resources>

@@ -29,7 +29,7 @@
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="可做成功能6" />
+                android:title="富文本的反馈" />
         </menu>
     </item>
 

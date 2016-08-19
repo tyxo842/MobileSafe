@@ -55,6 +55,7 @@ import dodola.hotfixlib.HotFix;
 import tyxo.functions.music.MusicActivity;
 import tyxo.mobilesafe.activity.ImageViewerActivity;
 import tyxo.mobilesafe.activity.RecyclerActivity;
+import tyxo.mobilesafe.activity.RichEditorActivity;
 import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
 import tyxo.mobilesafe.activity.activityGrid.Aciticity1;
 import tyxo.mobilesafe.activity.activityGrid.Aciticity2;
@@ -301,7 +302,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(this, RichEditorActivity.class);
+            startActivity(intent);
         }
 
         /*switch (id) {
