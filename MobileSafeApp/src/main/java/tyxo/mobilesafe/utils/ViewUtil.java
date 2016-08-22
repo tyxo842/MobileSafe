@@ -310,13 +310,14 @@ public class ViewUtil {
         rlIcon4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*Intent intent = new Intent(activity, MapActivity.class);
+                activity.startActivity(intent);*/
                 rightLowerMenu.close(true);
             }
         });
         rlIcon3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(activity, SplashActivityPG.class);
                 Intent intent = new Intent(activity, HomeActivity.class);
                 activity.startActivity(intent);
                 rightLowerMenu.close(true);

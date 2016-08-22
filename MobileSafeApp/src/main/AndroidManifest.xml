@@ -22,6 +22,19 @@
     <!--RichEditor 用到的-->
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
+    <!--百度地图-->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
@@ -29,6 +42,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/ApplicationAppTheme">
+
+        <!--百度地图-->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="3BEU1w65GtinyqPohBYeE1bpeFcAmWz0" />
+
         <activity
             android:name=".activity.SplashActivity"
             android:label="@string/app_name"
@@ -120,6 +139,8 @@
             android:name="tyxo.mobilesafe.activity.RichEditorActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <!--<activity android:name="tyxo.functions.baidumap.MapActivity"/>-->
 
     </application>
 </manifest>
