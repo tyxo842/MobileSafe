@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
-task('processWithJavassist') << {//plugin version 1.3.0,新版本不支持
+/*task('processWithJavassist') << {//plugin version 1.3.0,新版本不支持
     String classPath = file('build/intermediates/classes/debug')//项目编译class所在目录
     dodola.patch.PatchClass.process(classPath, project(':hackdex').buildDir
             .absolutePath + '/intermediates/classes/debug')//第二个参数是hackdex的class所在目录
-}
+}*/
 
 android {
     compileSdkVersion 23
@@ -17,7 +17,9 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    buildTypes {
+   /*
+    //热修复
+   buildTypes {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -30,7 +32,7 @@ android {
     //plugin version 1.3.0,新版本不支持
     applicationVariants.all { variant ->
         variant.dex.dependsOn << processWithJavassist //在执行dx命令之前将代码打入到class中
-    }
+    }*/
 
     android {
         packagingOptions {
@@ -65,7 +67,7 @@ dependencies {
     compile 'com.romainpiel.shimmer:library:1.4.0'
     compile project(':ShortcutBadger')
     compile 'com.hovans.dynamicgrid:dynamicgrid:1.0.0'
-    compile project(':hotfixlib')
+    //compile project(':hotfixlib') //热修复
     compile files('libs/jpush-android-2.1.0.jar')
     compile 'org.greenrobot:eventbus:3.0.0'
     //compile 'org.hybridsquad.android.photocropper:library:2.1.0' //没有demo,直接换成了lib
@@ -94,10 +96,11 @@ dependencies {
     compile project(':pgirllibrary')
 
     //fuli
-    compile 'io.realm:realm-android:0.87.0'
+    /*compile 'io.realm:realm-android:0.87.0'
     compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile files('libs/umeng-update-v2.6.0.1.jar')
+   */
 }

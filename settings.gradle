@@ -1,5 +1,5 @@
 include ':MobileSafeApp'
 include ':ShortcutBadger'
-include ':hackdex','buildSrc',':hotfixlib'
+//include ':hackdex','buildSrc',':hotfixlib' //去掉热修复
 include ':JNChartLib'
 include ':pgirllibrary'

@@ -1,6 +1,5 @@
 package tyxo.mobilesafe;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -43,15 +42,12 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import dodola.hotfix.LoadBugClass;
-import dodola.hotfixlib.HotFix;
 import tyxo.functions.music.MusicActivity;
 import tyxo.mobilesafe.activity.ImageViewerActivity;
 import tyxo.mobilesafe.activity.RecyclerActivity;
@@ -71,7 +67,6 @@ import tyxo.mobilesafe.utils.bitmap.CropHandler;
 import tyxo.mobilesafe.utils.bitmap.CropHelper;
 import tyxo.mobilesafe.utils.bitmap.CropParams;
 import tyxo.mobilesafe.utils.dialog.DialogUtil;
-import tyxo.mobilesafe.utils.hotfix.Utils;
 import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.GooeyMenu;
 import tyxo.mobilesafe.widget.dragGridView.DragGridView;
@@ -650,19 +645,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
             return true;
         }
-        /**注意 : 如果先点击测试，再点击打补丁，再测试是不会变化的，因为类一旦加载以后，不会重新再去重新加载了。*/
+        /**热修复 注意 : 如果先点击测试，再点击打补丁，再测试是不会变化的，因为类一旦加载以后，不会重新再去重新加载了。*/
         switch (id) {
             case R.id.action_settings_fix:
-                //准备补丁,从assert里拷贝到dex里
+                /*//准备补丁,从assert里拷贝到dex里
                 File dexPath = new File(getDir("dex", Context.MODE_PRIVATE), "path_dex3.jar");
                 Utils.prepareDex(this.getApplicationContext(), dexPath, "path_dex3.jar");
                 HotFix.patch(this, dexPath.getAbsolutePath(), "tyxo.mobilesafe.activity.ImageViewerActivity");
-//                HotFix.patch(this, dexPath.getAbsolutePath(), "dodola.hotfix.BugClass");
-                //DexInjector.inject(dexPath.getAbsolutePath(), defaultDexOptPath, "dodola.hotfix.BugClass");
+                //HotFix.patch(this, dexPath.getAbsolutePath(), "dodola.hotfix.BugClass");
+                //DexInjector.inject(dexPath.getAbsolutePath(), defaultDexOptPath, "dodola.hotfix.BugClass");*/
                 break;
             case R.id.action_settings_test:
-                LoadBugClass bugClass = new LoadBugClass();
-                ToastUtil.showToastS(this,"测试调用方法:" + bugClass.getBugString());
+                /*LoadBugClass bugClass = new LoadBugClass();
+                ToastUtil.showToastS(this,"测试调用方法:" + bugClass.getBugString());*/
                 break;
             case R.id.action_delete:
                 mAdapter.removeData(0);

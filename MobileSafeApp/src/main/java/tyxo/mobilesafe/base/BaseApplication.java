@@ -1,12 +1,6 @@
 package tyxo.mobilesafe.base;
 
 import android.app.Application;
-import android.content.Context;
-
-import java.io.File;
-
-import dodola.hotfixlib.HotFix;
-import tyxo.mobilesafe.utils.hotfix.Utils;
 /**
 * @author ly
 * @created at 2016/7/28 11:22
@@ -44,7 +38,7 @@ public class BaseApplication extends Application {
 		super.onCreate();
 		instance = this;
 
-		// 读取path_dex.jar文件
+		/*// 读取path_dex.jar文件
 		File dexPath = new File(getDir("dex", Context.MODE_PRIVATE), "hackdex_dex.jar");
 		Utils.prepareDex(this.getApplicationContext(),dexPath,"hackdex_dex.jar");	//调用Utils.prepareDex将assets中的hackdex_dex.jar写入该文件.
 		HotFix.patch(this,dexPath.getAbsolutePath(),"dodola.hackdex.AntilazyLoad");	//HotFix.patch就是去反射去修改dexElements了.
@@ -52,7 +46,7 @@ public class BaseApplication extends Application {
 			this.getClassLoader().loadClass("dadala.hackdex.AntilazyLoad");
 		} catch (ClassNotFoundException e ) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	public static BaseApplication getInstance() {
