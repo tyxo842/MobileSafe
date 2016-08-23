@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
+import tyxo.functions.fuli.activity.FuliActivity;
 import tyxo.functions.prettygirls.home.HomeActivity;
 import tyxo.mobilesafe.ConstValues;
 import tyxo.mobilesafe.ConstantsMy;
@@ -326,7 +327,7 @@ public class ViewUtil {
     }
 
     /** 设置页面右下角 彩色menu 图标 动画 */
-    public static void initCenterColorMenu(Activity activity) {
+    public static void initCenterColorMenu(final Activity activity) {
         int redActionButtonSize = activity.getResources().getDimensionPixelSize(R.dimen.red_action_button_size2);
         int redActionButtonMargin = activity.getResources().getDimensionPixelOffset(R.dimen.action_button_margin);
         int redActionButtonContentSize = activity.getResources().getDimensionPixelSize(R.dimen.red_action_button_content_size);
@@ -396,6 +397,15 @@ public class ViewUtil {
                 .setEndAngle(-70)
                 .attachTo(leftCenterButton)
                 .build();
+
+        lcIcon2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, FuliActivity.class);
+                activity.startActivity(intent);
+                leftCenterMenu.close(true);
+            }
+        });
     }
 
     /** 设置页面底部中央 menu 图标 动画 */

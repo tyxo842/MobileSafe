@@ -203,4 +203,6 @@
 
     <color name="swipe_background_color">#ffffff</color>
 
+    <color name="blue_500">#2196f3</color>
+
 </resources>

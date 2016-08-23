@@ -163,7 +163,7 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(itemCompat);
         mSearchView.setIconified(false);
         mSearchView.setIconifiedByDefault(false);*/
-        getMenuInflater().inflate(R.menu.menu_imageactivity, menu);
+        getMenuInflater().inflate(R.menu.menu_imageractivity, menu);
         return true;
     }
 
