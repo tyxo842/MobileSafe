@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import tyxo.functions.music.MusicActivity;
+import tyxo.functions.prettygirls.home.HomeActivity;
 import tyxo.mobilesafe.activity.ImageViewerActivity;
 import tyxo.mobilesafe.activity.RecyclerActivity;
 import tyxo.mobilesafe.activity.RichEditorActivity;
@@ -288,7 +289,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_camera) {
             DialogUtil.showDialogCamera(MainActivity.this,mCropParams);
         } else if (id == R.id.nav_gallery) {
-
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent(this, MusicActivity.class);
             startActivity(intent);

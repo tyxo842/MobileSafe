@@ -106,6 +106,6 @@ public class GirlActivity extends AppActivity implements GirlFragment.OnGirlChan
 
     private void finishActivity() {
         finish();
-        overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
+        //overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
     }
 }
