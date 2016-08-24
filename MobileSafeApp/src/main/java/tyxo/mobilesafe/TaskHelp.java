@@ -13,7 +13,6 @@ import tyxo.mobilesafe.base.MyApp;
 import tyxo.mobilesafe.base.PlatUser;
 import tyxo.mobilesafe.net.volley.VolleyCallBack;
 import tyxo.mobilesafe.net.volley.VolleyManager;
-import tyxo.mobilesafe.utils.StringUtils;
 import tyxo.mobilesafe.utils.log.HLog;
 
 /**
@@ -76,7 +75,8 @@ public class TaskHelp {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = StringUtils.combineURl(ConstValues.MYPHOTO_URL, ConstValues.MYPHOTO_URL);
+        //String url = StringUtils.combineURl(ConstValues.MYPHOTO_URL, ConstValues.MYPHOTO_URL);
+        String url = "";
         VolleyManager.getInstance(context).postJson(url, jsonObject, callback);
         HLog.i("lynet:", "企业  请求url: "+url+"\n请求参数: "+jsonObject.toString());
     }
