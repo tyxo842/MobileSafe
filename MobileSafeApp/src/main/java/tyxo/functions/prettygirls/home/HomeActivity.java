@@ -10,9 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import coder.mylibrary.base.AppActivity;
 import coder.mylibrary.base.BaseFragment;
 import tyxo.functions.prettygirls.about.AboutActivity;
@@ -20,11 +17,8 @@ import tyxo.mobilesafe.R;
 
 public class HomeActivity extends AppActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
-
+    private Toolbar mToolbar;
+    private FloatingActionButton mFab;
     private long exitTime = 0;
 
     @Override
@@ -40,16 +34,19 @@ public class HomeActivity extends AppActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
         initView();
     }
 
     protected void initView() {
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(this);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(R.string.app_name);
         setSupportActionBar(mToolbar);
     }
 
-    @OnClick(R.id.fab)
+    //@OnClick(R.id.fab)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

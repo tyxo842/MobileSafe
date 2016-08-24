@@ -8,8 +8,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import coder.mylibrary.base.BaseFragment;
 import coder.mylibrary.base.GestureActivity;
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -21,17 +19,13 @@ import tyxo.mobilesafe.R;
  */
 public class AboutActivity extends GestureActivity {
 
-    @BindView(R.id.backdrop)
-    ImageView mBackdrop;
-    @BindView(R.id.about_toolbar)
-    Toolbar mAboutToolbar;
-    @BindView(R.id.toolbar_layout)
-    CollapsingToolbarLayout mToolbarLayout;
+    private ImageView mBackdrop;
+    private Toolbar mAboutToolbar;
+    private CollapsingToolbarLayout mToolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
         initView();
     }
 
@@ -56,6 +50,9 @@ public class AboutActivity extends GestureActivity {
     }
 
     private void initView() {
+        mToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        mBackdrop = (ImageView) findViewById(R.id.backdrop);
+        mAboutToolbar = (Toolbar) findViewById(R.id.about_toolbar);
         mAboutToolbar.setTitle("关于我");
         setSupportActionBar(mAboutToolbar);
         mAboutToolbar.setNavigationIcon(R.drawable.ic_back);

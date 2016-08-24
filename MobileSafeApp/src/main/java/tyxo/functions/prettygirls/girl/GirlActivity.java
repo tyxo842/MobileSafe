@@ -9,8 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import coder.mylibrary.base.AppActivity;
 import coder.mylibrary.base.BaseFragment;
 import tyxo.functions.prettygirls.util.ColorUtil;
@@ -21,10 +19,8 @@ import tyxo.mobilesafe.R;
  */
 public class GirlActivity extends AppActivity implements GirlFragment.OnGirlChange {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-
-    GirlFragment mGirlFragment;
+    private Toolbar mToolbar;
+    private GirlFragment mGirlFragment;
 
     @Override
     protected int getContentViewId() {
@@ -45,11 +41,11 @@ public class GirlActivity extends AppActivity implements GirlFragment.OnGirlChan
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
         initView();
     }
 
     private void initView() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(R.string.meizhi);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_back);

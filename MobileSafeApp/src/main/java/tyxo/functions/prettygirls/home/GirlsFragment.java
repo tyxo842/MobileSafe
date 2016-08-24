@@ -15,9 +15,6 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import coder.mylibrary.base.BaseFragment;
 import tyxo.functions.prettygirls.data.bean.GirlsBean;
 import tyxo.functions.prettygirls.girl.GirlActivity;
@@ -31,12 +28,8 @@ import tyxo.mobilesafe.utils.log.HLog;
 public class GirlsFragment extends BaseFragment implements GirlsContract.View, SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnLoadMoreListener {
 
     public static final String TAG = "GirlsFragment";
-
-    @BindView(R.id.girls_recycler_view)
-    EasyRecyclerView mGirlsRecyclerView;
-    @BindView(R.id.network_error_layout)
-    ViewStub mNetworkErrorLayout;
-
+    private ViewStub mNetworkErrorLayout;
+    private EasyRecyclerView mGirlsRecyclerView;
     private View networkErrorView;
 
     private ArrayList<GirlsBean.ResultsEntity> data;
@@ -46,7 +39,7 @@ public class GirlsFragment extends BaseFragment implements GirlsContract.View, S
     private int page = 1;
     private int size = 20;
 
-    private Unbinder unbinder;
+    //private Unbinder unbinder;
 
     @Override
     protected int getLayoutId() {
@@ -60,8 +53,10 @@ public class GirlsFragment extends BaseFragment implements GirlsContract.View, S
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        unbinder = ButterKnife.bind(this, view);
+        //unbinder = ButterKnife.bind(this, view);
 
+        mGirlsRecyclerView = (EasyRecyclerView) view.findViewById(R.id.girls_recycler_view);
+        mNetworkErrorLayout = (ViewStub) view.findViewById(R.id.network_error_layout);
         mPresenter = new GirlsPresenter(this);
 
         initRecyclerView();
@@ -157,6 +152,6 @@ public class GirlsFragment extends BaseFragment implements GirlsContract.View, S
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        //unbinder.unbind();
     }
 }

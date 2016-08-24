@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
+import tyxo.functions.fuli.activity.FuliActivity;
 import tyxo.functions.prettygirls.home.HomeActivity;
 import tyxo.mobilesafe.ConstValues;
 import tyxo.mobilesafe.ConstantsMy;
@@ -400,8 +401,8 @@ public class ViewUtil {
         lcIcon2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(activity, FuliActivity.class);
-                activity.startActivity(intent);*/
+                Intent intent = new Intent(activity, FuliActivity.class);
+                activity.startActivity(intent);
                 leftCenterMenu.close(true);
             }
         });

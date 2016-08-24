@@ -121,9 +121,6 @@
 
         <!--图片功能 Rxjava+Retrofit+...-->
         <activity
-            android:name="tyxo.functions.prettygirls.splash.SplashActivityPG"
-            android:theme="@style/AppTheme.Splash"/>
-        <activity
             android:name="tyxo.functions.prettygirls.home.HomeActivity"
             android:label="PrettyGirls"
             android:theme="@style/GirlsHome"/>
@@ -141,6 +138,10 @@
             android:name="tyxo.mobilesafe.activity.RichEditorActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <!--fuli-->
+        <activity android:name="tyxo.functions.fuli.activity.FuliActivity"/>
+        <activity android:name="tyxo.functions.fuli.activity.ImageViewerActivity"/>
 
         <!--<activity android:name="tyxo.functions.baidumap.MapActivity"/>-->
 

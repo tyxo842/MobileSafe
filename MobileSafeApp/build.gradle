@@ -35,7 +35,6 @@ dependencies {
     compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'//右下角menu
 
     //Retrofit-RxJava-MPAndroidChart 显示天气
-    //compile 'com.orhanobut:logger:1.11'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
@@ -49,14 +48,13 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.+'
     compile 'com.jude:easyrecyclerview:4.0.2'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
-    compile 'com.jakewharton:butterknife:8.1.0'//compile 'com.jakewharton:butterknife-compiler:8.1.0'
+    //compile 'com.jakewharton:butterknife:8.1.0'//compile 'com.jakewharton:butterknife-compiler:8.1.0'
     compile project(':pgirllibrary')
 
     //fuli
-    //compile 'io.realm:realm-android:0.87.0'
-    //compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
-    //compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    //compile 'org.jsoup:jsoup:1.8.3'
-    //compile 'com.umeng.analytics:analytics:latest.integration'
-    //compile files('libs/umeng-update-v2.6.0.1.jar')
+    compile 'io.realm:realm-android:0.87.0'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'org.jsoup:jsoup:1.8.3'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile files('libs/umeng-update-v2.6.0.1.jar')
 }

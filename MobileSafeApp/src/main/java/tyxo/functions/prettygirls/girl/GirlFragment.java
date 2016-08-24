@@ -18,9 +18,6 @@ import android.widget.LinearLayout;
 import java.io.File;
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import coder.mylibrary.base.BaseFragment;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -37,23 +34,18 @@ import tyxo.mobilesafe.R;
  */
 public class GirlFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
 
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
-    @BindView(R.id.rootView)
-    LinearLayout mRootView;
+    private ViewPager mViewPager;
+    private LinearLayout mRootView;
     private GirlAdapter mAdapter;
-
     private ArrayList<GirlsBean.ResultsEntity> datas;
     private int current;
-
-    private Unbinder unbinder;
-
+    //private Unbinder unbinder;
     private OnGirlChange mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
+        //ButterKnife.bind(this, rootView);
         return rootView;
     }
 
@@ -90,7 +82,9 @@ public class GirlFragment extends BaseFragment implements ViewPager.OnPageChange
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        unbinder = ButterKnife.bind(this, view);
+        //unbinder = ButterKnife.bind(this, view);
+        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        mRootView = (LinearLayout) view.findViewById(R.id.rootView);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -222,6 +216,6 @@ public class GirlFragment extends BaseFragment implements ViewPager.OnPageChange
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        //unbinder.unbind();
     }
 }
