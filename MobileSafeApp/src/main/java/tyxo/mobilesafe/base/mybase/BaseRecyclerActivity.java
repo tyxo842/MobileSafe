@@ -28,6 +28,38 @@ import tyxo.mobilesafe.utils.log.HLog;
  */
 public abstract class BaseRecyclerActivity<E> extends BaseActivityToolbar{
 
+    /*
+    public static <T> String arrayToString(ArrayList<T> list) {
+    Gson g = new Gson();
+    return g.toJson(list);
+    }
+    public static <T> ArrayList<T> stringToArray(String s) {
+    Gson g = new Gson();
+    Type listType = new TypeToken<ArrayList<T>>(){}.getType();
+    ArrayList<T> list = g.fromJson(s, listType);
+    return list;
+    }
+
+    正确:
+    public static <T> List<T> stringToArray(String s, Class<T[]> clazz) {
+    T[] arr = new Gson().fromJson(s, clazz);
+    return Arrays.asList(arr); //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
+    }
+
+    public <T> List<T> deserializeList(String json) {
+    Gson gson = new Gson();
+    Type type = (new TypeToken<List<T>>() {}).getType();
+    return  gson.fromJson(json, type);
+    }
+
+    正确:
+    public <T> List<T> deserializeList(String json, Type type) {
+    Gson gson = new Gson();
+    return  gson.fromJson(json, type);
+    }
+
+     */
+
     protected RecyclerView id_recyclerview;
     protected ArrayList<E> datas;
     protected TaskHelp taskHelp;
