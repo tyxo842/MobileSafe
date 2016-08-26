@@ -2,6 +2,7 @@ package tyxo.mobilesafe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +13,9 @@ import tyxo.mobilesafe.activity.SplashActivity;
 import tyxo.mobilesafe.base.MyApp;
 import tyxo.mobilesafe.base.PlatUser;
 import tyxo.mobilesafe.net.volley.VolleyCallBack;
+import tyxo.mobilesafe.net.volley.VolleyErrorResult;
 import tyxo.mobilesafe.net.volley.VolleyManager;
+import tyxo.mobilesafe.utils.StringUtils;
 import tyxo.mobilesafe.utils.log.HLog;
 
 /**
@@ -53,6 +56,59 @@ public class TaskHelp {
     }
 
 
+    /** 测试接口用,勿删! (从hh 挪移过来,get不到sp,会崩,记录一下 可变参数,接口思想) */
+    public static void testNet(Context context,String... args) {
+
+        PlatUser platUser = (PlatUser) MyApp.getInstance().getCurrentUser();
+        String userName = platUser.userName;
+        String orgId = platUser.orgId;
+        SharedPreferences mSpUser = MyApp.getAppContext().getSharedPreferences(ConstValues.USER_DATA_FILE, Context.MODE_PRIVATE);
+        String userPWD = mSpUser.getString("pwd", "");
+        String userLoginName = mSpUser.getString("userName", "");
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userName", userName);
+            jsonObject.put("userPwd", userPWD);
+            jsonObject.put("orgId", orgId);
+            jsonObject.put("orderContentId", args[1]);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //String url = StringUtils.combineURl(ConstValues.BASE_URL_CODE, ConstValues.ORDER_DETAIL_FRAGMENT_NORMAL);
+        String url = args[0];
+        VolleyManager.getInstance(context).postJson(url, jsonObject, new VolleyCallBack<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                HLog.i("tyxo",response.toString());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyErrorResult result) {
+                HLog.i("tyxo",result.toString());
+            }
+        });
+        HLog.i("tyxo:", " 请求url: "+url+"\n请求参数: "+jsonObject.toString());
+    }
+
+
+    /** 网络请求 基础方法 可变第一个参数要为url */
+    public static void getDatasNet(Context context,VolleyCallBack<JSONObject> callback,String... args) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("orderContentId", args[1]);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //String url = StringUtils.combineURl(ConstValues.BASE_URL_CODE, ConstValues.ORDER_DETAIL_FRAGMENT_NORMAL);
+        String url = args[0];
+
+        VolleyManager.getInstance(context).postJson(url, jsonObject, callback);
+        HLog.i("tyxo:", " 请求url: "+url+"\n请求参数: "+jsonObject.toString());
+    }
+
     /** 网络请求 */
     public void orderModifyState(Context context,String orderId, String orderState,
                                  VolleyCallBack<JSONObject> callback) {
@@ -75,12 +131,12 @@ public class TaskHelp {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //String url = StringUtils.combineURl(ConstValues.MYPHOTO_URL, ConstValues.MYPHOTO_URL);
         String url = "";
         VolleyManager.getInstance(context).postJson(url, jsonObject, callback);
-        HLog.i("lynet:", "企业  请求url: "+url+"\n请求参数: "+jsonObject.toString());
+        HLog.i("tyxo:", " 请求url: "+url+"\n请求参数: "+jsonObject.toString());
     }
 
+    /** 天气查看 网络请求 */
     public static void requstWeatherDatas(Context context, VolleyCallBack<JSONObject> callback, Map<String,String> header){
         String url = "http://apis.baidu.com/heweather/weather/free?city=beijing";
         VolleyManager.getInstance(context).getJsonWithHeader(url,callback,header);
@@ -123,6 +179,18 @@ public class TaskHelp {
         queue.add(request);
         //queue.start();*/
     }
+
+    /** girls 获取 网络请求 */
+    public static void getGirls(Context context,int pageSize,int pageIndex,int rand,VolleyCallBack<JSONObject> callback){
+        String urlBase = StringUtils.combineURl(ConstValues.MM_DABAI_BASE, ConstValues.MM_DABAI_BASE_NOZHI);
+        String apiKey = "&showapi_appid=20676&showapi_sign=f730cd8c4cf8498895f83d43ddaba8c2";
+
+        String url = urlBase+"?"+"num="+pageSize+"&page="+pageIndex+"&rand="+apiKey;
+        VolleyManager.getInstance(context).getJson(url,callback);
+        HLog.i("tyxo","getGirls url : "+url);
+    }
+
+
 }
 
 

@@ -1,4 +1,4 @@
-package tyxo.mobilesafe.base.myinterface;
+package tyxo.mobilesafe.base.interfacehh;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;

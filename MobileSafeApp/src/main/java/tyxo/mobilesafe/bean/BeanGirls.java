@@ -7,7 +7,16 @@ import java.util.List;
  * Mail      1577441454@qq.com
  * Describe :
  */
-public class GirlsBean {
+public class BeanGirls {
+
+    @Override
+    public String toString() {
+        return "BeanGirls{" +
+                "showapi_res_code=" + showapi_res_code +
+                ", showapi_res_error='" + showapi_res_error + '\'' +
+                ", showapi_res_body=" + showapi_res_body +
+                '}';
+    }
 
     /**
      * showapi_res_code : 0

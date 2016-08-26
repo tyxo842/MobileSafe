@@ -1,9 +1,6 @@
-package tyxo.mobilesafe.base.myabstract;
+package tyxo.mobilesafe.base.abstracthh;
 
 public abstract class EntityBase {
-
-
-
 
 	// 如果主键没有命名名为id或_id的时，需要为主键添加此注解
 	// @Id(column = "_id")
@@ -26,8 +23,6 @@ public abstract class EntityBase {
 //	public void setId(int id) {
 //		this.id = id;
 //	}
-
-
 
 
 //	public static LoginInfo info;

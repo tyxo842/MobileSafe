@@ -50,6 +50,7 @@ import java.util.List;
 
 import tyxo.functions.music.MusicActivity;
 import tyxo.functions.prettygirls.home.HomeActivity;
+import tyxo.mobilesafe.activity.GirlsActivity;
 import tyxo.mobilesafe.activity.ImageViewerActivity;
 import tyxo.mobilesafe.activity.RecyclerActivity;
 import tyxo.mobilesafe.activity.RichEditorActivity;
@@ -661,6 +662,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.action_settings_test:
                 /*LoadBugClass bugClass = new LoadBugClass();
                 ToastUtil.showToastS(this,"测试调用方法:" + bugClass.getBugString());*/
+
+                Intent intent = new Intent(this, GirlsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.action_delete:
                 mAdapter.removeData(0);

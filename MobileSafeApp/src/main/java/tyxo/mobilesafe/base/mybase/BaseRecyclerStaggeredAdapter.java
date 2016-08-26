@@ -1,4 +1,4 @@
-package tyxo.mobilesafe.adpter;
+package tyxo.mobilesafe.base.mybase;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +16,7 @@ import java.util.List;
 * @created at 2016/8/25 16:11
 * @des : recyclerView 的基类adapter
 */
-public abstract class BaseStaggeredAdapter<T extends RecyclerView.ViewHolder,E> extends
+public abstract class BaseRecyclerStaggeredAdapter<T extends RecyclerView.ViewHolder,E> extends
         RecyclerView.Adapter<T> {
 
     private Context context;
@@ -35,7 +35,7 @@ public abstract class BaseStaggeredAdapter<T extends RecyclerView.ViewHolder,E> 
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
-    public BaseStaggeredAdapter(Context context, ArrayList<E> datas,int layoutItemId) {
+    public BaseRecyclerStaggeredAdapter(Context context, ArrayList<E> datas, int layoutItemId) {
         this.context = context;
         //mInflater = LayoutInflater.from(context);
         mDatas = datas;
@@ -107,15 +107,6 @@ public abstract class BaseStaggeredAdapter<T extends RecyclerView.ViewHolder,E> 
         mDatas.remove(position);
         notifyItemRemoved(position);
     }
-
-    /*protected class MyViewHolder extends ViewHolder {
-        View item;
-
-        public MyViewHolder(View view) {
-            super(view);
-            item = view;
-        }
-    }*/
 }
 
 

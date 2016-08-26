@@ -19,7 +19,7 @@
         android:id="@+id/action_settings_test"
         android:icon="@drawable/icon_user"
         android:orderInCategory="100"
-        android:title="测试 吐司"
+        android:title="打开dbmm"
         app:showAsAction="never" />
 
 </menu>

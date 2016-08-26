@@ -1,4 +1,4 @@
-package tyxo.mobilesafe.base.myinterface;
+package tyxo.mobilesafe.base.interfacehh;
 
 public interface IBaseInit {
 

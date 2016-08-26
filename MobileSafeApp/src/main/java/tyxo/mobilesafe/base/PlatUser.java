@@ -15,8 +15,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import tyxo.mobilesafe.ConstValues;
-import tyxo.mobilesafe.base.myabstract.EntityBase;
-import tyxo.mobilesafe.base.myinterface.Table;
+import tyxo.mobilesafe.base.abstracthh.EntityBase;
+import tyxo.mobilesafe.base.interfacehh.Table;
 import tyxo.mobilesafe.net.volley.VolleyCallBack;
 import tyxo.mobilesafe.net.volley.VolleyErrorResult;
 import tyxo.mobilesafe.net.volley.VolleyManager;

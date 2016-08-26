@@ -16,7 +16,8 @@ public class ConstValues {
 
     /** mm 来自 大白 MVP demo */
     //public static String MM_DABAI_BASE = "http://route.showapi.com/197-1?num=20&page=1&rand=0&showapi_appid=20676&showapi_sign=f730cd8c4cf8498895f83d43ddaba8c2 HTTP/1.1";
-    public static String MM_DABAI_BASE = "http://route.showapi.com/197-1?num=20&page=1&rand=0&showapi_appid=20676&showapi_sign=f730cd8c4cf8498895f83d43ddaba8c2";
+    public static String MM_DABAI_BASE = "http://route.showapi.com/";
+    public static String MM_DABAI_BASE_NOZHI = "197-1";
 
 
 

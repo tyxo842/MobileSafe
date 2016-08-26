@@ -11,7 +11,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.io.File;
 import java.text.MessageFormat;
 
-import tyxo.mobilesafe.base.myinterface.IDialogAction;
+import tyxo.mobilesafe.base.interfacehh.IDialogAction;
 import tyxo.mobilesafe.net.volley.VolleyManager;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;

@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import tyxo.mobilesafe.R;
-import tyxo.mobilesafe.base.myinterface.IBaseBarCallback;
-import tyxo.mobilesafe.base.myinterface.IBaseInit;
+import tyxo.mobilesafe.base.interfacehh.IBaseBarCallback;
+import tyxo.mobilesafe.base.interfacehh.IBaseInit;
 import tyxo.mobilesafe.widget.control.LogicProxy;
 
 public abstract class BaseActivity extends AppCompatActivity implements IBaseBarCallback, IBaseInit {

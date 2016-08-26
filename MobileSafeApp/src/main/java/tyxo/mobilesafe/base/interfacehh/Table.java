@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package tyxo.mobilesafe.base.myinterface;
+package tyxo.mobilesafe.base.interfacehh;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
