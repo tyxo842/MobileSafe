@@ -74,7 +74,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:background="@drawable/seloctor_btn_commit_unradian"
-        android:textColor="@color/white"
+        android:textColor="@drawable/seloctor_tv_unradian"
         android:text="点击调整到 StaggeredGridActivity"/>
 
     <android.support.v4.widget.SwipeRefreshLayout

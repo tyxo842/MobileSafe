@@ -40,7 +40,7 @@
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/img_user"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/ApplicationAppTheme">
@@ -142,6 +142,10 @@
         <!--fuli-->
         <activity android:name="tyxo.functions.fuli.activity.FuliActivity"/>
         <activity android:name="tyxo.functions.fuli.activity.ImageViewerActivity"/>
+
+        <activity android:name="tyxo.mobilesafe.activity.GirlsActivity"
+            android:label=""
+            android:theme="@style/MyToolbarTheme"/>
 
         <!--<activity android:name="tyxo.functions.baidumap.MapActivity"/>-->
 

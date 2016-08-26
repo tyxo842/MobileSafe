@@ -243,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_main_up_recycler_1: {
+                //Utility.setTextViewState(this, tv_main_up_recycler_1, Utility.switchBtnClickState("",""));//设置drawleft的图片
                 Intent intent = new Intent(this, StaggeredGridLayoutActivity.class);
                 startActivity(intent);
             }

@@ -19,7 +19,8 @@ import tyxo.mobilesafe.R;
 /**
 * @author ly
 * @des : 使用 搭配(清单文件中) 	android:label=""
-								android:theme="Theme.AppCompat.Light.NoActionBar"
+								android:theme="@style/MyToolbarTheme"
+								//android:theme="Theme.AppCompat.Light.NoActionBar"(原始)
 * 	设置标题(居中) 直接调用  		mToolbarTitle.setText("");
 */
 public abstract class BaseActivityToolbar extends AppCompatActivity {
