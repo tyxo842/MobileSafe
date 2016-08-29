@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
@@ -40,6 +41,9 @@ import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.ViewUtil;
 import tyxo.mobilesafe.widget.AutoClearEditText;
 import tyxo.mobilesafe.widget.TouchImageView;
+import tyxo.mobilesafe.widget.brokenview.BrokenCallback;
+import tyxo.mobilesafe.widget.brokenview.BrokenTouchListener;
+import tyxo.mobilesafe.widget.brokenview.BrokenView;
 
 /**
 * @author ly
@@ -58,6 +62,12 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
     private Button button;              // 设置按钮
     private Button removeBadgeBtn;      // 清除按钮
     private TextView tv_iv_layout_2;    // 接收 eventBus 发送的消息
+
+    /** brokenview 用到的属性 */
+    private BrokenView mBrokenView;
+    private BrokenTouchListener colorfulListener;
+    private BrokenTouchListener whiteListener;
+    private Paint whitePaint;
 
     @Override
     protected void setMyContentView() {
@@ -91,6 +101,8 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         initGlide();
 
         ViewUtil.initBottomRightMenu(this);/** 初始化 底部 右下角menu图标 */
+
+        initBrokenView(); // 初始化特效
     }
 
     @Override
@@ -221,6 +233,57 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
         protected void onPostExecute(String result) {
             ToastUtil.showToastS(getApplicationContext(), result);
             image.setDrawingCacheEnabled(false);
+        }
+    }
+
+    /**BrokenView 特效*/
+    private void initBrokenView() {
+        mBrokenView = BrokenView.add2Window(this);
+        final BrokenCallback callback = new MyCallBack();
+        mBrokenView.setCallback(callback);
+        whitePaint = new Paint();
+        whitePaint.setColor(0xffffffff);
+        colorfulListener = new BrokenTouchListener.Builder(mBrokenView).build();
+        whiteListener = new BrokenTouchListener.Builder(mBrokenView).
+                setPaint(whitePaint).
+                build();
+        image.setOnTouchListener(colorfulListener);  // 放开就使用破碎特效,ps:无数据bg时可点击看到.
+    }
+    // brokenview 的回调显示
+    private void showCallback(View v, String s) {
+        switch (v.getId()) {
+            case R.id.image:
+                //ToastUtil.showToastS(this,s);
+                break;
+        }
+    }
+    // brokenview 的回调
+    private class MyCallBack extends BrokenCallback {
+        @Override
+        public void onStart(View v) {
+            showCallback(v, "onStart");
+        }
+        @Override
+        public void onCancel(View v) {
+            showCallback(v, "onCancel");
+        }
+        @Override
+        public void onRestart(View v) {
+            showCallback(v, "onRestart");
+        }
+        @Override
+        public void onFalling(View v) {
+            showCallback(v, "onFalling");
+        }
+        @Override
+        public void onFallingEnd(View v) {
+            //pb_order_list.setVisibility(View.VISIBLE);
+            //onRefresh();
+            image.setVisibility(View.GONE);
+        }
+        @Override
+        public void onCancelEnd(View v) {
+            showCallback(v, "onCancelEnd");
         }
     }
 
