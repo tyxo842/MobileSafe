@@ -9,13 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tyxo.mobilesafe.base.mybase.BaseRecyclerStaggeredAdapter;
+import tyxo.mobilesafe.bean.BeanGirls;
 
 /**
  * Created by LY on 2016/8/26 13: 34.
  * Mail      1577441454@qq.com
  * Describe :
  */
-public class GirlsAdapter extends BaseRecyclerStaggeredAdapter<GirlsAdapter.MyViewHolder,Object> {
+public class GirlsAdapter extends BaseRecyclerStaggeredAdapter<GirlsAdapter.MyViewHolder,BeanGirls.ShowapiResBodyBean.NewslistBean> {
 
     protected List<Integer> mHeights;                 //随机item的高度
 
@@ -34,9 +35,8 @@ public class GirlsAdapter extends BaseRecyclerStaggeredAdapter<GirlsAdapter.MyVi
     }
 
     @Override
-    protected void initItemView(MyViewHolder holder, Object bean) {
-
-        int position = holder.getLayoutPosition();
+    protected void initItemView(MyViewHolder holder, BeanGirls.ShowapiResBodyBean.NewslistBean bean, int position) {
+        //int position = holder.getLayoutPosition();
 
         // 设置随机高度
         ViewGroup.LayoutParams lp = holder.item.getLayoutParams();
@@ -44,7 +44,6 @@ public class GirlsAdapter extends BaseRecyclerStaggeredAdapter<GirlsAdapter.MyVi
         holder.item.setLayoutParams(lp);
 
         /** 设置item的 view内容数据 */
-
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -56,3 +55,17 @@ public class GirlsAdapter extends BaseRecyclerStaggeredAdapter<GirlsAdapter.MyVi
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -15,6 +15,9 @@ import java.util.List;
 * @author ly
 * @created at 2016/8/25 16:11
 * @des : recyclerView 的基类adapter
+ *       用法:
+ *        class GirlsAdapterMy extends BaseRecyclerStaggeredAdapter <MyHolder,NewslistBean>{...}
+ *        参考 GirlsAdapterMy 内的adapter用法.
 */
 public abstract class BaseRecyclerStaggeredAdapter<T extends RecyclerView.ViewHolder,E> extends
         RecyclerView.Adapter<T> {
@@ -63,7 +66,7 @@ public abstract class BaseRecyclerStaggeredAdapter<T extends RecyclerView.ViewHo
         holder.item.setLayoutParams(lp);*/
 
         final E bean = mDatas.get(position);
-        initItemView(holder,bean);
+        initItemView(holder,bean,position);
 
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickLitener != null) {
@@ -88,14 +91,18 @@ public abstract class BaseRecyclerStaggeredAdapter<T extends RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return mDatas.size();
+        if (mDatas != null && mDatas.size() >= 0) {
+            return mDatas.size();
+        } else {
+            return 0;
+        }
     }
 
     /** 返回 viewHolder */
     protected abstract T getViewHolder(View itemView);
 
     /** 设置数据 */
-    protected abstract void initItemView(T holder,E bean);
+    protected abstract void initItemView(T holder,E bean,int position);
 
     public void addData(int position,E bean) {
         mDatas.add(position, bean);

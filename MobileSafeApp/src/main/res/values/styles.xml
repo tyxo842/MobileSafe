@@ -178,4 +178,25 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="HeaderTitleTextAppearance"
+        parent="TextAppearance.AppCompat">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TitleTextAppearance"
+        parent="TextAppearance.AppCompat">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="SummaryTextAppearance"
+        parent="TextAppearance.AppCompat">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
 </resources>
