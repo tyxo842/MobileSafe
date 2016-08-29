@@ -61,6 +61,16 @@ public class BeanGirls {
     public static class ShowapiResBodyBean {
         private int code;
         private String msg;
+
+        @Override
+        public String toString() {
+            return "ShowapiResBodyBean{" +
+                    "code=" + code +
+                    ", msg='" + msg + '\'' +
+                    ", newslist=" + newslist +
+                    '}';
+        }
+
         /**
          * title : 瑜然ZEO 性感诱惑微博自拍
          * picUrl : http://m.xxxiao.com/wp-content/uploads/sites/3/2016/07/m.xxxiao.com_cda9c098518d4217c80f3fdb7c063f55-760x500.jpg
@@ -100,6 +110,18 @@ public class BeanGirls {
             private String picUrl;
             private String description;
             private String ctime;
+
+            @Override
+            public String toString() {
+                return "NewslistBean{" +
+                        "title='" + title + '\'' +
+                        ", picUrl='" + picUrl + '\'' +
+                        ", description='" + description + '\'' +
+                        ", ctime='" + ctime + '\'' +
+                        ", url='" + url + '\'' +
+                        '}';
+            }
+
             private String url;
 
             public String getTitle() {
