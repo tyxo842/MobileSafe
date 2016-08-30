@@ -1,22 +1,19 @@
 package tyxo.mobilesafe.activity;
 
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 import tyxo.mobilesafe.ConstValues;
 import tyxo.mobilesafe.R;
+import tyxo.mobilesafe.adpter.GirlsAdapterMy;
 import tyxo.mobilesafe.base.mybase.BaseRecyclerActivity;
 import tyxo.mobilesafe.base.mybase.BaseRecyclerStaggeredAdapter;
 import tyxo.mobilesafe.bean.BeanGirls;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
-import tyxo.mobilesafe.widget.recyclerdivider.recyclerbase.RatioImageView;
 
 /**
  * Created by LY on 2016/8/25 10: 38.
@@ -102,37 +99,6 @@ public class GirlsActivity extends BaseRecyclerActivity<BeanGirls>{
         super.onLoadMore();
         pageIndex++;
         requestNet();
-    }
-
-    class GirlsAdapterMy extends BaseRecyclerStaggeredAdapter <GirlsAdapterMy.MyHolder,BeanGirls.ShowapiResBodyBean.NewslistBean>{
-
-        public GirlsAdapterMy(Context context, ArrayList datas, int layoutItemId) {
-            super(context, datas, layoutItemId);
-        }
-
-        @Override
-        protected MyHolder getViewHolder(View itemView) {
-            return new MyHolder(itemView);
-        }
-
-        @Override
-        protected void initItemView(MyHolder holder, BeanGirls.ShowapiResBodyBean.NewslistBean bean,int position) {
-            holder.itemView.setTag(position);
-            Glide.with(GirlsActivity.this)
-                    .load(bean.getPicUrl())
-                    .centerCrop()
-                    .placeholder(R.color.global_background)
-                    .into(holder.mGirlImage);
-        }
-
-        class MyHolder extends RecyclerView.ViewHolder{
-            RatioImageView mGirlImage;
-            public MyHolder(View itemView) {
-                super(itemView);
-                mGirlImage = (RatioImageView) itemView.findViewById(R.id.girl_image_item);
-                mGirlImage.setRatio(0.618f);// set the ratio to golden ratio.
-            }
-        }
     }
 }
 

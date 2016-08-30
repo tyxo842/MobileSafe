@@ -104,4 +104,7 @@
 
     <dimen name="edit_padding_top">0dp</dimen>
 
+    <dimen name="card_image_width">312dp</dimen>
+    <dimen name="card_image_height">220dp</dimen>
+
 </resources>

@@ -99,5 +99,6 @@
     <item name="action_camera" type="id" />
     <item name="action_click" type="id" />
 
+    <item type="id" name="mask" />
 
 </resources>

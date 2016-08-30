@@ -57,4 +57,12 @@
         <attr name="border_color" format="color"/>
     </declare-styleable>
 
+    <!--smooth pic-->
+    <declare-styleable name="card">
+        <attr name="itemMarginTop" format="dimension" />
+        <attr name="bottomMarginTop" format="dimension" />
+        <attr name="yOffsetStep" format="dimension" />
+        <attr name="widthHeightRate" format="float" />
+    </declare-styleable>
+
 </resources>

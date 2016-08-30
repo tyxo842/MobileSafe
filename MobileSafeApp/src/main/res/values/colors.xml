@@ -205,4 +205,7 @@
 
     <color name="blue_500">#2196f3</color>
 
+    <color name="selection_ripple">#a5c5ccf5</color>
+    <color name="selection_mask">#8f000000</color>
+
 </resources>
