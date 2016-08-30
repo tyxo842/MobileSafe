@@ -25,7 +25,7 @@ import tyxo.mobilesafe.widget.recyclerdivider.recyclerbase.LoadMoreView;
  *            子类使用的时候: public class GirlsActivity extends BaseRecyclerActivity<BeanGirls>{....}.
  *            参考 GirlsActivity 代码.
  */
-public abstract class BaseRecyclerActivity<T> extends BaseActivityToolbar implements SwipeRefreshLayout.OnRefreshListener{
+public abstract class BaseRecyclerActivity<T extends Object> extends BaseActivityToolbar implements SwipeRefreshLayout.OnRefreshListener{
 
     /*
     public static <T> String arrayToString(ArrayList<T> list) {
@@ -68,6 +68,7 @@ public abstract class BaseRecyclerActivity<T> extends BaseActivityToolbar implem
     private Class<T> clazz ;
     private GridLayoutManager mLayoutManager;
     private int lastVisibleItem;
+    private T beanB;
 
     protected boolean isRefresh = true;            //是否是下拉刷新
     protected boolean isLoadMore = false;         //是否是上拉加载
@@ -103,6 +104,7 @@ public abstract class BaseRecyclerActivity<T> extends BaseActivityToolbar implem
     }
 
     /** 处理数据 */
+    protected abstract void handleData(T beanB);
     protected abstract void handleData(String resp , Class<T> clazzH);
         /** 子类建议做如下判断, 打印size,便于调试接口,按自己情况去写 */
         //Type type = new TypeToken<BeanGirls>() {}.getType();
@@ -125,8 +127,11 @@ public abstract class BaseRecyclerActivity<T> extends BaseActivityToolbar implem
                 HLog.i("tyxo", " response : " + response.toString());
                 try {
                     if (!TextUtils.isEmpty(response.toString())) {
+                        /*Type type = new TypeToken<T>() {}.getType();
+                        T bean = new Gson().fromJson(response.toString(), type);*/
 
                         handleData(response.toString(),clazz);   //处理数据
+                        //handleData(bean);   //处理数据
 
                     } else {
                         HLog.i("tyxo", " response为空 返回信息: " + ConstValues.SERVER_RESPONSE_EMPTY);

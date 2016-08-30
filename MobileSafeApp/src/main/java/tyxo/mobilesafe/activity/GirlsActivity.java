@@ -48,7 +48,6 @@ public class GirlsActivity extends BaseRecyclerActivity<BeanGirls>{
     @Override
     protected void initListener() {
         super.initListener();
-
     }
 
     /** 处理返回的数据 */
@@ -68,6 +67,10 @@ public class GirlsActivity extends BaseRecyclerActivity<BeanGirls>{
         }else {
             HLog.i("tyxo", "BeanGirls size<=0 返回信息: " + ConstValues.SERVER_RESPONSE_EMPTY);
         }
+    }
+    @Override
+    protected void handleData(BeanGirls beanB) {
+        HLog.i("tyxo", "BeanGirls beanB 返回解析: " + beanB.toString());
     }
 
     BaseRecyclerStaggeredAdapter.OnItemClickLitener itemClickLitener = new BaseRecyclerStaggeredAdapter.OnItemClickLitener() {

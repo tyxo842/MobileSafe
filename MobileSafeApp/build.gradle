@@ -11,6 +11,13 @@ android {
         multiDexEnabled true
     }
 
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
     dexOptions {
         javaMaxHeapSize "2g"
     }
@@ -22,7 +29,6 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     compile 'com.kymjs.rxvolley:rxvolley:1.0.1'
     compile files('libs/volley.jar')
-    compile files('libs/universal-image-loader-1.9.3-with-sources.jar')
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
@@ -57,4 +63,8 @@ dependencies {
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile files('libs/umeng-update-v2.6.0.1.jar')
+
+    //流畅的图片动画效果
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'com.facebook.rebound:rebound:0.3.8'
 }
