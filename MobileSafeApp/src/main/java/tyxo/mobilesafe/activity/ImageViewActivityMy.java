@@ -33,6 +33,7 @@ import java.io.FileOutputStream;
 import java.util.Date;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
+import tyxo.functions.dragphoto.DragPicActivity;
 import tyxo.functions.smoothpic.SmoothPicActivity;
 import tyxo.functions.weather.WeatherActivity;
 import tyxo.mobilesafe.ConstValues;
@@ -52,7 +53,7 @@ import tyxo.mobilesafe.widget.brokenview.BrokenView;
 *                   android:label=""
 *                   android:theme="@style/MyToolbarTheme"
 */
-public class ImageViewerActivity extends BaseActivityToolbar implements RequestListener<String,
+public class ImageViewActivityMy extends BaseActivityToolbar implements RequestListener<String,
         GlideDrawable>, View.OnClickListener ,View.OnLongClickListener {
 
     private String url;
@@ -189,13 +190,17 @@ public class ImageViewerActivity extends BaseActivityToolbar implements RequestL
                 Intent intent = new Intent(this, RecyclerActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.image_action_weather:   //跳转到 weatherActivity
+            case R.id.image_action_weather:   //跳转到 天气
                 Intent intent2 = new Intent(this, WeatherActivity.class);
                 startActivity(intent2);
                 break;
-            case R.id.image_action_smooth_pic:   //跳转到 weatherActivity
+            case R.id.image_action_smooth_pic:   //跳转到 炫酷流畅动画
                 Intent intent3 = new Intent(this, SmoothPicActivity.class);
                 startActivity(intent3);
+                break;
+            case R.id.image_action_drag_pic:   //跳转到 可拖拽的pic
+                Intent intent4 = new Intent(this, DragPicActivity.class);
+                startActivity(intent4);
                 break;
         }
         return super.onOptionsItemSelected(item);

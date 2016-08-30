@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\crop__ic_cancel.png",
+        "source": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\crop__ic_cancel.png"
+    },
+    {
+        "merged": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\crop__tile.png",
+        "source": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\crop__tile.png"
+    },
+    {
+        "merged": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\crop__ic_done.png",
+        "source": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\crop__ic_done.png"
+    }
+]

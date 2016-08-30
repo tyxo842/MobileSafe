@@ -51,7 +51,7 @@ import java.util.List;
 import tyxo.functions.music.MusicActivity;
 import tyxo.functions.prettygirls.home.HomeActivity;
 import tyxo.mobilesafe.activity.GirlsActivity;
-import tyxo.mobilesafe.activity.ImageViewerActivity;
+import tyxo.mobilesafe.activity.ImageViewActivityMy;
 import tyxo.mobilesafe.activity.RecyclerActivity;
 import tyxo.mobilesafe.activity.RichEditorActivity;
 import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.iv_left_header1:
-                Intent intent = new Intent(this, ImageViewerActivity.class);
+                Intent intent = new Intent(this, ImageViewActivityMy.class);
                 intent.putExtra("url", url);
                 startActivity(intent);
 

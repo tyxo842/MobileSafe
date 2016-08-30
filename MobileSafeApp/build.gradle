@@ -32,13 +32,15 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'com.romainpiel.shimmer:library:1.4.0'//compile 'com.romainpiel.shimmer:library:1.4.0@aar'
+    compile 'com.romainpiel.shimmer:library:1.4.0'
+    //compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     compile project(':ShortcutBadger')
     compile 'com.hovans.dynamicgrid:dynamicgrid:1.0.0'
     compile files('libs/jpush-android-2.1.0.jar')
     compile 'org.greenrobot:eventbus:3.0.0'
     compile files('libs/alipaySdk-20160111.jar')
-    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'//右下角menu
+    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    //右下角menu
 
     //Retrofit-RxJava-MPAndroidChart 显示天气
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
@@ -48,7 +50,6 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
     compile project(':JNChartLib')
-
     //pretygirl
     compile 'com.android.support:palette-v7:23.4.0'
     compile 'com.android.support:cardview-v7:23.+'
@@ -56,15 +57,14 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     //compile 'com.jakewharton:butterknife:8.1.0'//compile 'com.jakewharton:butterknife-compiler:8.1.0'
     compile project(':pgirllibrary')
-
     //fuli
     compile 'io.realm:realm-android:0.87.0'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile files('libs/umeng-update-v2.6.0.1.jar')
-
     //流畅的图片动画效果
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.facebook.rebound:rebound:0.3.8'
+    compile project(':crop')
 }

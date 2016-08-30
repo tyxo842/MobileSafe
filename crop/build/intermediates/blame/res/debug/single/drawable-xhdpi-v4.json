@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\crop__ic_done.png",
+        "source": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\src\\main\\res\\drawable-xhdpi\\crop__ic_done.png"
+    },
+    {
+        "merged": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\crop__ic_cancel.png",
+        "source": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\src\\main\\res\\drawable-xhdpi\\crop__ic_cancel.png"
+    },
+    {
+        "merged": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\crop__tile.png",
+        "source": "E:\\WorkPlace_Studio_Test\\MobileSafe\\crop\\src\\main\\res\\drawable-xhdpi\\crop__tile.png"
+    }
+]

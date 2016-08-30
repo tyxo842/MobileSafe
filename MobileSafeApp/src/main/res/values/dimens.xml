@@ -107,4 +107,10 @@
     <dimen name="card_image_width">312dp</dimen>
     <dimen name="card_image_height">220dp</dimen>
 
+    <!--drag pic -->
+    <dimen name="drag_square_interval" >2dp</dimen>
+    <dimen name="main_interval_v1">5dp</dimen>
+    <dimen name="main_interval_v2">10dp</dimen>
+    <dimen name="main_interval_v3">15dp</dimen>
+
 </resources>

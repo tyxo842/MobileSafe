@@ -75,7 +75,7 @@
         </activity>
 
         <activity
-            android:name=".activity.ImageViewerActivity"
+            android:name=".activity.ImageViewActivityMy"
             android:label=""
             android:theme="@style/MyToolbarTheme" />
 
@@ -150,6 +150,10 @@
             android:theme="@style/MyToolbarTheme"/>
 
         <activity android:name="tyxo.functions.smoothpic.SmoothPicActivity"/>
+
+        <activity android:name="tyxo.functions.dragphoto.DragPicActivity"/>
+
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
         <!--<activity android:name="tyxo.functions.baidumap.MapActivity"/>-->
 

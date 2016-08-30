@@ -32,6 +32,11 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="流畅的动画探探"
             app:showAsAction="never" />
+        <item
+            android:id="@+id/image_action_drag_pic"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="可拖动的Pic"
+            app:showAsAction="never" />
     </item>
 
 </menu>
