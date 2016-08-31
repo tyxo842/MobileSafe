@@ -113,4 +113,10 @@
     <dimen name="main_interval_v2">10dp</dimen>
     <dimen name="main_interval_v3">15dp</dimen>
 
+    <!--snake menu -->
+    <dimen name="float_marginBottom">20dp</dimen>
+    <dimen name="float_marginRight">20dp</dimen>
+    <dimen name="float_image_size">70dp</dimen>
+    <dimen name="float_elevation">4dp</dimen>
+
 </resources>

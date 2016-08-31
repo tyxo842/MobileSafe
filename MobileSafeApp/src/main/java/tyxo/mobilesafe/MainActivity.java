@@ -57,6 +57,10 @@ import tyxo.mobilesafe.activity.RichEditorActivity;
 import tyxo.mobilesafe.activity.StaggeredGridLayoutActivity;
 import tyxo.mobilesafe.activity.activityGrid.Aciticity1;
 import tyxo.mobilesafe.activity.activityGrid.Aciticity2;
+import tyxo.mobilesafe.activity.activityGrid.Aciticity3;
+import tyxo.mobilesafe.activity.activityGrid.Aciticity4;
+import tyxo.mobilesafe.activity.activityGrid.Aciticity5;
+import tyxo.mobilesafe.activity.activityGrid.Aciticity6;
 import tyxo.mobilesafe.adpter.AdapterMainGridView;
 import tyxo.mobilesafe.adpter.AdapterMainRecycler;
 import tyxo.mobilesafe.bean.MainGVItemBean;
@@ -116,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private int[] iconIDs = {R.drawable.app_financial, R.drawable.app_donate, R.drawable.app_essential,
             R.drawable.app_citycard, R.drawable.app_inter_transfer, R.drawable.app_facepay};
-    private String[] titles = {"手机防盗", "骚扰拦截", "软件管理", "进程管理", "流量统计", "缓存清理"};
+    private String[] titles = {"待做功能1", "待做功能2", "待做功能3", "待做功能4", "待做功能5", "snake mune"};
     private List<HashMap<String, Object>> dataSourceList = new ArrayList<>();
 
     @Override
@@ -523,6 +527,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ToastUtil.showToastS(MainActivity.this,parent.getAdapter().getItem(position).toString());
+                ToastUtil.showToastS(MainActivity.this,"点击的是 : "+position);
                 MainGVItemBean itemBean = (MainGVItemBean) parent.getAdapter().getItem(position);
                 //{"手机防盗", "骚扰拦截", "软件管理", "进程管理", "流量统计", "缓存清理"}
                 switch (itemBean.getId()) {
@@ -530,32 +535,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         HLog.v("tyxo",itemBean.getTitle());
                         Intent intent0 = new Intent(MainActivity.this,Aciticity1.class);
                         startActivity(intent0);
-                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"手机防盗");
                         break;
                     case 1:
                         Intent intent1 = new Intent(MainActivity.this,Aciticity2.class);
                         startActivity(intent1);
-                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"骚扰拦截");
                         break;
                     case 2:
-                        Intent intent2 = new Intent(MainActivity.this,Aciticity1.class);
+                        Intent intent2 = new Intent(MainActivity.this,Aciticity3.class);
                         startActivity(intent2);
-                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"软件管理");
                         break;
                     case 3:
-                        Intent intent3 = new Intent(MainActivity.this,Aciticity1.class);
+                        Intent intent3 = new Intent(MainActivity.this,Aciticity4.class);
                         startActivity(intent3);
-                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"进程管理");
                         break;
                     case 4:
-                        Intent intent4 = new Intent(MainActivity.this,Aciticity1.class);
+                        Intent intent4 = new Intent(MainActivity.this,Aciticity5.class);
                         startActivity(intent4);
-                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"流量统计");
                         break;
                     case 5:
-                        Intent intent5 = new Intent(MainActivity.this,Aciticity1.class);
+                        Intent intent5 = new Intent(MainActivity.this,Aciticity6.class);
                         startActivity(intent5);
-                        ToastUtil.showToastS(MainActivity.this,"点击的是 : "+"缓存清理");
                         break;
                 }
             }

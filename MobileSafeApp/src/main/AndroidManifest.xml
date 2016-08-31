@@ -109,6 +109,10 @@
             android:name=".activity.activityGrid.Aciticity5"
             android:label=""
             android:theme="@style/MyToolbarTheme" />
+        <activity
+            android:name=".activity.activityGrid.Aciticity6"
+            android:label=""
+            android:theme="@style/MyToolbarTheme" />
 
         <activity
             android:name="tyxo.functions.weather.WeatherActivity"
