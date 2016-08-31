@@ -3,7 +3,6 @@ package tyxo.mobilesafe.adpter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 
@@ -24,13 +23,10 @@ public class GirlsAdapterMy extends BaseRecyclerStaggeredAdapter<GirlsAdapterMy.
 
     protected List<Integer> mHeights;                 //随机item的高度
     private Context context;
-    private ArrayList<BeanGirls.ShowapiResBodyBean.NewslistBean> beanList; // 数据集合
 
     public GirlsAdapterMy(Context context, ArrayList <BeanGirls.ShowapiResBodyBean.NewslistBean> datas, int layoutItemId) {
         super(context, datas, layoutItemId);
-
         this.context = context;
-        beanList = datas;
 
         mHeights = new ArrayList<>();
         for (int i = 0; i < mDatas.size(); i++) {
@@ -47,10 +43,11 @@ public class GirlsAdapterMy extends BaseRecyclerStaggeredAdapter<GirlsAdapterMy.
     protected void initItemView(MyHolder holder, BeanGirls.ShowapiResBodyBean.NewslistBean bean,int position) {
         //int position = holder.getLayoutPosition();
 
-        // 设置随机高度
+        /*// 设置随机高度 ---> 报空了...
         ViewGroup.LayoutParams lp = holder.mGirlImage.getLayoutParams();
         lp.height = mHeights.get(position);
         holder.mGirlImage.setLayoutParams(lp);
+        */
 
         /** 设置item的 view内容数据 */
         holder.itemView.setTag(position);

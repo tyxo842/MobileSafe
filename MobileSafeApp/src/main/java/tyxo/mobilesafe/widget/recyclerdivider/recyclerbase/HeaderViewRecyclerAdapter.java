@@ -37,8 +37,11 @@ public class HeaderViewRecyclerAdapter extends WrapperRecyclerAdapter {
     private View mFooterView;
     private View mLoadingView;
 
-    public HeaderViewRecyclerAdapter(
-        RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+    /*public HeaderViewRecyclerAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+        super(adapter);
+    }*/
+
+    public HeaderViewRecyclerAdapter(RecyclerView.Adapter adapter) {
         super(adapter);
     }
 
@@ -55,7 +58,7 @@ public class HeaderViewRecyclerAdapter extends WrapperRecyclerAdapter {
     }
 
     public void setHeaderView(View view) {
-        if(null == view) {
+        if (null == view) {
             return;
         }
         mHeaderView = view;
@@ -63,7 +66,7 @@ public class HeaderViewRecyclerAdapter extends WrapperRecyclerAdapter {
     }
 
     public void setFooterView(View view) {
-        if(null == view) {
+        if (null == view) {
             return;
         }
         mFooterView = view;
@@ -71,7 +74,7 @@ public class HeaderViewRecyclerAdapter extends WrapperRecyclerAdapter {
     }
 
     public void setLoadingView(View view) {
-        if(null == view) {
+        if (null == view) {
             return;
         }
         mLoadingView = view;
@@ -79,21 +82,21 @@ public class HeaderViewRecyclerAdapter extends WrapperRecyclerAdapter {
     }
 
     public void removeHeaderView() {
-        if(null != mHeaderView) {
+        if (null != mHeaderView) {
             mHeaderView = null;
             notifyDataSetChanged();
         }
     }
 
     public void removeFooterView() {
-        if(null != mFooterView) {
+        if (null != mFooterView) {
             mFooterView = null;
             notifyDataSetChanged();
         }
     }
 
     public void removeLoadingView() {
-        if(null != mLoadingView) {
+        if (null != mLoadingView) {
             mLoadingView = null;
             notifyDataSetChanged();
         }
@@ -105,12 +108,12 @@ public class HeaderViewRecyclerAdapter extends WrapperRecyclerAdapter {
 
     private void setGridHeaderSpanSize(RecyclerView.LayoutManager layoutManager) {
         GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
-        if(gridLayoutManager.getSpanSizeLookup() instanceof GridLayoutManager.DefaultSpanSizeLookup) {
+        if (gridLayoutManager.getSpanSizeLookup() instanceof GridLayoutManager.DefaultSpanSizeLookup) {
             final int spanCount = gridLayoutManager.getSpanCount();
             gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    if(isFullSpanType(getItemViewType(position))) {
+                    if (isFullSpanType(getItemViewType(position))) {
                         return spanCount;
                     }
                     return 1;
@@ -122,7 +125,7 @@ public class HeaderViewRecyclerAdapter extends WrapperRecyclerAdapter {
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        if(recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+        if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
             setGridHeaderSpanSize(recyclerView.getLayoutManager());
         }
     }
@@ -130,9 +133,9 @@ public class HeaderViewRecyclerAdapter extends WrapperRecyclerAdapter {
     @Override
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
-        if(holder instanceof HeaderViewHolder) {
+        if (holder instanceof HeaderViewHolder) {
             ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
-            if(lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+            if (lp instanceof StaggeredGridLayoutManager.LayoutParams) {
                 StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) lp;
                 layoutParams.setFullSpan(true);
             }
@@ -155,7 +158,7 @@ public class HeaderViewRecyclerAdapter extends WrapperRecyclerAdapter {
             default:
                 break;
         }
-        if(null != itemView) {
+        if (null != itemView) {
             return new HeaderViewHolder(itemView);
         }
         return mAdapter.onCreateViewHolder(parent, viewType);
@@ -181,15 +184,15 @@ public class HeaderViewRecyclerAdapter extends WrapperRecyclerAdapter {
     @Override
     public int getItemViewType(int position) {
         int headerViewCount = getHeaderViewCount();
-        if(1 == headerViewCount && 0 == position) {
+        if (1 == headerViewCount && 0 == position) {
             return VIEW_TYPE_HEADER;
         }
         int actualCount = mAdapter.getItemCount();
-        if(1 == getLoadingViewCount() && getItemCount() - 1 == position) {
+        if (1 == getLoadingViewCount() && getItemCount() - 1 == position) {
             return VIEW_TYPE_LOADING;
         }
         int footerViewCount = getFooterViewCount();
-        if(1 == footerViewCount && (actualCount + headerViewCount + footerViewCount - 1) == position ) {
+        if (1 == footerViewCount && (actualCount + headerViewCount + footerViewCount - 1) == position) {
             return VIEW_TYPE_FOOTER;
         }
         return mAdapter.getItemViewType(position);

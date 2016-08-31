@@ -4,7 +4,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import org.json.JSONObject;
@@ -15,8 +14,8 @@ import tyxo.mobilesafe.TaskHelp;
 import tyxo.mobilesafe.base.BaseActivityToolbar;
 import tyxo.mobilesafe.net.volley.VolleyCallBack;
 import tyxo.mobilesafe.net.volley.VolleyErrorResult;
+import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
-import tyxo.mobilesafe.widget.recyclerdivider.recyclerbase.LoadMoreView;
 
 /**
  * Created by LY on 2016/8/25 10: 38.
@@ -61,7 +60,7 @@ public abstract class BaseRecyclerActivity<T extends Object> extends BaseActivit
 
     protected RecyclerView mRecyclerView;
     protected SwipeRefreshLayout mRefreshLayout;
-    protected LoadMoreView mLoadMore;
+    protected BaseRecyclerStaggeredAdapter.OnItemClickLitener itemClickLitener;
 
     protected TaskHelp taskHelp;
     protected VolleyCallBack<JSONObject> callback;
@@ -93,8 +92,24 @@ public abstract class BaseRecyclerActivity<T extends Object> extends BaseActivit
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addOnScrollListener(mScrollListener);
+    }
 
-        mLoadMore = (LoadMoreView) LayoutInflater.from(this).inflate(R.layout.base_load_more, mRecyclerView, false);
+    @Override
+    protected void initListener() {
+        super.initListener();
+        // 具体可以由子类去实现 itemClickLitener 的click内容.
+        itemClickLitener = new BaseRecyclerStaggeredAdapter.OnItemClickLitener() {
+            @Override
+            public void onItemClick(View view, Object bean, int position) {
+                //ToastUtil.showToastS(getApplicationContext(),"条目%1$.2f点击了"+position);
+                ToastUtil.showToastS(getApplicationContext(),String.format("%1$d点击了,这是第%2$d个条目",position,position));
+            }
+
+            @Override
+            public void onItemLongClick(View view, Object bean, int position) {
+
+            }
+        };
     }
 
     @Override
@@ -127,6 +142,7 @@ public abstract class BaseRecyclerActivity<T extends Object> extends BaseActivit
                 HLog.i("tyxo", " response : " + response.toString());
                 try {
                     if (!TextUtils.isEmpty(response.toString())) {
+                        // TODO: 2016/8/31  待完善,在基类里完成type转换...
                         /*Type type = new TypeToken<T>() {}.getType();
                         T bean = new Gson().fromJson(response.toString(), type);*/
 
@@ -134,9 +150,11 @@ public abstract class BaseRecyclerActivity<T extends Object> extends BaseActivit
                         //handleData(bean);   //处理数据
 
                     } else {
+                        stopLoading();
                         HLog.i("tyxo", " response为空 返回信息: " + ConstValues.SERVER_RESPONSE_EMPTY);
                     }
                 } catch (Exception e) {
+                    stopLoading();
                     e.printStackTrace();
                     HLog.i("tyxo", " 解析数据错误" + e.getMessage());
                 }
@@ -144,6 +162,7 @@ public abstract class BaseRecyclerActivity<T extends Object> extends BaseActivit
 
             @Override
             public void onErrorResponse(VolleyErrorResult result) {
+                stopLoading();
                 HLog.i("tyxo", " 请求失败: " + result.toString());
             }
         };
@@ -189,7 +208,11 @@ public abstract class BaseRecyclerActivity<T extends Object> extends BaseActivit
     protected void onLoadMore() {
         isLoadMore = true;
         isRefresh = false;
-        mLoadMore.setStatus(LoadMoreView.STATUS_LOADING);
+    }
+
+    protected void stopLoading(){
+        isLoadMore = false;
+        mRefreshLayout.setRefreshing(false);
     }
 }
 

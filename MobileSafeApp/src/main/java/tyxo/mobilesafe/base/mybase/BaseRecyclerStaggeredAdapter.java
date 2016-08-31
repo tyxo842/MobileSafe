@@ -23,7 +23,7 @@ public abstract class BaseRecyclerStaggeredAdapter<T extends RecyclerView.ViewHo
         RecyclerView.Adapter<T> {
 
     private Context context;
-    protected ArrayList<E> mDatas;
+    protected ArrayList<E> mDatas = new ArrayList<>();
     protected LayoutInflater mInflater;
     protected int layoutItemId;
     protected List<Integer> mHeights;                 //随机item的高度
@@ -43,11 +43,16 @@ public abstract class BaseRecyclerStaggeredAdapter<T extends RecyclerView.ViewHo
         //mInflater = LayoutInflater.from(context);
         mDatas = datas;
         this.layoutItemId = layoutItemId;
+    }
 
-        /*mHeights = new ArrayList<>();
-        for (int i = 0; i < mDatas.size(); i++) {
-            mHeights.add((int) (100 + Math.random() * 300));
-        }*/
+    public void substituteDatas(ArrayList<E> datas){
+        mDatas = datas;
+    }
+    public void clearDatas(){
+        mDatas.clear();
+    }
+    public void addDatas(ArrayList<E> datas){
+        mDatas.addAll(datas);
     }
 
     @Override
@@ -59,11 +64,6 @@ public abstract class BaseRecyclerStaggeredAdapter<T extends RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(final T holder, final int position) {
-
-        /*// 设置随机高度
-        LayoutParams lp = holder.item.getLayoutParams();
-        lp.height = mHeights.get(position);
-        holder.item.setLayoutParams(lp);*/
 
         final E bean = mDatas.get(position);
         initItemView(holder,bean,position);
