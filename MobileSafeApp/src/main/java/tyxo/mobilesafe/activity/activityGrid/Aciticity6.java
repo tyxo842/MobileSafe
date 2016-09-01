@@ -1,10 +1,13 @@
 package tyxo.mobilesafe.activity.activityGrid;
 
+import android.os.Build;
 import android.view.View;
 
 import tyxo.mobilesafe.R;
-import tyxo.mobilesafe.base.BaseActivityToolbar;
+import tyxo.mobilesafe.base.BaseActivity;
+import tyxo.mobilesafe.utils.StatusBarUtil;
 import tyxo.mobilesafe.utils.ToastUtil;
+import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.snakemenu.TumblrRelativeLayout;
 
 /**
@@ -12,19 +15,30 @@ import tyxo.mobilesafe.widget.snakemenu.TumblrRelativeLayout;
  * Mail      1577441454@qq.com
  * Describe :
  */
-public class Aciticity6 extends BaseActivityToolbar{
+public class Aciticity6 extends BaseActivity {
 
     private View.OnClickListener menuClickListener; //menu 点击事件
 
     @Override
-    protected void setMyContentView() {
+    protected void setContentView() {
         setContentView(R.layout.activity_gride6_snake);
-        mToolbarTitle.setText("snake");
+        //setContentView(R.layout.activity_gride6);
+        //设置状态栏透明
+        StatusBarUtil.setTranslucentBackground(this);
+
+        HLog.v("tyxo"," version : "+ Build.VERSION.SDK_INT);
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            //getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+        /*ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();*/
     }
 
     @Override
-    protected void initView(View contentView) {
-        super.initView(contentView);
+    public void initView() {
 
         menuClickListener = new View.OnClickListener() {
             @Override
