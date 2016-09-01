@@ -1,6 +1,7 @@
 package tyxo.mobilesafe.activity;
 
 import android.content.Intent;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
@@ -24,6 +25,11 @@ public class SplashActivity extends BaseActivity{
     @Override
     protected void setContentView() {
         setContentView(R.layout.activity_splash);
+        View decorView = getWindow().getDecorView();
+        int option = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(option);
+        /*ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();*/
     }
 
     @Override
