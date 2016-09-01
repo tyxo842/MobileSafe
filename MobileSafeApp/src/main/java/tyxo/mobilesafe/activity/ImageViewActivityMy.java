@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -70,6 +71,7 @@ public class ImageViewActivityMy extends BaseActivityToolbar implements RequestL
     private BrokenTouchListener colorfulListener;
     private BrokenTouchListener whiteListener;
     private Paint whitePaint;
+    private ScrollView crollview;
 
     @Override
     protected void setMyContentView() {
@@ -102,7 +104,8 @@ public class ImageViewActivityMy extends BaseActivityToolbar implements RequestL
         url = ConstValues.MYPHOTO_URL;
         initGlide();
 
-        ViewUtil.initBottomRightMenu(this);/** 初始化 底部 右下角menu图标 */
+        crollview = (ScrollView)contentView.findViewById(R.id.activity_iv_scrollview);
+        ViewUtil.initBottomRightMenu(this,crollview);/** 初始化 底部 右下角menu图标 */
 
         initBrokenView(); // 初始化特效
     }

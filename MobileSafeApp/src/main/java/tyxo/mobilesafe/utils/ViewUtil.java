@@ -5,22 +5,28 @@ import android.animation.PropertyValuesHolder;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
@@ -31,6 +37,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 
 import tyxo.functions.fuli.activity.FuliActivity;
 import tyxo.functions.prettygirls.home.HomeActivity;
@@ -264,7 +271,7 @@ public class ViewUtil {
     }
 
     /** 设置页面右下角 白色menu 图标 动画 */
-    public static void initBottomRightMenu(final Activity activity) {
+    public static void initBottomRightMenu(final Activity activity, final ScrollView scrollView) {
         final ImageView fabIconNew = new ImageView(activity);
         fabIconNew.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_jia_new_light));
         FloatingActionButton rightLButton = new FloatingActionButton.Builder(activity)
@@ -321,6 +328,14 @@ public class ViewUtil {
             public void onClick(View v) {
                 Intent intent = new Intent(activity, HomeActivity.class);
                 activity.startActivity(intent);
+                rightLowerMenu.close(true);
+            }
+        });
+        rlIcon2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //new SaveImageTask(activity).execute(getBitmapScreenShot(scrollView));
+                showDialogScreenShot(activity,null,scrollView);
                 rightLowerMenu.close(true);
             }
         });
@@ -501,6 +516,75 @@ public class ViewUtil {
                 .addSubActionView(h)
                 .attachTo(centerButton)
                 .build();
+    }
+
+    /** 获取超长截图的 Bitmap listview*/
+    public static Bitmap getBitmapScreenShot(ListView listView,Context context){
+        return ScreenShot.createBitmap(listView,context);
+    }
+    /** 获取超长截图的 Bitmap scrollView*/
+    public static Bitmap getBitmapScreenShot(ScrollView scrollView){
+        return ScreenShot.getBitmapByView(scrollView);
+    }
+    /** 保存 屏幕超长截图 */
+    public static void showDialogScreenShot(final Context context, final ListView listView,final ScrollView scrollView){
+        //ScreenShot.saveImageToGallery(context,ScreenShot.createBitmap(listView,context),"名字");//保存listview超长图片并插入图库
+        //ScreenShot.savePic(ScreenShot.getBitmapByView(scrollView),"/sdcard/tests.png"); //保存 scrollView 屏幕超长截图
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        //builder.setItems(new String[]{getResources().getString(R.string.save_picture)}, new DialogInterface.OnClickListener() {
+        builder.setItems(new String[]{"保存图片"}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Bitmap imageBitmap;
+                if (listView != null) {
+                    imageBitmap = getBitmapScreenShot(listView,context);
+                } else {
+                    imageBitmap = getBitmapScreenShot(scrollView);
+                }
+                if (imageBitmap != null) {
+                    new SaveImageTask(context).execute(imageBitmap);
+                }
+            }
+        });
+        builder.show();
+    }
+    /** 保存 屏幕超长截图 异步任务 */
+    public static class SaveImageTask extends AsyncTask<Bitmap, Void, String> {
+        Context context;
+
+        SaveImageTask(Context context){
+            this.context = context;
+        }
+        @Override
+        protected String doInBackground(Bitmap... params) {
+            String result = "保存失败";
+            try {
+                String sdcard = Environment.getExternalStorageDirectory().toString();
+
+                File file = new File(sdcard + "/Download");
+                if (!file.exists()) {
+                    file.mkdirs();
+                }
+
+                File imageFile = new File(file.getAbsolutePath(),new Date().getTime()+".jpg");
+                FileOutputStream outStream = null;
+                outStream = new FileOutputStream(imageFile);
+                Bitmap image = params[0];
+                image.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.flush();
+                outStream.close();
+                result = context.getResources().getString(R.string.save_picture_success,  file.getAbsolutePath());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.i("tyxo", "保存结果 : "+result);
+        }
     }
 }
 

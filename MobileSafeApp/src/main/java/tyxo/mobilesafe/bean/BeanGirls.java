@@ -1,5 +1,6 @@
 package tyxo.mobilesafe.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -105,7 +106,7 @@ public class BeanGirls {
             this.newslist = newslist;
         }
 
-        public static class NewslistBean {
+        public static class NewslistBean implements Serializable{
             private String title;
             private String picUrl;
             private String description;

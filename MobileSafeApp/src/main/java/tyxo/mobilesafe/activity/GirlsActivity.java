@@ -11,6 +11,7 @@ import tyxo.mobilesafe.ConstValues;
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.adpter.GirlsAdapterMy;
 import tyxo.mobilesafe.base.mybase.BaseRecyclerActivity;
+import tyxo.mobilesafe.base.mybase.BaseRecyclerStaggeredAdapter;
 import tyxo.mobilesafe.bean.BeanGirls;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.log.HLog;
@@ -34,6 +35,27 @@ public class GirlsActivity extends BaseRecyclerActivity<BeanGirls>{
         mToolbarTitle.setText("Girls");
 
         mLoadMore = (LoadMoreView) LayoutInflater.from(this).inflate(R.layout.base_load_more, mRecyclerView, false);
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        itemClickLitener = new BaseRecyclerStaggeredAdapter.OnItemClickLitener() {
+            @Override
+            public void onItemClick(View view, Object bean, int position) {
+                //ToastUtil.showToastS(getApplicationContext(),"条目%1$.2f点击了"+position);
+                /*Intent intent = new Intent(GirlsActivity.this, GirlActivity.class);
+                intent.putParcelableArrayListExtra("girls", beanList);
+                intent.putExtra("current", position);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeScaleUpAnimation(holder.itemView, holder.itemView.getWidth() / 2, holder.itemView.getHeight() / 2, 0, 0);
+                startActivity(intent, options.toBundle());*/
+            }
+
+            @Override
+            public void onItemLongClick(View view, Object bean, int position) {
+
+            }
+        };
     }
 
     @Override
