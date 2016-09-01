@@ -26,7 +26,7 @@ public class SplashActivity extends BaseActivity{
     protected void setContentView() {
         setContentView(R.layout.activity_splash);
         View decorView = getWindow().getDecorView();
-        int option = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        int option = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;//上边状态栏和下班导航栏
         decorView.setSystemUiVisibility(option);
         /*ActionBar actionBar = getSupportActionBar();
         actionBar.hide();*/
