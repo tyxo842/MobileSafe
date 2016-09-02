@@ -152,7 +152,10 @@
         <activity android:name="tyxo.functions.fuli.activity.FuliActivity"/>
         <activity android:name="tyxo.functions.fuli.activity.ImageViewerActivity"/>
 
-        <activity android:name="tyxo.mobilesafe.activity.GirlsActivity"
+        <activity android:name=".activity.ActivityGirls"
+            android:label=""
+            android:theme="@style/MyToolbarTheme"/>
+        <activity android:name=".activity.ActivityGirl"
             android:label=""
             android:theme="@style/MyToolbarTheme"/>
 

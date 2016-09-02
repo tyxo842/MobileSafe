@@ -1,5 +1,10 @@
 package tyxo.mobilesafe.activity;
 
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -23,7 +28,7 @@ import tyxo.mobilesafe.widget.recyclerdivider.recyclerbase.LoadMoreView;
  * Mail      1577441454@qq.com
  * Describe :
  */
-public class GirlsActivity extends BaseRecyclerActivity<BeanGirls>{
+public class ActivityGirls extends BaseRecyclerActivity<BeanGirls>{
 
     private ArrayList<BeanGirls.ShowapiResBodyBean.NewslistBean> beanList; // 返回数据集合
     private GirlsAdapterMy mAdapter;
@@ -41,14 +46,20 @@ public class GirlsActivity extends BaseRecyclerActivity<BeanGirls>{
     protected void initListener() {
         super.initListener();
         itemClickLitener = new BaseRecyclerStaggeredAdapter.OnItemClickLitener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onItemClick(View view, Object bean, int position) {
                 //ToastUtil.showToastS(getApplicationContext(),"条目%1$.2f点击了"+position);
-                /*Intent intent = new Intent(GirlsActivity.this, GirlActivity.class);
-                intent.putParcelableArrayListExtra("girls", beanList);
-                intent.putExtra("current", position);
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeScaleUpAnimation(holder.itemView, holder.itemView.getWidth() / 2, holder.itemView.getHeight() / 2, 0, 0);
-                startActivity(intent, options.toBundle());*/
+                Intent intent = new Intent(ActivityGirls.this, ActivityGirl.class);
+                //intent.putParcelableArrayListExtra("girls", beanList);
+                //intent.putExtra("current", position);
+                Bundle bun = new Bundle();
+                bun.putSerializable("girls",beanList);
+                bun.putInt("cuttent",position);
+                intent.putExtras(bun);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeScaleUpAnimation(
+                        view, view.getWidth() / 2, view.getHeight() / 2, 0, 0);
+                startActivity(intent,options.toBundle());
             }
 
             @Override
