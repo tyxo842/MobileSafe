@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private int[] iconIDs = {R.drawable.app_financial, R.drawable.app_donate, R.drawable.app_essential,
             R.drawable.app_citycard, R.drawable.app_inter_transfer, R.drawable.app_facepay};
-    private String[] titles = {"待做功能1", "待做功能2", "待做功能3", "待做功能4", "待做功能5", "snake mune"};
+    private String[] titles = {"待做功能1", "待做功能2", "待做功能3", "沉浸式", "导航栏", "状态栏"};
     private List<HashMap<String, Object>> dataSourceList = new ArrayList<>();
 
     @Override

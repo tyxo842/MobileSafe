@@ -35,7 +35,7 @@ public class Aciticity5 extends BaseActivityToolbar {
                 ToastUtil.showToastS(Aciticity5.this,"menu 点击了");
             }
         };
-        TumblrRelativeLayout rootLayout = (TumblrRelativeLayout) findViewById(R.id.activity6_snake_menu_trl);
+        TumblrRelativeLayout rootLayout = (TumblrRelativeLayout) findViewById(R.id.activity5_snake_menu_trl);
         rootLayout.setMenuListener(menuClickListener);
     }
 }

@@ -103,7 +103,7 @@ public class StatusBarUtil {
         }
     }
 
-    /**设置导航栏透明 --> Activity5 ,继承 BaseActivityToolbar ,theme:BottomTheme*/
+    /**设置导航栏透明 --> Activity5 ,继承 BaseActivityToolbar ,theme:MyToolbarTheme*/
     public static void setNavigationBar(Activity activity) {
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = activity.getWindow().getDecorView();
