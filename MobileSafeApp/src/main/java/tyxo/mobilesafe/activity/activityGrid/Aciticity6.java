@@ -1,13 +1,11 @@
 package tyxo.mobilesafe.activity.activityGrid;
 
-import android.os.Build;
 import android.view.View;
 
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.base.BaseActivity;
 import tyxo.mobilesafe.utils.StatusBarUtil;
 import tyxo.mobilesafe.utils.ToastUtil;
-import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.widget.snakemenu.TumblrRelativeLayout;
 
 /**
@@ -22,19 +20,7 @@ public class Aciticity6 extends BaseActivity {
     @Override
     protected void setContentView() {
         setContentView(R.layout.activity_gride6_snake);
-        //setContentView(R.layout.activity_gride6);
-        //设置状态栏透明
-        StatusBarUtil.setTranslucentBackground(this);
-
-        HLog.v("tyxo"," version : "+ Build.VERSION.SDK_INT);
-        if (Build.VERSION.SDK_INT >= 21) {
-            View decorView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            decorView.setSystemUiVisibility(option);
-            //getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
-        /*ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();*/
+        StatusBarUtil.setStateBar(this);   /**设置状态栏透明 导航栏不变*/
     }
 
     @Override

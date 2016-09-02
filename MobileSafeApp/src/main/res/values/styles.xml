@@ -199,4 +199,14 @@
         <item name="android:textColor">@android:color/darker_gray</item>
     </style>
 
+    <!--底部导航栏 activity6-->
+    <style name="BottomTheme" parent="AppTheme.NoActionBar">
+        <!-- 底部导航栏的颜色 -->
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/transparent</item>
+        <!-- 状态栏颜色 -->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+        <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>-->
+    </style>
+
 </resources>

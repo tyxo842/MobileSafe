@@ -78,22 +78,69 @@ public class StatusBarUtil {
     }
 
     /**
-     * 使状态栏半透明
-     *
+     * 使状态栏半透明,
      * 适用于图片作为背景的界面,此时需要图片填充到状态栏
-     *
-     * @param activity 需要设置的activity
      */
     public static void setTranslucent(Activity activity) {
         setTranslucent(activity, DEFAULT_STATUS_BAR_ALPHA);
     }
 
+    /**设置状态栏透明*/
     public static void setTranslucentBackground(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = activity.getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+    }
+
+    /**设置导航栏透明*/
+    public static void setTranslucentBottom(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window window = activity.getWindow();
+            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+    }
+
+    /**设置导航栏透明 --> Activity5 ,继承 BaseActivityToolbar ,theme:BottomTheme*/
+    public static void setNavigationBar(Activity activity) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = activity.getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            //   | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION ;//底部 导航栏 (界面向下移动一个导航栏的高度)
+            decorView.setSystemUiVisibility(option);
+            //getWindow().setStatusBarColor(Color.TRANSPARENT);     // 顶部状态栏 透明 (不管用)
+            //getWindow().setNavigationBarColor(Color.TRANSPARENT); // 底部导航栏 透明 (不管用)
+        }
+        /*ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();*/
+        setTranslucentBottom(activity);
+    }
+
+    /**设置状态栏透明 导航栏不变* --> Activity6 ,继承 BaseActivity ,theme:BottomTheme */
+    public static void setStateBar(Activity activity) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = activity.getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE ;
+            //   | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION ;//底部 导航栏 (界面向下移动一个导航栏的高度)
+            decorView.setSystemUiVisibility(option);
+            //getWindow().setStatusBarColor(Color.TRANSPARENT);     // 顶部状态栏 透明 (不管用)
+            //getWindow().setNavigationBarColor(Color.TRANSPARENT); // 底部导航栏 透明 (不管用)
+        }
+        /*ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();*/
+        setTranslucentBackground(activity);   /**设置状态栏透明*/
+    }
+
+    /**真正的 沉浸式 状态栏 和 底部导航栏 --> SplashActivity ,继承BaseActivity,theme:MyToolbarTheme*/
+    public static void setImmersedStateBar(Activity activity){
+        View decorView = activity.getWindow().getDecorView();
+        int option = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;//上边状态栏和下班导航栏
+        decorView.setSystemUiVisibility(option);
+        /*ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();*/
+        setTranslucentBackground(activity);//设置状态栏透明
     }
 
     /**

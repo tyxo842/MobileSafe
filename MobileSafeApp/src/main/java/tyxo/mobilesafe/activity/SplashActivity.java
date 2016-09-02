@@ -1,7 +1,6 @@
 package tyxo.mobilesafe.activity;
 
 import android.content.Intent;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
@@ -25,20 +24,13 @@ public class SplashActivity extends BaseActivity{
     @Override
     protected void setContentView() {
         setContentView(R.layout.activity_splash);
-        View decorView = getWindow().getDecorView();
-        int option = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;//上边状态栏和下班导航栏
-        decorView.setSystemUiVisibility(option);
-        /*ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();*/
+        StatusBarUtil.setImmersedStateBar(this);    /**真正的 沉浸式 状态栏 和 底部导航栏*/
     }
 
     @Override
     public void initView() {
         super.initView();
         splashView = (ImageView) findViewById(R.id.splash_view);
-
-        //设置状态栏透明
-        StatusBarUtil.setTranslucentBackground(this);
         //开始执行动画,开始跳转
         startScaleAnimation();
     }

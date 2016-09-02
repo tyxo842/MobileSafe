@@ -115,7 +115,7 @@
         <activity
             android:name=".activity.activityGrid.Aciticity6"
             android:label=""
-            android:theme="@style/MyToolbarTheme" />
+            android:theme="@style/BottomTheme" />
 
         <activity
             android:name="tyxo.functions.weather.WeatherActivity"
