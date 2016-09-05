@@ -15,6 +15,7 @@ import tyxo.mobilesafe.utils.ViewUtil;
 import tyxo.mobilesafe.utils.bitmap.CropHelper;
 import tyxo.mobilesafe.utils.bitmap.CropParams;
 import tyxo.mobilesafe.utils.db.DataCleanManager;
+import tyxo.mobilesafe.widget.butterfly.ButterFlyDialog;
 
 
 /**
@@ -350,4 +351,10 @@ public class DialogUtil {
         customDialog.setContentView(dialogView);
         return customDialog;
     }*/
+
+    /**蝴蝶 动画*/
+    public static void showFlyDialog(Context context) {
+        ButterFlyDialog butterFlyDialog = new ButterFlyDialog(context);
+        butterFlyDialog.show();
+    }
 }
