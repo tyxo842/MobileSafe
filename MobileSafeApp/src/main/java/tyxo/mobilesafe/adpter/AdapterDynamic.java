@@ -29,7 +29,7 @@ public class AdapterDynamic extends BaseDynamicGridAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView==null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_main_griditem, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_griditem_recycler, null);
         }
         return convertView;
     }
