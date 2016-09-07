@@ -142,10 +142,10 @@ https://github.com/tyxo842/MobileSafe/raw/master/MobileSafeApp/src/main/assets/p
 >>这样看起来比较干净。
 
 ###链接本仓库里的URL
-https://github.com/tyxo842/MobileSafe/raw/master/MobileSafeApp/src/main/assets/wall01.jpg
 |语法|效果|
 |----|-----
 |`[我的项目gradle]|(/MobileSafeApp/build.gradle)`|[我的项目gradle](/MobileSafeApp/build.gradle)
+|`[我的图片06]|(/MobileSafeApp/...)`|[我的图片06](/MobileSafeApp/src/main/assets/wall06)
 
 ###图片链接
 给图片加链接的本质是混合图片显示语法和普通的链接语法。普通的链接中[ ]内部是链接要显示的文本，而图片链接[ ]里面则是要显示的图片。  
