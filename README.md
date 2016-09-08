@@ -5,8 +5,8 @@ README
 参考自: https://github.com/guodongxiaren/README
 
 ****
-###                                            Author: tyxo
-####                                      E-mail: tyxo842@163.com
+###　　　　　　　　　　　　Author:tyxo
+###　　　　　　　　　 E-mail:tyxo842@163.com
 
 ===========================
 
