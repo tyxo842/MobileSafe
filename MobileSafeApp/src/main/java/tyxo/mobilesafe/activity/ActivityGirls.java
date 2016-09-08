@@ -8,8 +8,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 
 import tyxo.mobilesafe.ConstValues;
@@ -60,6 +58,7 @@ public class ActivityGirls extends BaseRecyclerActivity<BeanGirls>{
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeScaleUpAnimation(
                         view, view.getWidth() / 2, view.getHeight() / 2, 0, 0);
                 startActivity(intent,options.toBundle());
+                HLog.v("tyxo","点击位置 : "+position);
             }
 
             @Override
@@ -85,17 +84,14 @@ public class ActivityGirls extends BaseRecyclerActivity<BeanGirls>{
 
     /** 处理返回的数据 */
     @Override
-    protected void handleData(String resp, Class<BeanGirls> clazzH) {
-        //Type type = new TypeToken<BeanGirls>() {}.getType();
-        //BeanGirls bean = new Gson().fromJson(response.toString(), type);
-        clazzH = BeanGirls.class;
-        BeanGirls bean = new Gson().fromJson(resp, clazzH);
-        BeanGirls.ShowapiResBodyBean beanBody = bean.getShowapi_res_body();
+    protected void handleData(BeanGirls beanB) {
+        HLog.i("tyxo", "BeanGirls beanB 返回解析: " + beanB.toString());
+        BeanGirls.ShowapiResBodyBean beanBody = beanB.getShowapi_res_body();
 
         if(beanBody.getNewslist()!=null && beanBody.getNewslist().size() > 0){
             HLog.i("tyxo", "BeanGirls response size(): " + beanBody.getNewslist().size());
 
-            ArrayList<BeanGirls.ShowapiResBodyBean.NewslistBean> resList = (ArrayList<BeanGirls.ShowapiResBodyBean.NewslistBean>) bean.getShowapi_res_body().getNewslist();
+            ArrayList<BeanGirls.ShowapiResBodyBean.NewslistBean> resList = (ArrayList<BeanGirls.ShowapiResBodyBean.NewslistBean>) beanB.getShowapi_res_body().getNewslist();
             if (isLoadMore) {
                 beanList.addAll(resList);
             } else {
@@ -109,10 +105,6 @@ public class ActivityGirls extends BaseRecyclerActivity<BeanGirls>{
             ToastUtil.showToastS(this,"无更多数据");
             HLog.i("tyxo", "BeanGirls size<=0 返回信息: " + ConstValues.SERVER_RESPONSE_EMPTY);
         }
-    }
-    @Override
-    protected void handleData(BeanGirls beanB) {
-        HLog.i("tyxo", "BeanGirls beanB 返回解析: " + beanB.toString());
     }
 
     @Override

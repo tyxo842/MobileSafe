@@ -6,7 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.google.gson.Gson;
+
 import org.json.JSONObject;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import tyxo.mobilesafe.ConstValues;
 import tyxo.mobilesafe.R;
@@ -64,10 +69,8 @@ public abstract class BaseRecyclerActivity<T extends Object> extends BaseActivit
 
     protected TaskHelp taskHelp;
     protected VolleyCallBack<JSONObject> callback;
-    private Class<T> clazz ;
     private GridLayoutManager mLayoutManager;
     private int lastVisibleItem;
-    private T beanB;
 
     protected boolean isRefresh = true;            //是否是下拉刷新
     protected boolean isLoadMore = false;         //是否是上拉加载
@@ -120,12 +123,10 @@ public abstract class BaseRecyclerActivity<T extends Object> extends BaseActivit
 
     /** 处理数据 */
     protected abstract void handleData(T beanB);
-    protected abstract void handleData(String resp , Class<T> clazzH);
         /** 子类建议做如下判断, 打印size,便于调试接口,按自己情况去写 */
         //Type type = new TypeToken<BeanGirls>() {}.getType();
         //BeanGirls bean = new Gson().fromJson(response.toString(), type);
-        //clazzH = BeanGirls.class;
-        //BeanGirls bean = new Gson().fromJson(resp, clazzH);
+
         /*if(bean.getData()!=null && bean.getData().size() > 0){
             HLog.i("tyxo", " response size(): " + bean.getData().size());
         }else {
@@ -142,12 +143,7 @@ public abstract class BaseRecyclerActivity<T extends Object> extends BaseActivit
                 HLog.i("tyxo", " response : " + response.toString());
                 try {
                     if (!TextUtils.isEmpty(response.toString())) {
-                        // TODO: 2016/8/31  待完善,在基类里完成type转换...
-                        /*Type type = new TypeToken<T>() {}.getType();
-                        T bean = new Gson().fromJson(response.toString(), type);*/
-
-                        handleData(response.toString(),clazz);   //处理数据
-                        //handleData(bean);   //处理数据
+                        handleData(parseObject(response.toString()));  //处理数据
 
                     } else {
                         stopLoading();
@@ -213,6 +209,22 @@ public abstract class BaseRecyclerActivity<T extends Object> extends BaseActivit
     protected void stopLoading(){
         isLoadMore = false;
         mRefreshLayout.setRefreshing(false);
+    }
+
+    /**解析 返回数据*/
+    protected T parseObject(String response) throws Exception{
+        try {
+            return new Gson().fromJson(response, getClazz());
+        }catch (Exception e){
+            HLog.e("tyxo","BaseRecyclerActivity parseObject 数据解析失败"+e);
+            throw new Exception(e);
+        }
+    }
+    public Class<T> getClazz() {
+        Type t = getClass().getGenericSuperclass();
+        ParameterizedType p = (ParameterizedType) t;
+        Class<T> c = (Class<T>) p.getActualTypeArguments()[0];
+        return c;
     }
 }
 
