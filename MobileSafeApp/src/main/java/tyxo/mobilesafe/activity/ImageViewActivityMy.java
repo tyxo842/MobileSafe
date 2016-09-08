@@ -105,7 +105,7 @@ public class ImageViewActivityMy extends BaseActivityToolbar implements RequestL
         initGlide();
 
         crollview = (ScrollView)contentView.findViewById(R.id.activity_iv_scrollview);
-        ViewUtil.initBottomRightMenu(this,crollview);/** 初始化 底部 右下角menu图标 */
+        ViewUtil.initBottomRightMenu(this,crollview);/** 初始化 底部 右下角menu图标 */ /**第二个超长截图*/
 
         initBrokenView(); // 初始化特效
     }
