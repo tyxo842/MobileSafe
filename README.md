@@ -1,12 +1,12 @@
 README
 ===========================
 该文件用来测试和展示书写README的各种markdown语法。GitHub的markdown语法在标准的markdown语法基础上做了扩充，称之为
-`GitHub Flavored Markdown`。简称`GFM`，GFM在GitHub上有广泛应用，issues和wiki均支持markdown语法。
+`GitHub Flavored Markdown`，简称`GFM`。GFM 在GitHub上有广泛应用，issues和wiki均支持markdown语法。
 参考自: https://github.com/guodongxiaren/README
 
-****
+*****
 ###　　　　　　　　　　　　            Author: tyxo
-###　　　　　　　　　            E-mail: tyxo842@163.com
+####　　　　　　　　　             E-mail: tyxo842@163.com
 
 ===========================
 
@@ -22,14 +22,13 @@ README
     * 来源于网络的图片
     * GitHub仓库中的图片
 * [链接](#链接) 
-    * 文字超链接
+    * 超链接
         *  链接外部URL
         *  链接本仓库里的URL
     * [图片链接](#图片链接)
 * [列表](#列表)
     * 多级无序列表
     * 有序列表
-* [块引用](#块引用)
 * [代码高亮](#代码高亮)
 * [表格](#表格) 
 * [表情](#表情)
