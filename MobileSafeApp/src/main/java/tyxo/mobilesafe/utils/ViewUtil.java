@@ -518,14 +518,7 @@ public class ViewUtil {
                 .build();
     }
 
-    /** 获取超长截图的 Bitmap listview*/
-    public static Bitmap getBitmapScreenShot(ListView listView,Context context){
-        return ScreenShot.createBitmap(listView,context);
-    }
-    /** 获取超长截图的 Bitmap scrollView*/
-    public static Bitmap getBitmapScreenShot(ScrollView scrollView){
-        return ScreenShot.getBitmapByView(scrollView);
-    }
+
     /** 保存 屏幕超长截图 */
     public static void showDialogScreenShot(final Context context, final ListView listView,final ScrollView scrollView){
         //ScreenShot.saveImageToGallery(context,ScreenShot.createBitmap(listView,context),"名字");//保存listview超长图片并插入图库
@@ -533,7 +526,7 @@ public class ViewUtil {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         //builder.setItems(new String[]{getResources().getString(R.string.save_picture)}, new DialogInterface.OnClickListener() {
-        builder.setItems(new String[]{"保存图片"}, new DialogInterface.OnClickListener() {
+        builder.setItems(new String[]{"保存超长截图"}, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Bitmap imageBitmap;
@@ -548,6 +541,14 @@ public class ViewUtil {
             }
         });
         builder.show();
+    }
+    /** 获取超长截图的 Bitmap listview*/
+    public static Bitmap getBitmapScreenShot(ListView listView,Context context){
+        return ScreenShot.createBitmap(listView,context);
+    }
+    /** 获取超长截图的 Bitmap scrollView*/
+    public static Bitmap getBitmapScreenShot(ScrollView scrollView){
+        return ScreenShot.getBitmapByView(scrollView);
     }
     /** 保存 屏幕超长截图 异步任务 */
     public static class SaveImageTask extends AsyncTask<Bitmap, Void, String> {
