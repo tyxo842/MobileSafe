@@ -257,6 +257,6 @@ Github的Markdown语法支持添加emoji表情，输入不同的符号码（两�
 [Github]:https://github.com/tyxo842 "我的github"
 [weibo]:http://weibo.com
 [baidu-logo]:http://www.baidu.com/img/bdlogo.gif "百度logo"
-[weibo-logo]:/img/weibo.png "点击图片进入微博"
-[csdn-logo]:/img/csdn.png "我的CSDN博客"
+[weibo-logo]:https://github.com/tyxo842/MobileSafe/raw/master/MobileSafeApp/src/main/assets/weibo.png "点击图片进入微博"
+[csdn-logo]:https://github.com/tyxo842/MobileSafe/raw/master/MobileSafeApp/src/main/assets/csdn.png "我的CSDN博客"
 [pikaqiu]:https://github.com/tyxo842/MobileSafe/raw/master/MobileSafeApp/src/main/assets/pikaqiu.gif
