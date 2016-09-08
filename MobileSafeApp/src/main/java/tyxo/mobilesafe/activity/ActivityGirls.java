@@ -53,7 +53,7 @@ public class ActivityGirls extends BaseRecyclerActivity<BeanGirls>{
                 //intent.putExtra("current", position);
                 Bundle bun = new Bundle();
                 bun.putSerializable("girls",beanList);
-                bun.putInt("cuttent",position);
+                bun.putInt("current",position);
                 intent.putExtras(bun);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeScaleUpAnimation(
                         view, view.getWidth() / 2, view.getHeight() / 2, 0, 0);
