@@ -357,4 +357,18 @@ public class DialogUtil {
         ButterFlyDialog butterFlyDialog = new ButterFlyDialog(context);
         butterFlyDialog.show();
     }
+
+    /**显示简单 dialog: 只有一个提示按钮*/
+    public static void showNomalDialog(Context context,String str, final boolean isOk){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setItems(new String[]{str}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (isOk) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
 }
