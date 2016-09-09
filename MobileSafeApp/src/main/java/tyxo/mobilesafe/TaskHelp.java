@@ -15,6 +15,7 @@ import tyxo.mobilesafe.base.PlatUser;
 import tyxo.mobilesafe.net.volley.VolleyCallBack;
 import tyxo.mobilesafe.net.volley.VolleyErrorResult;
 import tyxo.mobilesafe.net.volley.VolleyManager;
+import tyxo.mobilesafe.utils.MD5Util;
 import tyxo.mobilesafe.utils.StringUtils;
 import tyxo.mobilesafe.utils.log.HLog;
 
@@ -190,6 +191,20 @@ public class TaskHelp {
         HLog.i("tyxo","getGirls url : "+url);
     }
 
+    /**小罗童鞋 网络请求*/
+    public static void getDataLuo(Context context,int pageNum,int pageSize,VolleyCallBack<JSONObject> callback){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("pageNum", pageNum);
+            jsonObject.put("pageSize", pageSize);
+            jsonObject.put("token", MD5Util.getMD5("lc0sd7mcx5vk1re3"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String url = "http://test.baike.art-d.com.cn:88/"+"app/headLines/headLines.json";
+        VolleyManager.getInstance(context).postJson(url, jsonObject, callback);
+        HLog.i("tyxo:", " 请求url: "+url+"\n请求参数: "+jsonObject.toString());
+    }
 
 }
 
