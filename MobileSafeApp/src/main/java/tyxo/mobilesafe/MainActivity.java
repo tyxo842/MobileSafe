@@ -868,7 +868,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Message msg = new Message();
             msg.what = 2;
             handler.sendMessage(msg);
-            HLog.e("tyxo","onAuthenticationSucceeded ："+"验证成功");
+            HLog.v("tyxo","onAuthenticationSucceeded ："+"验证成功");
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
         }
