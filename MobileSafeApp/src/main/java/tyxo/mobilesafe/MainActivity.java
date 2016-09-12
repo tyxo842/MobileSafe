@@ -74,6 +74,7 @@ import tyxo.mobilesafe.utils.bitmap.CropHelper;
 import tyxo.mobilesafe.utils.bitmap.CropParams;
 import tyxo.mobilesafe.utils.dialog.DialogUtil;
 import tyxo.mobilesafe.utils.log.HLog;
+import tyxo.mobilesafe.utils.permission.PermissionUtil;
 import tyxo.mobilesafe.widget.GooeyMenu;
 import tyxo.mobilesafe.widget.dragGridView.DragGridView;
 import tyxo.mobilesafe.widget.dragGridView.GridViewMy;
@@ -139,6 +140,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initView();         // 初始化View
         initListener();     // 初始化监听
         initData();         // 初始化数据
+
+        new PermissionUtil(this);
     }
 
     protected void initView() {
