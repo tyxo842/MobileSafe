@@ -1,4 +1,4 @@
-package tyxo.mobilesafe.utils;
+package tyxo.mobilesafe.utils.md5;
 
 import java.security.MessageDigest;
 

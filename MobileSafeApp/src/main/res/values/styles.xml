@@ -138,7 +138,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
         <!-- 底部导航栏的颜色 -->
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/navigationBarColor</item>
+        <!--<item name="android:navigationBarColor" tools:targetApi="lollipop">@color/navigationBarColor</item>--><!--会变成白色-->
     </style>
 
 
@@ -202,7 +202,7 @@
     <!--底部导航栏 activity6-->
     <style name="BottomTheme" parent="AppTheme.NoActionBar">
         <!-- 底部导航栏的颜色 -->
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/transparent</item>
+        <!--<item name="android:navigationBarColor" tools:targetApi="lollipop">@color/transparent</item>--><!--会变成白色-->
         <!-- 状态栏颜色 -->
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
