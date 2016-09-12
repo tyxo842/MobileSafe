@@ -1,7 +1,10 @@
 package tyxo.functions.prettygirls.girl;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -13,6 +16,8 @@ import coder.mylibrary.base.AppActivity;
 import coder.mylibrary.base.BaseFragment;
 import tyxo.functions.prettygirls.util.ColorUtil;
 import tyxo.mobilesafe.R;
+import tyxo.mobilesafe.utils.ToastUtil;
+import tyxo.mobilesafe.utils.permission.PermissionUtil;
 
 /**
  * Created by oracleen on 2016/7/4.
@@ -71,7 +76,10 @@ public class GirlActivity extends AppActivity implements GirlFragment.OnGirlChan
             mGirlFragment.shareGirl();
             return true;
         } else if (id == R.id.action_save) {
-            mGirlFragment.saveGirl();
+            //申请权限
+            PermissionUtil.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    PermissionUtil.MY_PERMISSIONS_WRITE_STORAGE);
+            //mGirlFragment.saveGirl();
             return true;
         }
 
@@ -107,5 +115,20 @@ public class GirlActivity extends AppActivity implements GirlFragment.OnGirlChan
     private void finishActivity() {
         finish();
         //overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
+        if (requestCode == PermissionUtil.MY_PERMISSIONS_WRITE_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission Granted
+                mGirlFragment.saveGirl();
+            } else {
+                // Permission Denied
+                ToastUtil.showToastS(this,"请提供权限允许");
+            }
+        }
     }
 }

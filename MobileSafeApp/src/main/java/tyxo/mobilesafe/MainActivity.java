@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initListener();     // 初始化监听
         initData();         // 初始化数据
 
-        new PermissionUtil(this);
+        new PermissionUtil(this);//申请清单文件全部权限.
     }
 
     protected void initView() {

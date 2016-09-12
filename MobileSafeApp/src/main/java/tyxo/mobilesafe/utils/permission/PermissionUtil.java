@@ -5,10 +5,9 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by LY on 2016/9/12 12: 08.
@@ -19,10 +18,16 @@ import java.util.List;
  */
 public class PermissionUtil {
     private Activity activity;
+    public static int MY_PERMISSIONS_WRITE_STORAGE = 1;
+
     public PermissionUtil(Activity activity) {
         this.activity = activity;
         iniAttribute();
         initRequestPermissions();
+    }
+
+    private void iniAttribute() {
+
     }
 
     private void initRequestPermissions() {
@@ -47,13 +52,32 @@ public class PermissionUtil {
         Log.d("tyxo", "Has " + Manifest.permission.READ_EXTERNAL_STORAGE + " permission: " + hasPermission);
     }
 
-    private void iniAttribute() {
+    //检查是否有权限
+    public static void checkPermission(Activity activity1,String permission, int ReqPermission){
+        if (ContextCompat.checkSelfPermission(activity1, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请 权限
+            ActivityCompat.requestPermissions(activity1,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},ReqPermission);
 
+           /* if (ActivityCompat.shouldShowRequestPermissionRationale(activity1, permission)) {
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+                //申请 权限
+                ActivityCompat.requestPermissions(activity1,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},ReqPermission);
+            }*/
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     public void requestPermissions(Object object, int requestCode, String[] permissions){
-        /*if (!isOverMarshmallow()) {
+        /*
+        //鸿洋 代码
+        if (!isOverMarshmallow()) {
             doExecuteSuccess(object, requestCode);
             return;
         }
@@ -70,8 +94,7 @@ public class PermissionUtil {
             doExecuteSuccess(object,requestCode);
         }*/
     }
-
-    @TargetApi(Build.VERSION_CODES.M)
+    /*@TargetApi(Build.VERSION_CODES.M)
     public static List<String> findDeniedPermissions(Activity activity, String ... permission) {
         List<String> denyPermissions = new ArrayList<>();
         for (String value : permission) {
@@ -80,7 +103,7 @@ public class PermissionUtil {
             }
         }
         return denyPermissions;
-    }
+    }*/
 
 }
 /*
