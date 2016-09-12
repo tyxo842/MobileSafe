@@ -1,6 +1,5 @@
 package tyxo.mobilesafe;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -51,7 +49,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import tyxo.functions.music.MusicActivity;
-import tyxo.functions.prettygirls.home.HomeActivity;
 import tyxo.mobilesafe.activity.ActivityGirls;
 import tyxo.mobilesafe.activity.ImageViewActivityMy;
 import tyxo.mobilesafe.activity.RecyclerActivity;
@@ -67,6 +64,7 @@ import tyxo.mobilesafe.adpter.AdapterMainGridView;
 import tyxo.mobilesafe.adpter.AdapterMainRecycler;
 import tyxo.mobilesafe.bean.MainGVItemBean;
 import tyxo.mobilesafe.utils.AnimationUtil;
+import tyxo.mobilesafe.utils.FingerPrintUtils;
 import tyxo.mobilesafe.utils.StringUtils;
 import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.utils.ViewUtil;
@@ -297,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_camera) {
             DialogUtil.showDialogCamera(MainActivity.this,mCropParams);
         } else if (id == R.id.nav_gallery) {
-            fingerCheck();
+            new FingerPrintUtils(this);
         } else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent(this, MusicActivity.class);
             startActivity(intent);
@@ -471,7 +469,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     swipeRL_recyclerActivity.setRefreshing(false);
                     break;
                 case 2:
-                    pd.hide();
                     break;
             }
         }
@@ -805,73 +802,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             CropHelper.clearCachedCropFile(cropHandler.getCropParams().uri);//
         }*/
         super.onDestroy();
-    }
-
-
-    /**指纹 解锁*/
-    private FingerprintManagerCompat fManager = FingerprintManagerCompat.from(this);// 获取一个FingerPrintManagerCompat的实例
-    private boolean isCheckOk;
-    private ProgressDialog pd ;
-    private Handler fHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            fManager.authenticate(null,0,null,new MyCallBackFinger(),null);
-            HLog.v("tyxo","MainActivity fHandler : "+"重启指纹模块");
-        }
-    };
-    private boolean fingerCheck(){
-        pd = new ProgressDialog(this);
-        pd.setTitle("请录入指纹");
-        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);//风格:圆形,旋转
-        //pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);//风格:水平
-        pd.setMessage("");
-        pd.setIndeterminate(false);//进度条是否不明确
-        pd.setCancelable(true);//按返回取消
-        pd.show();
-        /**
-         * 开始验证，什么时候停止由系统来确定，如果验证成功，那么系统会关系sensor，如果失败，则允许
-         * 多次尝试，如果依旧失败，则会拒绝一段时间，然后关闭sensor，过一段时候之后再重新允许尝试
-         *
-         * 第四个参数为重点，需要传入一个FingerprintManagerCompat.AuthenticationCallback的子类
-         * 并重写一些方法，不同的情况回调不同的函数
-         */
-        fManager.authenticate(null,0,null,new MyCallBackFinger(),null);
-
-        return isCheckOk;
-    }
-    private class MyCallBackFinger extends FingerprintManagerCompat.AuthenticationCallback{
-
-        // 当出现错误的时候回调此函数，比如多次尝试都失败了的时候，errString是错误信息
-        @Override
-        public void onAuthenticationError(int errMsgId, CharSequence errString) {
-            super.onAuthenticationError(errMsgId, errString);
-            isCheckOk = false;
-            fHandler.sendMessageDelayed(new Message(), 1000 * 30);
-            HLog.e("tyxo","onAuthenticationError ："+errString);
-        }
-
-        // 当指纹验证失败的时候会回调此函数，失败之后允许多次尝试，失败次数过多会停止响应一段时间然后再停止sensor的工作
-        @Override
-        public void onAuthenticationFailed() {
-            super.onAuthenticationFailed();
-            isCheckOk = false;
-            fHandler.sendMessageDelayed(new Message(), 1000 * 30);
-            HLog.e("tyxo","onAuthenticationFailed ："+"验证失败");
-        }
-
-        // 当验证的指纹成功时会回调此函数，然后不再监听指纹sensor
-        @Override
-        public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
-            super.onAuthenticationSucceeded(result);
-            isCheckOk = true;
-            Message msg = new Message();
-            msg.what = 2;
-            handler.sendMessage(msg);
-            HLog.v("tyxo","onAuthenticationSucceeded ："+"验证成功");
-            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-            startActivity(intent);
-        }
     }
 }
 
