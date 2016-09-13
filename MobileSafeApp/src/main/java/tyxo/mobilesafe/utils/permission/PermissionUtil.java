@@ -7,19 +7,22 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
+
+import tyxo.mobilesafe.utils.log.HLog;
 
 /**
  * Created by LY on 2016/9/12 12: 08.
  * Mail      tyxo842@163.com
  * Describe : android 6.0 运行时权限申请, 都有哪些见 类尾.
- *            用法:
- *            if (PermissionUtil.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    PermissionUtil.MY_PERMISSIONS_WRITE_STORAGE)) {
-                    mGirlFragment.saveGirl();   //具体操作
-              }else{}
- *            重写 onRequestPermissionsResult 用户选择允许或拒绝后，会回调.
- *            根据requestCode和grantResults(授权结果)做相应的具体操作.
+ *            当前用到权限,用法:
+                  if (PermissionUtil.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        PermissionUtil.MY_PERMISSIONS_WRITE_STORAGE)) {
+                        mGirlFragment.saveGirl();   //具体操作
+                  }else{}
+                  重写 onRequestPermissionsResult 用户选择允许或拒绝后，会回调.
+                  根据requestCode和grantResults(授权结果)做相应的具体操作.
+               申请清单全部权限,用法:
+                    new PermissionUtil(this);
  *
  */
 public class PermissionUtil {
@@ -28,34 +31,26 @@ public class PermissionUtil {
 
     public PermissionUtil(Activity activity) {
         this.activity = activity;
-        iniAttribute();
-        initRequestPermissions();
+        iniAttribute();             //初始化 一些用到的属性.
+        initRequestPermissions();   //new PermissionUtil ,会在开始,申请清单里面所有权限,之后哪里用到还需再检查.
     }
 
-    private void iniAttribute() {
-
-    }
+    private void iniAttribute() {}
 
     private void initRequestPermissions() {
-        /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
-        }*/
         // Requesting all the permissions in the manifest
         PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(activity, new PermissionsResultAction() {
             @Override
-            public void onGranted() {
+            public void onGranted() {                   //允许的操作
             }
 
             @Override
-            public void onDenied(String permission) {
+            public void onDenied(String permission) {   //拒绝的操作
             }
         });
 
         boolean hasPermission = PermissionsManager.getInstance().hasPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
-        Log.d("tyxo", "Has " + Manifest.permission.READ_EXTERNAL_STORAGE + " permission: " + hasPermission);
+        HLog.v("tyxo", "例如,是否有: " + Manifest.permission.READ_EXTERNAL_STORAGE + " permission: " + hasPermission);
     }
 
     //检查是否有权限,有就继续操作,没有就申请(ps:禁止并不再提示,未解决)
@@ -65,30 +60,16 @@ public class PermissionUtil {
             //申请 权限
             ActivityCompat.requestPermissions(activity1,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},ReqPermission);
-            return false;
-
-            /*
-            //有问题:先拒绝,再授权,第二次保存失败(无反应)
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity1, permission)) {
-                ToastUtil.showToastS(activity1,"请设置sdk权限,否则保存图片会失败");
-                //申请 权限
-                ActivityCompat.requestPermissions(activity1,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},ReqPermission);
-
-            } else {
-                //申请 权限
-                ActivityCompat.requestPermissions(activity1,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},ReqPermission);
-            }*/
+            return false;   //没有权限,申请,后走到Activity回调 onRequestPermissionsResult.
         }else{
-            return true;    //已经有权限,可以直接读写操作等.
+            return true;    //已经有权限,不走回调,直接读写操作等.
         }
     }
 
+    //鸿洋代码,未完成,不用.
     @TargetApi(Build.VERSION_CODES.M)
     public void requestPermissions(Object object, int requestCode, String[] permissions){
         /*
-        //鸿洋 代码
         if (!isOverMarshmallow()) {
             doExecuteSuccess(object, requestCode);
             return;
@@ -118,24 +99,9 @@ public class PermissionUtil {
     }*/
 
 }
+
+
 /*
-@Override
-  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-      super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-      doNext(requestCode,grantResults);
-  }
-
-  private void doNext(int requestCode, int[] grantResults) {
-      if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
-          if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-              // Permission Granted 允许
-          } else {
-              // Permission Denied 拒绝
-          }
-      }
-  }
-
-
   Fragment中运行时权限的特殊处理
 在Fragment中申请权限，不要使用ActivityCompat.requestPermissions, 直接使用Fragment的requestPermissions方法，否则会回调到Activity的onRequestPermissionsResult
 
