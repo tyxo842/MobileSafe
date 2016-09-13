@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -17,8 +16,10 @@ import tyxo.functions.fuli.widget.ExtendedViewPager;
 import tyxo.mobilesafe.R;
 
 /**
- * Created by Zj on 2016/1/25.
- */
+* @author ly
+* @created at 2016/9/13 11:31
+* @des : mm详情界面依附的Activity,具体显示操作在ImageViewerFragment.
+*/
 public class ImageViewerActivity extends AppCompatActivity {
 
     Realm realm;
@@ -39,9 +40,6 @@ public class ImageViewerActivity extends AppCompatActivity {
         images=realm.where(ImageFuli.class).equalTo("type",type).findAll();
 
         mViewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-
-        Log.i("tyxo", "ImageViewerActivity  onCreate ");
-
     }
 
     @Override
@@ -71,8 +69,5 @@ public class ImageViewerActivity extends AppCompatActivity {
             return ImageViewerFragment.newInstance(
                     images.get(position).getUrl());
         }
-
     }
-
-
 }

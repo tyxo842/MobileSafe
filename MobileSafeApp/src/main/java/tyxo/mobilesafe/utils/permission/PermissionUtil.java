@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 
 import tyxo.mobilesafe.utils.log.HLog;
@@ -21,6 +22,15 @@ import tyxo.mobilesafe.utils.log.HLog;
                   }else{}
                   重写 onRequestPermissionsResult 用户选择允许或拒绝后，会回调.
                   根据requestCode和grantResults(授权结果)做相应的具体操作.
+                     if (requestCode == PermissionUtil.MY_PERMISSIONS_WRITE_STORAGE) {
+                         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                             // Permission Granted
+                             mGirlFragment.saveGirl();
+                         } else {
+                             // Permission Denied
+                             ToastUtil.showToastS(this,"请提供权限允许");
+                         }
+                     }
                申请清单全部权限,用法:
                     new PermissionUtil(this);
  *
@@ -53,13 +63,24 @@ public class PermissionUtil {
         HLog.v("tyxo", "例如,是否有: " + Manifest.permission.READ_EXTERNAL_STORAGE + " permission: " + hasPermission);
     }
 
-    //检查是否有权限,有就继续操作,没有就申请(ps:禁止并不再提示,未解决)
+    //检查是否有权限,有就继续操作,没有就申请(ps:禁止并不再提示,未解决) ---> Activity -->GirlActivity(Gank)
     public static boolean checkPermission(Activity activity1,String permission, int ReqPermission){
         if (ContextCompat.checkSelfPermission(activity1, permission)
                 != PackageManager.PERMISSION_GRANTED) {
             //申请 权限
             ActivityCompat.requestPermissions(activity1,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},ReqPermission);
+            return false;   //没有权限,申请,后走到Activity回调 onRequestPermissionsResult.
+        }else{
+            return true;    //已经有权限,不走回调,直接读写操作等.
+        }
+    }
+    //检查是否有权限,有就继续操作,没有就申请(ps:禁止并不再提示,未解决) ---> Fragment -->ImageViewerFragment(Fuli)
+    public static boolean checkPermission(Fragment fragment, String permission, int ReqPermission){
+        if (ContextCompat.checkSelfPermission(fragment.getActivity(), permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请 权限
+            fragment.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},ReqPermission);
             return false;   //没有权限,申请,后走到Activity回调 onRequestPermissionsResult.
         }else{
             return true;    //已经有权限,不走回调,直接读写操作等.

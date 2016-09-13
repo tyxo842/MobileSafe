@@ -1,10 +1,13 @@
 package tyxo.functions.fuli.Fragment;
 
+import android.Manifest;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -24,10 +27,12 @@ import java.util.Date;
 
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.utils.ToastUtil;
+import tyxo.mobilesafe.utils.permission.PermissionUtil;
 import tyxo.mobilesafe.widget.TouchImageView;
 
 /**
- * Created by Zj on 2016/1/28.
+ * Created by ly
+ * description : mm详情界面,含长按保存.
  */
 public class ImageViewerFragment extends Fragment implements RequestListener<String, GlideDrawable>,View.OnLongClickListener{
 
@@ -88,16 +93,24 @@ public class ImageViewerFragment extends Fragment implements RequestListener<Str
         builder.setItems(new String[]{"保存图片"}, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                image.setDrawingCacheEnabled(true);
-                Bitmap imageBitmap = image.getDrawingCache();
-                if (imageBitmap != null) {
-                    new SaveImageTask().execute(imageBitmap);
-                }
+                if (PermissionUtil.checkPermission(ImageViewerFragment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        PermissionUtil.MY_PERMISSIONS_WRITE_STORAGE)) {
+                    saveImageLocal();           //点击按钮,保存图片到本地.
+                }else{}
             }
         });
         builder.show();
 
         return true;
+    }
+
+    //保存图片到本地.
+    private void saveImageLocal() {
+        image.setDrawingCacheEnabled(true);
+        Bitmap imageBitmap = image.getDrawingCache();
+        if (imageBitmap != null) {
+            new SaveImageTask().execute(imageBitmap);
+        }
     }
 
     private class SaveImageTask extends AsyncTask<Bitmap, Void, String> {
@@ -132,6 +145,20 @@ public class ImageViewerFragment extends Fragment implements RequestListener<Str
             ToastUtil.showToastS(getActivity(),result);
 
             image.setDrawingCacheEnabled(false);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PermissionUtil.MY_PERMISSIONS_WRITE_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission Granted
+                saveImageLocal();
+            } else {
+                // Permission Denied
+                ToastUtil.showToastS(getActivity(),"请提供权限允许");
+            }
         }
     }
 }
