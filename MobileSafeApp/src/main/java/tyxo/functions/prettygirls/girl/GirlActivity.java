@@ -17,6 +17,7 @@ import coder.mylibrary.base.BaseFragment;
 import tyxo.functions.prettygirls.util.ColorUtil;
 import tyxo.mobilesafe.R;
 import tyxo.mobilesafe.utils.ToastUtil;
+import tyxo.mobilesafe.utils.log.HLog;
 import tyxo.mobilesafe.utils.permission.PermissionUtil;
 
 /**
@@ -76,10 +77,10 @@ public class GirlActivity extends AppActivity implements GirlFragment.OnGirlChan
             mGirlFragment.shareGirl();
             return true;
         } else if (id == R.id.action_save) {
-            //申请权限
-            PermissionUtil.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    PermissionUtil.MY_PERMISSIONS_WRITE_STORAGE);
-            //mGirlFragment.saveGirl();
+            if (PermissionUtil.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE,    //申请检查 权限
+                    PermissionUtil.MY_PERMISSIONS_WRITE_STORAGE)) {
+                mGirlFragment.saveGirl();
+            }else{}
             return true;
         }
 
@@ -120,6 +121,7 @@ public class GirlActivity extends AppActivity implements GirlFragment.OnGirlChan
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        HLog.v("tyxo","权限回调处理");
         //PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
         if (requestCode == PermissionUtil.MY_PERMISSIONS_WRITE_STORAGE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

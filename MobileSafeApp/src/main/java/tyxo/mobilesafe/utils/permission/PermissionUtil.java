@@ -13,8 +13,14 @@ import android.util.Log;
  * Created by LY on 2016/9/12 12: 08.
  * Mail      tyxo842@163.com
  * Describe : android 6.0 运行时权限申请, 都有哪些见 类尾.
+ *            用法:
+ *            if (PermissionUtil.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    PermissionUtil.MY_PERMISSIONS_WRITE_STORAGE)) {
+                    mGirlFragment.saveGirl();   //具体操作
+              }else{}
  *            重写 onRequestPermissionsResult 用户选择允许或拒绝后，会回调.
- *            根据requestCode和grantResults(授权结果)做相应的后续处理.
+ *            根据requestCode和grantResults(授权结果)做相应的具体操作.
+ *
  */
 public class PermissionUtil {
     private Activity activity;
@@ -52,24 +58,30 @@ public class PermissionUtil {
         Log.d("tyxo", "Has " + Manifest.permission.READ_EXTERNAL_STORAGE + " permission: " + hasPermission);
     }
 
-    //检查是否有权限
-    public static void checkPermission(Activity activity1,String permission, int ReqPermission){
+    //检查是否有权限,有就继续操作,没有就申请(ps:禁止并不再提示,未解决)
+    public static boolean checkPermission(Activity activity1,String permission, int ReqPermission){
         if (ContextCompat.checkSelfPermission(activity1, permission)
                 != PackageManager.PERMISSION_GRANTED) {
             //申请 权限
             ActivityCompat.requestPermissions(activity1,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},ReqPermission);
+            return false;
 
-           /* if (ActivityCompat.shouldShowRequestPermissionRationale(activity1, permission)) {
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+            /*
+            //有问题:先拒绝,再授权,第二次保存失败(无反应)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity1, permission)) {
+                ToastUtil.showToastS(activity1,"请设置sdk权限,否则保存图片会失败");
+                //申请 权限
+                ActivityCompat.requestPermissions(activity1,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},ReqPermission);
 
             } else {
                 //申请 权限
                 ActivityCompat.requestPermissions(activity1,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},ReqPermission);
             }*/
+        }else{
+            return true;    //已经有权限,可以直接读写操作等.
         }
     }
 
@@ -116,9 +128,9 @@ public class PermissionUtil {
   private void doNext(int requestCode, int[] grantResults) {
       if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
           if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-              // Permission Granted
+              // Permission Granted 允许
           } else {
-              // Permission Denied
+              // Permission Denied 拒绝
           }
       }
   }
