@@ -78,6 +78,8 @@ public class RecyclerActivity extends BaseActivityToolbar implements View.OnClic
         swipeRL = (SwipeRefreshLayout) findViewById(R.id.recycler_swipeRL_recyclerActivity);
         swipeRL.setColorSchemeResources(R.color.gray, R.color.green, R.color.order_text_code_color_2b5fc5);
         swipeRL.setProgressBackgroundColor(R.color.order_bg_f0f3f5);//进度条背景颜色
+
+        //getSupportActionBar().hide();
     }
 
     @Override
