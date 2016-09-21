@@ -282,28 +282,3 @@ public class RecyclerActivity extends BaseActivityToolbar implements View.OnClic
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

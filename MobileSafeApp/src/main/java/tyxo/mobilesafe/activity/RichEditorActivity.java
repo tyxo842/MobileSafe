@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 
 import tyxo.mobilesafe.R;
+import tyxo.mobilesafe.utils.IDCardUtil;
+import tyxo.mobilesafe.utils.ToastUtil;
 import tyxo.mobilesafe.widget.richeditor.RichTextEditor;
 
 /**
@@ -32,7 +34,7 @@ public class RichEditorActivity extends FragmentActivity {
     private static final int REQUEST_CODE_PICK_IMAGE = 1023;
     private static final int REQUEST_CODE_CAPTURE_CAMEIA = 1022;
     private RichTextEditor editor;
-    private View btn1, btn2, btn3;
+    private View btn1, btn2, btn3,btn4;
     private View.OnClickListener btnListener;
 
     private static final File PHOTO_DIR = new File(
@@ -63,6 +65,17 @@ public class RichEditorActivity extends FragmentActivity {
                     List<RichTextEditor.EditData> editList = editor.buildEditData();
                     // 下面的代码可以上传、或者保存，请自行实现
                     dealEditData(editList);
+                } else if (v.getId() == btn4.getId()) {//点击验证是否为身份证号
+                    List<RichTextEditor.EditData> editList = editor.buildEditData();
+                    for (RichTextEditor.EditData itemData : editList) {
+                        if (itemData.inputStr != null) {
+                            if (IDCardUtil.isIDCard(itemData.inputStr.trim())) {
+                                ToastUtil.showToastS(RichEditorActivity.this, "是身份证号");
+                            } else {
+                                ToastUtil.showToastS(RichEditorActivity.this,"不是身份证号");
+                            }
+                        }
+                    }
                 }
             }
         };
@@ -70,10 +83,12 @@ public class RichEditorActivity extends FragmentActivity {
         btn1 = findViewById(R.id.button1);
         btn2 = findViewById(R.id.button2);
         btn3 = findViewById(R.id.button3);
+        btn4 = findViewById(R.id.button4);
 
         btn1.setOnClickListener(btnListener);
         btn2.setOnClickListener(btnListener);
         btn3.setOnClickListener(btnListener);
+        btn4.setOnClickListener(btnListener);
     }
 
     /**
@@ -86,7 +101,6 @@ public class RichEditorActivity extends FragmentActivity {
             } else if (itemData.imagePath != null) {
                 Log.d("RichEditor", "commit imgePath=" + itemData.imagePath);
             }
-
         }
     }
 

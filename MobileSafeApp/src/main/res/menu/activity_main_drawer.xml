@@ -29,7 +29,7 @@
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="富文本的反馈" />
+                android:title="富文本反馈+身份证号验证" />
         </menu>
     </item>
 
