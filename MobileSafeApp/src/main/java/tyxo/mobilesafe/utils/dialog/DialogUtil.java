@@ -1,16 +1,28 @@
 package tyxo.mobilesafe.utils.dialog;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.List;
 
 import tyxo.mobilesafe.ConstantsMy;
 import tyxo.mobilesafe.R;
+import tyxo.mobilesafe.bean.TextValue;
 import tyxo.mobilesafe.utils.ViewUtil;
 import tyxo.mobilesafe.utils.bitmap.CropHelper;
 import tyxo.mobilesafe.utils.bitmap.CropParams;
@@ -312,12 +324,14 @@ public class DialogUtil {
             mLongClickDialog.show();
         }
     }
+    */
 
-    public static Dialog createUpperDialog(Activity context, String title, List<TextValue> list, View.OnClickListener dialogListtener, @Nullable AdapterView.OnItemClickListener listener) {
-        final int checkPostion;
+    /**dialog底部弹框 上部圆角透明*/
+    public static Dialog createBottomDialog(Activity context, String title, List<TextValue> list,
+                                           View.OnClickListener dialogListtener, @Nullable AdapterView.OnItemClickListener listener) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.barcodetype_chooser, null);
+        View dialogView = inflater.inflate(R.layout.layout_bottom_chooser, null);
         TextView tvTitle = (TextView) dialogView.findViewById(R.id.dialog_title);
         tvTitle.setText(title);
 
@@ -336,8 +350,6 @@ public class DialogUtil {
         localLayoutParams.x = 0;
         localLayoutParams.y = 0;
 
-
-
         int screenWidth = context.getWindowManager().getDefaultDisplay().getWidth();
         dialogView.setMinimumWidth(screenWidth);
 
@@ -350,7 +362,7 @@ public class DialogUtil {
         customDialog.setCanceledOnTouchOutside(true);
         customDialog.setContentView(dialogView);
         return customDialog;
-    }*/
+    }
 
     /**蝴蝶 动画*/
     public static void showFlyDialog(Context context) {

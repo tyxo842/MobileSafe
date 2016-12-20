@@ -240,7 +240,7 @@ public class RichTextEditor extends ScrollView {
      * @param index   位置
      * @param editStr EditText显示的文字
      */
-    private void addEditTextAtIndex(final int index, String editStr) {
+    public void addEditTextAtIndex(final int index, String editStr) {
         EditText editText2 = createEditText("", getResources()
                 .getDimensionPixelSize(R.dimen.edit_padding_top));
         editText2.setText(editStr);

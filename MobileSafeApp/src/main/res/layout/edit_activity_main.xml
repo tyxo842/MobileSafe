@@ -45,6 +45,13 @@
             android:layout_marginLeft="14dp"
             android:background="@drawable/ic_onlie_answerer"
             android:gravity="center_horizontal" />
+        <View
+            android:id="@+id/button5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="14dp"
+            android:background="@drawable/icon_jia_new"
+            android:gravity="center_horizontal" />
     </LinearLayout>
 
     <!-- 富文本编辑器 -->
