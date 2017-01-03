@@ -321,7 +321,7 @@ public class ImageViewActivityMy extends BaseActivityToolbar implements RequestL
                 //.dontTransform()      //移除当前的转换
                 //.animate("设置资源加载完成后的动画,不包括从内存缓存中的获取")
                 //.dontAnimate()          //移除设置的动画
-                //.placeholder("设置加载的时候的图片")
+                //.placeholder("设置加载的时候的图片")    //placeholder可能导致图片加载不出来,去掉即可
                 //.error("设置加载失败后显示的图片")
                 //.skipMemoryCache("设置是否跳过内存缓存")
                 //.override("设置加载资源图片的像素宽 高")
@@ -339,7 +339,7 @@ public class ImageViewActivityMy extends BaseActivityToolbar implements RequestL
                 //.centerCrop()                               //大屏图
                 .fitCenter()                                //适配图(这个也注释后,是小图)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)   //缓存源资源和转换后的资源
-                .placeholder(R.drawable.loading)            //占位符 也就是加载中的图片，可放个gif
+                .placeholder(R.drawable.loading)            //占位符 也就是加载中的图片，可放个gif//placeholder可能导致图片加载不出来,去掉即可
                 .error(R.drawable.icon_zanwu)               //失败图片
                 .into(new BitmapImageViewTarget(image));
 

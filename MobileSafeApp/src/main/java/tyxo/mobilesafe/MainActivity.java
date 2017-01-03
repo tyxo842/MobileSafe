@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Glide.with(this)
                         .load(url)
                         .asBitmap()
-                        .placeholder(R.drawable.loading) //占位符 也就是加载中的图片，可放个gif
+                        .placeholder(R.drawable.loading) //占位符 也就是加载中的图片，可放个gif//placeholder可能导致图片加载不出来,去掉即可
                         .error(R.drawable.icon_zanwu) //失败图片
                         .into(target);
                 HLog.i("tyxo", "小标题 点击 ... url : " + url);
