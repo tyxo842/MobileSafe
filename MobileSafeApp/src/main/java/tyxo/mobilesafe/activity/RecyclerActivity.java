@@ -194,9 +194,9 @@ public class RecyclerActivity extends BaseActivityToolbar implements View.OnClic
                 HLog.i("tyxo","返回数据 response : "+response.toString());
                 Type type = new TypeToken<MainGVItemBean>() {}.getType();
                 MainGVItemBean bean = new Gson().fromJson(response.toString(), type);
-                /*处理 返回 数据 bean
-                * ...判空,增减,刷新ui等等操作....
-                * */
+                //处理 返回 数据 bean
+                // ...判空,增减,刷新ui等等操作....
+                //
             }
 
             @Override

@@ -597,6 +597,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //editText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         //editText.addTextChangedListener(watcher);
         editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);           //et 默认数字软键盘,可输入字母汉字等
+        /*//将软键盘搜索功能改为"搜索"两个字,同时修改xml文件处.
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                    // 先隐藏键盘
+                    ((InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
+                    //实现自己的搜索逻辑
+                    return true;
+                }
+                return false;
+            }
+        });*/
     }
 
     TextWatcher watcher = new TextWatcher() {
