@@ -131,6 +131,14 @@
 
         <service android:name="tyxo.mobilesafe.service.music.MusicService" />
 
+        <activity android:name=".activity.PicActivity"
+            android:label=""
+            android:theme="@style/MyToolbarTheme"/>
+        <!--android:label="TestGlideGif"
+            android:theme="@style/MyRecyclerMainTheme"
+            android:label=""
+            android:theme="@style/MyToolbarTheme"-->
+
         <!--图片功能 Rxjava+Retrofit+...-->
         <activity
             android:name="tyxo.functions.prettygirls.home.HomeActivity"
