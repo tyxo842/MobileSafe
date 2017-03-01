@@ -34,6 +34,7 @@ public abstract class OnMultiTouchListener implements View.OnTouchListener {
 
     public void removeCallback() {
         if (mRun != null) {
+            //// TODO: 2017/3/1 此处有报错为解决
             //getMainLoopHandler().removeCallbacks(mRun);
             mRun = null;
         }
@@ -60,6 +61,7 @@ public abstract class OnMultiTouchListener implements View.OnTouchListener {
                 }
             };
 
+            //// TODO: 2017/3/1 此处有报错为解决
             //postTaskInUIThread(mRun, getMultiTouchInterval());
         }
         return true;
