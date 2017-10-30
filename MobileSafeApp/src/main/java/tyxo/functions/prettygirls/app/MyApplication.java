@@ -1,6 +1,7 @@
 package tyxo.functions.prettygirls.app;
 
 import android.app.Application;
+import android.os.Handler;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,6 +18,7 @@ public class MyApplication extends Application {
 
     private static MyApplication mApplication;
     public static String currentGirl = "http://ww2.sinaimg.cn/large/610dc034jw1f5k1k4azguj20u00u0421.jpg";
+    private static Handler mainHandler;//主线程的handler
 
     @Override
     public void onCreate() {
@@ -32,6 +34,7 @@ public class MyApplication extends Application {
 
         //配置程序异常退出处理
         Thread.setDefaultUncaughtExceptionHandler(new LocalFileHandler(this));
+        mainHandler = new Handler();//初始化handler
     }
 
     public static OkHttpClient defaultOkHttpClient() {
@@ -45,5 +48,9 @@ public class MyApplication extends Application {
 
     public static MyApplication getIntstance() {
         return mApplication;
+    }
+
+    public static Handler getMainHandler(){
+        return mainHandler;
     }
 }

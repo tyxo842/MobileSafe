@@ -1,5 +1,7 @@
 package tyxo.mobilesafe.utils.log;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -180,5 +182,51 @@ public class HLog {
     /** 调试标记 */
     public static boolean getHardDebugFlag() {
         return HConfig.DEBUG;
+    }
+
+    private static boolean isDebug = true;//log开关，发布应用前值为false
+
+    /**
+     * 打印i级别的log
+     * @param tag
+     * @param msg
+     */
+    public static void i1(String tag,String msg){
+        if(isDebug){
+            Log.i(tag, msg);
+        }
+    }
+
+    /**
+     * 打印i级别的log
+     * @param tag
+     * @param msg
+     */
+    public static void i1(Object object,String msg){
+        if(isDebug){
+            Log.i(object.getClass().getSimpleName(), msg);
+        }
+    }
+
+    /**
+     * 打印e级别的log
+     * @param tag
+     * @param msg
+     */
+    public static void e1(String tag,String msg){
+        if(isDebug){
+            Log.e(tag, msg);
+        }
+    }
+
+    /**
+     * 打印e级别的log
+     * @param tag
+     * @param msg
+     */
+    public static void e1(Object object,String msg){
+        if(isDebug){
+            Log.e(object.getClass().getSimpleName(), msg);
+        }
     }
 }

@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -85,7 +86,7 @@ import tyxo.mobilesafe.widget.recyclerdivider.WrapRecyclerView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, AdapterMainRecycler.OnItemClickListener,
-        CropHandler,GooeyMenu.GooeyMenuInterface{
+        CropHandler, GooeyMenu.GooeyMenuInterface {
 
     private FloatingActionButton fab;
     private GooeyMenu gooey_menu;
@@ -122,14 +123,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private int[] iconIDs = {R.drawable.app_financial, R.drawable.app_donate, R.drawable.app_essential,
             R.drawable.app_citycard, R.drawable.app_inter_transfer, R.drawable.app_facepay};
-    private String[] titles = {"待做功能1", "待做功能2", "待做功能3", "沉浸式", "导航栏", "状态栏"};
+    private String[] titles = {"待做功能1", "待做功能2", "蝴蝶", "沉浸式", "导航栏", "状态栏"};
     private List<HashMap<String, Object>> dataSourceList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        ViewUtil.setStateBar(this,R.color.bg_green);/** 设置状态栏颜色 */
+        //ViewUtil.setStateBar(this, R.color.bg_green);/** 设置状态栏颜色 */
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -224,20 +226,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             bean.setId(i);
             gvListInfos.add(bean);
         }
-        for (int i =0;i<4;i++) {
+        for (int i = 0; i < 4; i++) {
             HashMap<String, Object> itemHashMap = new HashMap<>();
-            itemHashMap.put("item_image",R.drawable.app_financial);
+            itemHashMap.put("item_image", R.drawable.app_financial);
             itemHashMap.put("item_text", "拖拽 " + Integer.toString(i));
             dataSourceList.add(itemHashMap);
         }
         mAdapter = new AdapterMainRecycler(getApplicationContext(), mDatas);
-        mGridAdapter = new AdapterMainGridView(this, gvListInfos,3);
+        mGridAdapter = new AdapterMainGridView(this, gvListInfos, 3);
         mDragGridAdapter = new SimpleAdapter(this, dataSourceList,
-                R.layout.layout_main_griditem, new String[] { "item_image", "item_text" },
-                new int[] { R.id.main_header_gv_item_iv, R.id.main_header_gv_item_tv });
+                R.layout.layout_main_griditem, new String[]{"item_image", "item_text"},
+                new int[]{R.id.main_header_gv_item_iv, R.id.main_header_gv_item_tv});
         mGridView.setAdapter(mGridAdapter);
         mDragGridView.setAdapter(mDragGridAdapter);
-        AnimationUtil.setMainGridAnimtion(this,mGridView);  //gridView 设置动画
+        AnimationUtil.setMainGridAnimtion(this, mGridView);  //gridView 设置动画
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));//list的分割线
         //mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));//grid的分割线
@@ -282,12 +284,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onItemClick(View view, int position) {
-        ToastUtil.showToastS(this,"条目 "+position+" 点击了");
+        ToastUtil.showToastS(this, "条目 " + position + " 点击了");
     }
 
     @Override
     public void onItemLongClick(View view, int position) {
-        ToastUtil.showToastS(this,"条目 "+position+" 长按了");
+        ToastUtil.showToastS(this, "条目 " + position + " 长按了");
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -297,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            DialogUtil.showDialogCamera(MainActivity.this,mCropParams);
+            DialogUtil.showDialogCamera(MainActivity.this, mCropParams);
         } else if (id == R.id.nav_gallery) {
             new FingerPrintUtils(this);
         } else if (id == R.id.nav_slideshow) {
@@ -306,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_pic) {
             Intent intent = new Intent(this, PicActivity.class);
             startActivity(intent);
-        }else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 
@@ -339,11 +341,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void menuItemClicked(int menuNumber) {   //googlemenu
-        ToastUtil.showToastS(this,"Menu item clicked : " + menuNumber);
+        ToastUtil.showToastS(this, "Menu item clicked : " + menuNumber);
         gooey_menu.startHideAnimate();
     }
 
-    /** recyclerView 上拉下拉 监听 */
+    /**
+     * recyclerView 上拉下拉 监听
+     */
     @Override
     public void onRefresh() {
         Message msg = new Message();
@@ -381,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //header.setLayoutParams(params);           //不管用,回头查查代码设置重绘
         //headerGridView.setLayoutParams(params);   //不管用,回头查查代码设置重绘
         mGridView = (GridViewMy) headerGridView.findViewById(R.id.main_header_gridview);
-        mDragGridView = (DragGridView)findViewById(R.id.main_DragGridView);
+        mDragGridView = (DragGridView) findViewById(R.id.main_DragGridView);
         //mDragGridView.setVisibility(View.VISIBLE);
         /** 添加两个头不成功,此方法不行,可以尝试在adapter内重写getItemViewType 参考AdapterRecyclerHeader 注释掉部分*/
         //mRecyclerView.addHeaderView(header);
@@ -450,7 +454,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    /** 加载图片 */
+    /**
+     * 加载图片
+     */
     private SimpleTarget target = new SimpleTarget() {
         @Override
         public void onResourceReady(Object resource, GlideAnimation glideAnimation) {
@@ -514,13 +520,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //              dataSourceList.set(to, temp);
 
                 //这里的处理需要注意下
-                if(form < to){
-                    for(int i=form; i<to; i++){
-                        Collections.swap(dataSourceList, i, i+1);
+                if (form < to) {
+                    for (int i = form; i < to; i++) {
+                        Collections.swap(dataSourceList, i, i + 1);
                     }
-                }else if(form > to){
-                    for(int i=form; i>to; i--){
-                        Collections.swap(dataSourceList, i, i-1);
+                } else if (form > to) {
+                    for (int i = form; i > to; i--) {
+                        Collections.swap(dataSourceList, i, i - 1);
                     }
                 }
                 dataSourceList.set(to, temp);
@@ -532,34 +538,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ToastUtil.showToastS(MainActivity.this,parent.getAdapter().getItem(position).toString());
-                ToastUtil.showToastS(MainActivity.this,"点击的是 : "+position);
+                ToastUtil.showToastS(MainActivity.this, parent.getAdapter().getItem(position).toString());
+                ToastUtil.showToastS(MainActivity.this, "点击的是 : " + position);
                 MainGVItemBean itemBean = (MainGVItemBean) parent.getAdapter().getItem(position);
                 //{"手机防盗", "骚扰拦截", "软件管理", "进程管理", "流量统计", "缓存清理"}
                 switch (itemBean.getId()) {
                     case 0:
-                        HLog.v("tyxo",itemBean.getTitle());
-                        Intent intent0 = new Intent(MainActivity.this,Aciticity1.class);
+                        HLog.v("tyxo", itemBean.getTitle());
+                        Intent intent0 = new Intent(MainActivity.this, Aciticity1.class);
                         startActivity(intent0);
                         break;
                     case 1:
-                        Intent intent1 = new Intent(MainActivity.this,Aciticity2.class);
+                        Intent intent1 = new Intent(MainActivity.this, Aciticity2.class);
                         startActivity(intent1);
                         break;
                     case 2:
-                        Intent intent2 = new Intent(MainActivity.this,Aciticity3.class);
+                        Intent intent2 = new Intent(MainActivity.this, Aciticity3.class);
                         startActivity(intent2);
                         break;
                     case 3:
-                        Intent intent3 = new Intent(MainActivity.this,Aciticity4.class);
+                        Intent intent3 = new Intent(MainActivity.this, Aciticity4.class);
                         startActivity(intent3);
                         break;
                     case 4:
-                        Intent intent4 = new Intent(MainActivity.this,Aciticity5.class);
+                        Intent intent4 = new Intent(MainActivity.this, Aciticity5.class);
                         startActivity(intent4);
                         break;
                     case 5:
-                        Intent intent5 = new Intent(MainActivity.this,Aciticity6.class);
+                        Intent intent5 = new Intent(MainActivity.this, Aciticity6.class);
                         startActivity(intent5);
                         break;
                 }
@@ -620,7 +626,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     TextWatcher watcher = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -633,12 +640,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         @Override
-        public void afterTextChanged(Editable s) { }
+        public void afterTextChanged(Editable s) {
+        }
     };
 
     @Override
     public void onBackPressed() {
-        if ( mGridView.isEditMode() ||drawer.isDrawerOpen(GravityCompat.START)) {
+        if (mGridView.isEditMode() || drawer.isDrawerOpen(GravityCompat.START)) {
             mGridView.stopEditMode();
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -700,7 +708,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onPhotoCropped(Uri uri) {
         if (!mCropParams.compress)
-        iv_left_header1.setImageBitmap(BitmapUtil.decodeUriAsBitmap(MainActivity.this, uri));
+            iv_left_header1.setImageBitmap(BitmapUtil.decodeUriAsBitmap(MainActivity.this, uri));
     }
 
     @Override
@@ -709,11 +717,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onCancel() { }
+    public void onCancel() {
+    }
 
     @Override
     public void onFailed(String message) {
-        ToastUtil.showToastS(MainActivity.this,"失败 "+message);
+        ToastUtil.showToastS(MainActivity.this, "失败 " + message);
     }
 
     @Override
@@ -788,14 +797,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //CropHelper.handleResult(cropHandler, requestCode, resultCode, data);
         if (ConstantsMy.isUtil) {
             CropHelper.handleResult(this, requestCode, resultCode, data);
-        }else {
+        } else {
             //从相册返回数据
             if (data != null) {
                 Bitmap photo = null;
                 //得到图片的全路径
                 Uri uri = data.getData();
                 try {
-                    if (photo!=null) photo.recycle();
+                    if (photo != null) photo.recycle();
                     photo = null;
                     photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
@@ -804,13 +813,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }else {}
+            } else {
+            }
         }
     }
 
     //销毁bitmap
     private void destoryBitmap(Bitmap photo) {
-        if(photo != null && !photo.isRecycled()){
+        if (photo != null && !photo.isRecycled()) {
             photo.recycle();
             photo = null;
         }
